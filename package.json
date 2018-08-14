@@ -1,0 +1,26 @@
+{
+    "name": "umime-simple",
+    "version": "0.1.0",
+    "description": "",
+    "main": "gulpfile.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "gulp",
+        "build": "gulp build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/pavelhamrik/umime-simple.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/pavelhamrik/umime-simple/issues"
+    },
+    "homepage": "https://github.com/pavelhamrik/umime-simple#readme",
+    "devDependencies": {
+        "gulp": "^3.9.1",
+        "gulp-sass": "^4.0.1",
+        "gulp-sourcemaps": "^2.6.4"
+    }
+}
