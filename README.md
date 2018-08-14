@@ -15,8 +15,8 @@ simplified boilerplate for the front ends of the [Umime to](https://www.umimeto.
 
 ## consider
 
-- [] some `js` and `html` stage depending on legacy code integration
-- [] `browser-sync`: live reload
+- [ ] some `js` and `html` stage depending on legacy code integration
+- [ ] `browser-sync`: live reload
 
 ## done
 
