@@ -5,24 +5,27 @@ const sourcemaps = require('gulp-sourcemaps');
 const dist = './docs';
 const paths = {
     assets: {
-        src: './src/assets/*',
+        src: './src/assets/**/*',
         dest: dist + '/assets/'
     },
     styles: {
         src: './src/**/*.scss',
-        dest: dist + '/styles/'
-    }
+        dest: dist + '/assets/'
+    },
+    sass: ['./node_modules/foundation-sites/scss']
 };
 
 gulp.task('default', ['styles', 'copy', 'watch']);
 
 // todo: build task minify etc
-// gulp.task('build', ['styles']);
+// gulp.task('build', ['styles', 'copy']);
 
 gulp.task('styles', function () {
     return gulp.src(paths.styles.src)
         .pipe(sourcemaps.init())
-        .pipe(sass().on('error', sass.logError))
+        .pipe(sass({
+            includePaths: paths.sass
+        }).on('error', sass.logError))
         .pipe(sourcemaps.write())
         .pipe(gulp.dest(paths.styles.dest));
 });

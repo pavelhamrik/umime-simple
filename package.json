@@ -19,6 +19,7 @@
     },
     "homepage": "https://github.com/pavelhamrik/umime-simple#readme",
     "devDependencies": {
+        "foundation-sites": "^6.5.0-rc.2",
         "gulp": "^3.9.1",
         "gulp-sass": "^4.0.1",
         "gulp-sourcemaps": "^2.6.4"
