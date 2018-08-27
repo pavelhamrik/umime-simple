@@ -1,0 +1,10 @@
+@import 'util/util';
+@import 'custom-settings';
+
+a {
+    transition: $custom-hover-transition;
+}
+
+p.suppressed {
+    color: $medium-gray;
+}

@@ -1,0 +1,59 @@
+@import 'util/util';
+@import '../custom-settings';
+
+.content-box {
+    background: $white;
+    border-radius: $global-radius;
+    box-shadow: $custom-soft-shadow;
+    margin: 0 0 $custom-box-margin;
+
+    .content-box-header {
+        @include flex;
+        @include flex-align(justify, middle);
+        padding: $custom-vertical-padding $custom-small-horizontal-padding;
+
+        @include breakpoint(medium up) {
+            padding: $custom-vertical-padding $custom-horizontal-padding;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin-bottom: 0;
+            line-height: 1.5rem;
+        }
+
+        h1 {
+            font-size: $custom-content-box-h1-size;
+        }
+
+        h2 {
+            font-size: $custom-content-box-h2-size;
+        }
+
+        h3 {
+            font-size: $custom-content-box-h3-size;
+        }
+    }
+
+    .content-box-section {
+        padding: $custom-vertical-padding * 1.5 $custom-small-horizontal-padding $custom-vertical-padding;
+
+        @include breakpoint(medium up) {
+            padding-left: $custom-horizontal-padding;
+            padding-right: $custom-horizontal-padding;
+        }
+
+        >.grid-container {
+            padding: 0;
+        }
+
+        &.tight {
+            padding-top: $custom-vertical-padding;
+        }
+    }
+
+    &>*:not(:last-child) {
+        border-bottom: 1px solid $border-gray;
+    }
+}

@@ -1,0 +1,71 @@
+@import 'util/unit';
+@import 'settings';
+
+// paddings and margins
+
+$custom-vertical-padding: 0.75rem;
+$custom-horizontal-padding: 1.75rem;
+$custom-small-horizontal-padding: 0.75rem;
+
+$custom-box-margin: 1.5rem;
+
+// colors
+
+$custom-background-color: #F5F6F7;
+
+$border-gray: rgba($black, 0.1);
+$border-medium-gray: rgba($black, 0.18);
+
+$custom-apps: (
+    'czech':        #00CA65,
+    'english':      #9B59B6,
+    'math':         #0BB9F3,
+    'facts':        #E65D50,
+    'programming':  #078AB6,
+    'german':       #F0AE35
+);
+
+$custom-active-darken-color: -14%;
+
+// buttons
+
+$button-box-shadow: inset 0 rem-calc(-1) 0 rgba(0,0,0,0.12);
+$button-suppressed-box-shadow: inset 0 rem-calc(-1) 0 rgba(0,0,0,0.04);
+$button-suppressed-background: rgba($black, 0.08);
+$button-suppressed-background-hover: rgba($black, 0.2);
+
+// animations
+
+$custom-hover-transition: background-color 0.15s ease-out, color 0.15s ease-out;
+
+// box shadows
+
+$custom-soft-shadow: 0 2px 5px  0 rgba(0,0,0,.015),
+                     0 5px 16px 0 rgba(0,0,0,.02);
+
+$custom-floating-shadow: 0 1px 7px  0 rgba(0,0,0,.07),
+                         0 5px 20px 0 rgba(0,0,0,.04);
+
+// font sizes
+
+$custom-content-box-h1-size: 21px;
+$custom-content-box-h2-size: 18px;
+$custom-content-box-h3-size: 16px;
+
+// line heights
+
+$custom-medium-line-height: 1.5rem;
+$custom-small-line-height: 1.25rem;
+
+// icons
+
+$custom-icon-font: 'umime-to' !important;
+
+$custom-content-icons: (
+    'doplnovacka',
+    'diktaty'
+);
+
+// helpers
+
+$custom-ultimate-radius: 5rem;

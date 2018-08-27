@@ -1,0 +1,12 @@
+@import 'util/util';
+@import '../custom-settings';
+
+.page-wrapper {
+    background: $custom-background-color url('../img/footer-pencils.png') no-repeat bottom -2rem center;
+    background-size: (690px * 0.45) (270px * 0.45);
+    padding: 1rem 0 7rem;
+
+    @include breakpoint(medium up) {
+        padding: 2rem 0 7rem;
+    }
+}

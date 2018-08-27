@@ -1,0 +1,8 @@
+@import 'util/util';
+@import 'custom-settings';
+
+@each $app, $color in $custom-apps {
+    .color-#{$app} {
+        color: $color !important;
+    }
+}

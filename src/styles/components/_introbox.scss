@@ -1,0 +1,37 @@
+@import 'util/util';
+@import '../custom-settings';
+
+.intro-box {
+    padding: 0 $custom-small-horizontal-padding $custom-vertical-padding * 2;
+    text-align: center;
+
+    @include breakpoint(medium up) {
+        padding: 0 $custom-horizontal-padding $custom-vertical-padding * 2;
+        text-align: left;
+        @include flex;
+        @include flex-align(left, top);
+    }
+
+    @include breakpoint(large up) {
+        max-width: 80%;
+    }
+
+    h1 {
+        font-size: 2rem;
+
+        @include breakpoint(medium up) {
+            font-size: 4rem;
+            margin-bottom: 0;
+        }
+    }
+
+    .dongle {
+        width: 6rem;
+        margin: 0 auto 0.75rem;
+
+        @include breakpoint(medium up) {
+            width: 14rem;
+            margin: 0.75rem 1.75rem 0 0;
+        }
+    }
+}

@@ -1,0 +1,6 @@
+@import 'util/util';
+@import '../custom-settings';
+
+hr {
+    border-color: $border-gray;
+}

@@ -1,0 +1,27 @@
+@import 'util/util';
+@import '../custom-settings';
+
+@each $icon in $custom-content-icons {
+    .icon-#{$icon} {
+        background: $white url('../img/icon-#{$icon}.png') center no-repeat;
+        background-size: contain;
+        border-radius: 20%;
+        box-shadow: $custom-soft-shadow;
+        min-width: 3rem;
+
+        &:before {
+            content: '';
+            display: block;
+            padding-top: 100%;
+        }
+    }
+
+    // todo: make it work
+    //.icon-small {
+    //    width: 3rem;
+    //}
+    //
+    //.icon-medium {
+    //    width: 4rem;
+    //}
+}

@@ -1,0 +1,48 @@
+@import 'util/util';
+@import '../custom-settings';
+
+.button {
+    box-shadow: $button-box-shadow;
+    border: transparent;
+
+    &.primary {
+        font-weight: $global-weight-bold;
+    }
+
+    &[disabled] {
+        box-shadow: none;
+    }
+
+    &.suppressed {
+        background: $button-suppressed-background;
+        box-shadow: $button-suppressed-box-shadow;
+        color: $black;
+
+        @each $designation, $color in $foundation-palette {
+            &.#{$designation},
+            &.#{$designation}[disabled]:hover {
+                color: $color;
+            }
+
+            &.#{$designation}:hover {
+                background-color: $button-suppressed-background-hover;
+            }
+        }
+
+        &:hover {
+            background: scale-color($button-suppressed-background, $lightness: -7%)
+        }
+
+        &[disabled],
+        &[disabled]:hover {
+            background: opacify($button-suppressed-background, 0.11);
+            box-shadow: none;
+        }
+    }
+
+    // todo: hovers
+}
+
+table .button:last-child {
+    margin-bottom: 0;
+}

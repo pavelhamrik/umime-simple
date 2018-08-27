@@ -1,0 +1,60 @@
+@import 'util/util';
+@import '../custom-settings';
+
+footer {
+    background: $white;
+    padding: $custom-vertical-padding * 4 0;
+    box-shadow: 0 -3px 3px 0 rgba(0,0,0,.007),
+                0 -8px 8px 0 rgba(0,0,0,.008);
+
+    p {
+        color: $dark-gray;
+        line-height: $custom-medium-line-height;
+    }
+
+    h2 {
+        color: $dark-gray;
+        font-size: map-get(map-get(map-get($header-styles, small), 'h4'), 'font-size') + px;
+        line-height: $custom-medium-line-height * 1.25;
+
+        @include breakpoint(medium up) {
+            font-size: map-get(map-get(map-get($header-styles, medium), 'h4'), 'font-size') + px;
+        }
+    }
+
+    ul {
+        line-height: $custom-medium-line-height * 1.25;
+    }
+
+    .dongle {
+        width: 110px;
+    }
+
+    .grid-x:not(:last-child) {
+        position: relative;
+        padding-bottom: $custom-vertical-padding * 1.5;
+        margin-bottom: $custom-vertical-padding * 3;
+
+        &:after {
+            border-bottom: 1px solid $border-gray;
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: $custom-small-horizontal-padding + rem-calc(map-get($grid-margin-gutters, small)) * 0.5;
+            right: $custom-small-horizontal-padding + rem-calc(map-get($grid-margin-gutters, small)) * 0.5;
+
+            @include breakpoint(medium up) {
+                left: $custom-horizontal-padding + rem-calc(map-get($grid-margin-gutters, medium)) * 0.5;
+                right: $custom-horizontal-padding + rem-calc(map-get($grid-margin-gutters, medium)) * 0.5;
+            }
+        }
+    }
+
+    .cell {
+        padding: 0 $custom-small-horizontal-padding;
+
+        @include breakpoint(medium up) {
+            padding: 0 $custom-horizontal-padding;
+        }
+    }
+}

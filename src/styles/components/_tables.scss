@@ -1,0 +1,83 @@
+@import 'util/util';
+@import '../custom-settings';
+
+table {
+    &.edgetoedge {
+        tbody, thead {
+            background: transparent;
+            border-width: 0;
+        }
+
+        thead {
+            border-bottom-width: 1px;
+        }
+
+        tbody th {
+            text-align: left;
+        }
+
+        th:last-child,
+        td:last-child {
+            padding-right: 0;
+        }
+
+        th:first-child,
+        td:first-child {
+            padding-left: 0;
+        }
+    }
+
+    &.nested {
+        @for $l from 1 through 5 {
+            .level-#{$l} th:first-child,
+            .level-#{$l} td:first-child {
+                padding-left: 2rem * ($l - 1);
+            }
+        }
+    }
+
+    &.stackable {
+        @include breakpoint(small only) {
+            &,
+            thead,
+            tbody,
+            tr,
+            th,
+            td,
+            &.nested th:first-child,
+            &.nested td:first-child {
+                display: block;
+                padding-left: 0;
+                padding-right: 0;
+            }
+            .stackable-inline,
+            &.nested th.stackable-inline,
+            &.nested td.stackable-inline {
+                display: inline-block;
+            }
+
+            .stackable-hidden {
+                display: none;
+            }
+        }
+    }
+
+    h1:last-child,
+    h2:last-child,
+    h3:last-child,
+    h4:last-child,
+    h5:last-child,
+    h6:last-child {
+        margin-bottom: 0;
+    }
+
+    @for $c from 1 through 12 {
+        .width-#{$c} {
+            width: (100% / $grid-columns) * $c;
+        }
+    }
+}
+
+.table-scroll table {
+    min-width: 100%;
+}
