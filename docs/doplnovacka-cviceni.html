@@ -158,37 +158,55 @@
     
     </div>
 
-    <div class="page-wrapper">
-        <div class="grid-container">
+    <div class="page-wrapper page-wrapper-exercise">
+        <div class="grid-container exercise-grid">
+    
             <div class="grid-x grid-margin-x">
-                <div class="medium-8 medium-offset-2 cell">
-    
-                    <div class="intro-box intro-box-simple-headline">
-                        <div class="dongle icon-doplnovacka icon-medium"></div>
-                        <div class="content">
-                            <h1>Doplňovačka</h1>
+                <div class="medium-6 medium-offset-3 cell">
+                    <div class="exercise-stats">
+                        <div class="progress">
+                            <div class="labels">
+                                <div class="description">Rozkoukávání</div>
+                                <div class="in-a-row">28 v řadě</div>
+                            </div>
+                            <div class="meter">
+                                <div class="ceiling" style="width: 57%;"></div>
+                                <div class="current" style="width: 33%;"></div>
+                            </div>
                         </div>
+                        <div class="shield shield-lvl-2"></div>
                     </div>
-    
-                    <div class="content-box">
-                        <div class="content-box-header">
-                            <h2>Vyjmenovaná slova po P</h2>
-                            <span class="badge secondary">Novinka</span>
-                        </div>
-                        <div class="content-box-section">
-                            <h3 class="subheader">Základní vyjmenovaná slova po P</h3>
-                            <p><strong>pýcha, pytel, pysk, netopýr, slepýš, pyl, kopyto, klopýtat, třpytit se, zpytovat,
-                                pykat, pýr, pýří, pýřit se, pyj, čepýřit se</strong></p>
-                            <p>Písmeno Y píšeme i ve slovech příbuzných a v některých dalších jménech osob nebo zeměpisných
-                                názvech.</p>
-                        </div>
-                        <div class="content-box-section tight text-center">
-                            <a href="doplnovacka-cviceni.html" class="button primary">Jdeme na to</a>
-                        </div>
-                    </div>
-    
                 </div>
             </div>
+    
+            <div class="grid-x grid-margin-x">
+                <div class="medium-8 medium-offset-2 cell">
+                    <h1 class="exercise-question">Vým<span class="exercise-blank">_</span>na stráží</h1>
+                </div>
+    
+                <!-- the onclick events are dev only -->
+                <div class="medium-4 medium-offset-2 cell">
+                    <button class="button exercise" onclick="this.classList.toggle('incorrect')">ně</button>
+                </div>
+                <div class="medium-4 cell">
+                    <button class="button exercise" onclick="this.classList.toggle('correct')">ě</button>
+                </div>
+            </div>
+    
+            <div class="grid-x grid-margin-x">
+                <div class="medium-6 medium-offset-3 cell">
+                    <div class="exercise-utils">
+                        <div class="">
+                            <input type="checkbox" id="show-details">
+                            <label for="show-details">Vždy zobrazit vysvětlení</label>
+                        </div>
+                        <div class="">
+                            <a href="#0" class="small suppressed button">Zkuste jiné cvičení</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
         </div>
     </div>
 

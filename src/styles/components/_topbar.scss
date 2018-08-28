@@ -140,7 +140,7 @@
 
     .menu .stacked-labels {
         @include flex;
-        @include flex-align(space-between, center);
+        @include flex-align(spaced, middle);
         padding: $custom-vertical-padding * 0.4175 $dropdown-padding;
 
         @include breakpoint(small only) {

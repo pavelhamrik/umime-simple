@@ -1,0 +1,50 @@
+@import 'util/util';
+@import '../custom-settings';
+
+.meter {
+    height: 1rem;
+    border-radius: $global-radius;
+    background: $white;
+    box-shadow: $custom-soft-shadow;
+    position: relative;
+
+    &:before,
+    &:after {
+        content: '';
+        display: block;
+        width: rem-calc(1px);
+        background: $medium-gray;
+        position: absolute;
+        left: 50%;
+        height: 100%;
+        z-index: 1;
+    }
+
+    &:after {
+        width: 50%;
+        left: 25%;
+        background: none;
+        border-style: solid;
+        border-color: $medium-gray;
+        border-width: 0 rem-calc(1px);
+    }
+
+    .ceiling,
+    .current {
+        border-radius: $global-radius;
+        background: opacify($light-gray, 0.06);
+        //background: $light-gray;
+        //background: scale-color(map-get($foundation-palette, warning), $lightness: 60%);
+        height: 100%;
+        position: absolute;
+        transition: $custom-size-transition;
+    }
+
+    .current {
+        $meter-current: map-get($foundation-palette, warning);
+        background: linear-gradient(to right,
+                scale-color($meter-current, $lightness: 20%) 5%,
+                scale-color($meter-current, $lightness: 0) 95%
+        );
+    }
+}

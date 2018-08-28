@@ -1,0 +1,30 @@
+@import 'util/util';
+@import '../custom-settings';
+
+.exercise-question {
+    text-align: center;
+    font-weight: $global-weight-normal;
+    margin: 0 0 $custom-vertical-padding * 3;
+}
+
+.exercise-blank {
+    color: map-get($foundation-palette, secondary);
+}
+
+.exercise-grid {
+    @include flex;
+    @include flex-direction(column);
+    @include flex-align(justify, null);
+    min-height: 100%    ;
+}
+
+.exercise-utils {
+    @include flex;
+    @include flex-align(justify, middle);
+
+    margin-top: 2rem;
+
+    input[type=checkbox] {
+        margin-bottom: 0;
+    }
+}

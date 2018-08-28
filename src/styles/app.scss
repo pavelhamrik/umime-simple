@@ -32,7 +32,7 @@
 @include foundation-menu;
 //@include foundation-menu-icon;
 //@include foundation-drilldown-menu;
-//@include foundation-dropdown;
+@include foundation-dropdown;
 @include foundation-dropdown-menu;
 //@include foundation-responsive-embed;
 @include foundation-label;
@@ -45,7 +45,7 @@
 //@include foundation-sticky;
 //@include foundation-reveal;
 //@include foundation-switch;
-//@include foundation-table;
+@include foundation-table;
 //@include foundation-tabs;
 //@include foundation-thumbnail;
 //@include foundation-title-bar;
@@ -69,6 +69,7 @@
 @import 'colors';
 @import 'identities';
 @import 'typography';
+@import 'utils';
 
 // umime to component styles
 
@@ -79,6 +80,10 @@
 @import 'components/hr';
 @import 'components/icons';
 @import 'components/introbox';
+@import 'components/meter';
 @import 'components/page-wrapper';
+@import 'components/shields';
+@import 'components/exercise';
+@import 'components/exercise-stats';
 @import 'components/tables';
 @import 'components/topbar';

@@ -77,5 +77,5 @@ gulp.task('browser-reload', function() {
 gulp.task('watch', function () {
     gulp.watch(paths.styles.src, ['styles']);
     gulp.watch(paths.assets.src, ['copy', 'browser-reload']);
-    gulp.watch(paths.pages.src + '**/*', ['pages-refresh', 'browser-reload']);
+    gulp.watch(paths.pages.src + '**/*', ['pages-refresh', 'pages', 'browser-reload']);
 });

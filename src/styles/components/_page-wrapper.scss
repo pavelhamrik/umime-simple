@@ -9,4 +9,41 @@
     @include breakpoint(medium up) {
         padding: 2rem 0 7rem;
     }
+
+    &.page-wrapper-exercise {
+        background-image: none;
+        position: relative;
+        height: calc(100% - 3.5rem);
+
+
+
+        @include breakpoint(medium up) {
+            height: calc(100% - 8rem);
+        }
+
+        //$base-color: scale-color($secondary-color, $lightness: +40%, $saturation: -30%);
+        //background: radial-gradient(circle farthest-side at 100% 60%, rgba($black, 0.85) 7%, rgba($black, 0) 100%),
+        //            radial-gradient(circle farthest-side at 0% 0%, rgba($black, 0.85) 5%, rgba($white, 0.2)  100%),
+        //            linear-gradient(15deg, rgba($black, 0.2) 0%, rgba($white, 0.2) 100%),
+        //            linear-gradient($base-color, $base-color);
+
+        //&:before {
+        //    content: '';
+        //    display: block;
+        //    position: absolute;
+        //
+        //    $blur: 100px;
+        //    top: -$blur;s
+        //    right: -$blur;
+        //    bottom: -$blur;
+        //    left: -$blur;
+        //    filter: blur($blur);
+        //
+        //    $tint: #000;
+        //    background: radial-gradient(circle closest-corner at (random(100)+%) (random(100)+%), rgba($tint, random()), transparent),
+        //                radial-gradient(circle closest-corner at (random(100)+%) (random(100)+%), rgba($tint, random()), transparent),
+        //                radial-gradient(circle closest-corner at (random(100)+%) (random(100)+%), rgba($tint, random()), transparent);
+        //    opacity: 0.5;
+        //}
+    }
 }

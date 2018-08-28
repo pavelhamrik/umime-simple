@@ -1,0 +1,42 @@
+@import 'util/util';
+@import '../custom-settings';
+
+.exercise-stats {
+    @include flex;
+    @include flex-align(justify, middle);
+    margin: 1rem 0;
+
+    .progress {
+        flex-grow: 2;
+        position: relative;
+
+        .labels {
+            padding: 0 0.25rem 0.25rem;
+            @include flex;
+            @include flex-align(justify, middle);
+            position: absolute;
+            top: -1.625rem;
+            right: 0;
+            left: 0;
+            font-size: $small-font-size;
+        }
+    }
+
+    .progress + .shield {
+        margin-left: 0.5rem;
+
+        @include breakpoint(medium up) {
+            margin-left: 1rem;
+        }
+    }
+
+    .shield {
+        width: 3.25rem;
+        height: 3.25rem;
+        background-color: $white;
+        box-shadow: $custom-soft-shadow;
+        border-radius: $custom-ultimate-radius;
+        background-origin: content-box;
+        padding: 0.25rem;
+    }
+}

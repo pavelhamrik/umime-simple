@@ -1,0 +1,15 @@
+@import 'util/util';
+@import '../custom-settings';
+
+.shield {
+    background: url('../img/shield-lvl-dot.png') center no-repeat;
+    background-size: contain;
+    height: 2rem;
+    width: 2rem;
+}
+
+@each $shield in $custom-shields {
+    .shield-#{$shield} {
+        background-image: url('../img/shield-#{$shield}.png');
+    }
+}

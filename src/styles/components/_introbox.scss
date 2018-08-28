@@ -34,4 +34,13 @@
             margin: 0.75rem 1.75rem 0 0;
         }
     }
+
+    &.intro-box-simple-headline {
+        .dongle {
+            @include breakpoint(medium up) {
+                width: 5.5rem;
+                margin-top: 0;
+            }
+        }
+    }
 }
