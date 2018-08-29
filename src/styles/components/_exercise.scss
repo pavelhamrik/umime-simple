@@ -23,17 +23,20 @@
     @include flex;
     @include flex-direction(column);
     @include flex-align(justify, null);
-    min-height: 100%    ;
+    min-height: calc(100vh - 8rem);
+
+    @include breakpoint(medium up) {
+        min-height: calc(100vh - 14rem);
+    }
 }
 
 .exercise-main {
-    margin: 0 0 2rem;
+    @include breakpoint(medium up) {
+        margin-bottom: 4rem;
+    }
 }
 
 .exercise-utils {
-    //@include flex;
-    //@include flex-align(justify, middle);
-
     input[type=checkbox] {
         margin-bottom: 0;
     }
@@ -78,4 +81,5 @@
 
 .exercise-alternatives {
     text-align: center;
+    margin-top: 1.5rem;
 }
