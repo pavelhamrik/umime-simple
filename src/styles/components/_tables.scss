@@ -9,11 +9,15 @@ table {
         }
 
         thead {
-            border-bottom-width: 1px;
+            border-bottom-width: rem-calc(1px);
         }
 
         tbody th {
             text-align: left;
+        }
+
+        tbody:only-child {
+            border-top-width: rem-calc(1px);
         }
 
         th:last-child,

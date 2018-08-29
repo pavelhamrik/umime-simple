@@ -61,7 +61,10 @@
 
         &:hover {
             box-shadow: $custom-floating-shadow;
-            transform: scale(1.025, 1.075);
+
+            @include breakpoint(medium up) {
+                transform: scale(1.025, 1.075);
+            }
         }
 
         &:active {
@@ -72,7 +75,10 @@
         &.incorrect {
             color: $white;
             position: relative;
-            transform: scale(1.025, 1.075);
+
+            @include breakpoint(medium up) {
+                transform: scale(1.025, 1.075);
+            }
         }
 
         &.correct {

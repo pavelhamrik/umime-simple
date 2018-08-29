@@ -11,6 +11,14 @@
     color: map-get($foundation-palette, secondary);
 }
 
+.exercise-correct {
+    color: map-get($foundation-palette, success);
+}
+
+.exercise-incorrect {
+    color: map-get($foundation-palette, alert);
+}
+
 .exercise-grid {
     @include flex;
     @include flex-direction(column);
@@ -18,13 +26,56 @@
     min-height: 100%    ;
 }
 
-.exercise-utils {
-    @include flex;
-    @include flex-align(justify, middle);
+.exercise-main {
+    margin: 0 0 2rem;
+}
 
-    margin-top: 2rem;
+.exercise-utils {
+    //@include flex;
+    //@include flex-align(justify, middle);
 
     input[type=checkbox] {
         margin-bottom: 0;
     }
+}
+
+.exercise-disclosure {
+    text-align: center;
+    margin: 1rem 0;
+
+    [type=checkbox] + label {
+        margin-left: 0.25rem;
+    }
+
+    .content {
+        height: 0;
+        box-sizing: border-box;
+        overflow-y: auto;
+        text-align: left;
+        transition: $custom-size-transition;
+        font-size: $small-font-size;
+
+        & > * {
+            margin: 0.5rem 0;
+        }
+    }
+
+    [type=checkbox]:checked ~ .content {
+        height: 6rem;
+    }
+
+    &.exercise-disclosure-large [type=checkbox]:checked ~ .content {
+        height: 12rem;
+    }
+
+
+    table {
+        &.unstriped tbody tr {
+            background: transparent;
+        }
+    }
+}
+
+.exercise-alternatives {
+    text-align: center;
 }
