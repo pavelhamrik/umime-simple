@@ -23,10 +23,18 @@
     @include flex;
     @include flex-direction(column);
     @include flex-align(justify, null);
-    min-height: calc(100vh - 8rem);
+    min-height: calc(100vh - 7rem);
 
     @include breakpoint(medium up) {
-        min-height: calc(100vh - 14rem);
+        min-height: calc(100vh - 13.5rem);
+    }
+}
+
+.page-wrapper-final .exercise-grid {
+    min-height: calc(100vh - 11rem);
+
+    @include breakpoint(medium up) {
+        min-height: calc(100vh - 16rem);
     }
 }
 
