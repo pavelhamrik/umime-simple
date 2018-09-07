@@ -1,0 +1,47 @@
+@import 'util/util';
+@import '../custom-settings';
+
+.exercise-thumb {
+    background: $light-gray;
+    border-radius: $global-radius;
+    @include flex;
+    @include flex-align(left, middle);
+    padding: 0.5rem;
+    height: 100%;
+
+    &:hover,
+    &:focus {
+        background-color: $button-suppressed-background-hover;
+
+        .dongle {
+            box-shadow: $custom-soft-shadow;
+        }
+    }
+
+    .dongle {
+        width: 3.5rem;
+        margin-right: $custom-small-horizontal-padding;
+        flex-shrink: 0;
+    }
+
+    .content {
+        color: $black;
+        overflow: hidden;
+
+        .title {
+            font-weight: $global-weight-bold;
+            line-height: 1.375rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            //white-space: nowrap;
+            //text-overflow: ellipsis;
+
+        }
+
+        .description {
+            font-size: $small-font-size;
+        }
+    }
+}

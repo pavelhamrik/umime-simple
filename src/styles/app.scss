@@ -66,6 +66,7 @@
 
 // umime to general styles
 
+@import 'animations';
 @import 'colors';
 @import 'identities';
 @import 'typography';
@@ -76,6 +77,9 @@
 @import 'components/badge';
 @import 'components/buttons';
 @import 'components/contentbox';
+@import 'components/exercise';
+@import 'components/exercise-stats';
+@import 'components/exercise-thumb';
 @import 'components/footer';
 @import 'components/hr';
 @import 'components/icons';
@@ -83,7 +87,5 @@
 @import 'components/meter';
 @import 'components/page-wrapper';
 @import 'components/shields';
-@import 'components/exercise';
-@import 'components/exercise-stats';
 @import 'components/tables';
 @import 'components/topbar';

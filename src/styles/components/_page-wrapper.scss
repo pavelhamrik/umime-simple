@@ -10,12 +10,16 @@
         padding: 2rem 0 7rem;
     }
 
-    &.page-wrapper-exercise {
-        background-image: none;
+    &.page-wrapper-exercise,
+    &.page-wrapper-final {
         position: relative;
         padding: 2rem 0 3rem;
         @include breakpoint(medium up) {
             padding: 3rem 0 4rem;
         }
+    }
+
+    &.page-wrapper-exercise {
+        background-image: none;
     }
 }

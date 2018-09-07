@@ -19,6 +19,18 @@
             right: 0;
             left: 0;
             font-size: $small-font-size;
+            white-space: nowrap;
+
+            & > :only-child {
+                text-align: center;
+                width: 100%;
+            }
+
+            & > h1,
+            & > h2 {
+                position: relative;
+                top: -1rem;
+            }
         }
     }
 
@@ -31,12 +43,19 @@
     }
 
     .shield {
-        width: 3.25rem;
-        height: 3.25rem;
+        width: 3rem;
+        height: 3rem;
         background-color: $white;
         box-shadow: $custom-soft-shadow;
         border-radius: $custom-ultimate-radius;
         background-origin: content-box;
         padding: 0.25rem;
+    }
+
+    &.exercise-stats-inverse {
+        .shield {
+            background-color: $light-gray;
+            box-shadow: none;
+        }
     }
 }

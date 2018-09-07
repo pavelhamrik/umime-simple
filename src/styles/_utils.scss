@@ -1,8 +1,8 @@
-//@import 'util/util';
-//@import 'custom-settings';
+@import 'util/util';
+@import 'custom-settings';
 
-// removed, using vh units instead
-//body,
-//html {
-//    height: 100%;
-//}
+.grid-vertically-spaced {
+    .cell {
+        margin-bottom: $custom-vertical-padding;
+    }
+}

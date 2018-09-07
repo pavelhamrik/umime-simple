@@ -24,4 +24,5 @@ simplified boilerplate for the front ends of the [Umime to](https://www.umimeto.
 
 ## frontend
 
-- [ ] the `doplnovacka` exercise
+- [x] the `doplnovacka` exercise
+- [x] a `final board` for an exercise

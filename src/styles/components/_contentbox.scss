@@ -53,7 +53,22 @@
         }
     }
 
-    &>*:not(:last-child) {
+    &.content-box-padded .content-box-section {
+        padding-top: $custom-vertical-padding * 2;
+        padding-bottom: $custom-vertical-padding * 2;
+
+        @include breakpoint(medium up) {
+            padding-top: $custom-vertical-padding * 3;
+            padding-bottom: $custom-vertical-padding * 3;
+        }
+
+        @include breakpoint(large up) {
+            padding-top: $custom-vertical-padding * 4;
+            padding-bottom: $custom-vertical-padding * 4;
+        }
+    }
+
+    & > *:not(:last-child) {
         border-bottom: 1px solid $border-gray;
     }
 }

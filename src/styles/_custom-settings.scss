@@ -50,40 +50,20 @@ $custom-floating-shadow: $custom-floating-shadow-close,
 
 // animations
 
-$custom-hover-transition: background-color 0.15s ease-out, color 0.15s ease-out;
-$custom-size-transition: width 0.45s ease-out, height 0.45s ease-out;
+$custom-default-easing: ease-out;
+$custom-fadein-easing: ease-in;
 
-@keyframes aura-success {
-    from {
-        box-shadow: 0 0.0625rem 0 0 rgba(map-get($foundation-palette, success), 0.5),
-                    $custom-floating-shadow-close,
-                    $custom-floating-shadow-far;
-    }
+$custom-swing-easing: cubic-bezier(0.7,0.2,0.3,1);
 
-    to {
-        box-shadow: 0 0.0625rem 0 1.25rem rgba(map-get($foundation-palette, success), 0),
-                    $custom-floating-shadow-close,
-                    $custom-floating-shadow-far;
-    }
-}
+$custom-lightning-speed: 0.15s;
+$custom-fast-speed: 0.25s;
+$custom-medium-speed: 0.45s;
+$custom-slow-speed: 0.85s;
+$custom-sluggish-speed: 2s;
 
-@keyframes shake {
-    10%, 90% {
-        left: -0.0625rem;
-    }
+$custom-hover-transition: background-color $custom-lightning-speed $custom-default-easing, color $custom-lightning-speed $custom-default-easing;
+$custom-size-transition: width $custom-medium-speed $custom-default-easing, height $custom-medium-speed $custom-default-easing;
 
-    20%, 80% {
-        left: 0.125rem;
-    }
-
-    30%, 50%, 70% {
-        left: -0.25rem;
-    }
-
-    40%, 60% {
-        left: 0.25rem;
-    }
-}
 
 // font sizes
 
