@@ -1,0 +1,20 @@
+@import '../custom-settings';
+
+#gridcross {
+    margin: 0 auto;
+    padding: 1rem;
+
+    .canvas {
+        background: bisque;
+        border-radius: $global-radius;
+        margin: 0 auto;
+        padding: 20px;
+        width: 282px;
+        height: 282px;
+
+        path {
+            stroke-linecap: round;
+            stroke-width: 1px;
+        }
+    }
+}

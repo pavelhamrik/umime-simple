@@ -19,11 +19,16 @@
     },
     "homepage": "https://github.com/pavelhamrik/umime-simple#readme",
     "devDependencies": {
-        "browser-sync": "^2.24.6",
+        "browser-sync": "^2.26.3",
         "foundation-sites": "^6.5.0-rc.2",
         "gulp": "^3.9.1",
+        "gulp-plumber": "^1.2.0",
         "gulp-sass": "^4.0.1",
         "gulp-sourcemaps": "^2.6.4",
-        "panini": "^1.6.2"
+        "panini": "^1.6.2",
+        "webpack-stream": "^5.1.1"
+    },
+    "dependencies": {
+        "vinyl-named": "^1.1.0"
     }
 }
