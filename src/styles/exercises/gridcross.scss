@@ -17,23 +17,45 @@
         box-sizing: border-box;
         display: block;
 
-        path {
+        path,
+        line {
             stroke-linecap: round;
             stroke-width: 1px;
 
-            .gridline {
+            &.gridline {
+                stroke: $medium-gray;
+            }
+
+            &.userline {
                 stroke: $black;
             }
+
+            pointer-events: none;
         }
 
         .indicator {
             stroke-linecap: round;
             stroke-width: 3px;
             stroke: $secondary-color;
+
+            &.snapped {
+                stroke: $warning-color;
+                stroke-width: 4px;
+            }
         }
 
         .node {
-            //cursor: pointer;
+            &.gridnode {
+                fill: transparent;
+            }
+
+            &.usernode {
+                stroke: $black;
+                fill: $white;
+                stroke-width: 2;
+                position: relative;
+                z-index: 2;
+            }
         }
     }
 }
