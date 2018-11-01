@@ -4,17 +4,36 @@
     margin: 0 auto;
     padding: 1rem;
 
-    .canvas {
+    #canvas-wrapper {
         background: bisque;
         border-radius: $global-radius;
+        box-sizing: content-box;
         margin: 0 auto;
-        padding: 20px;
-        width: 282px;
-        height: 282px;
+        //padding: 10px;
+        width: fit-content;
+    }
+
+    #canvas {
+        box-sizing: border-box;
+        display: block;
 
         path {
             stroke-linecap: round;
             stroke-width: 1px;
+
+            .gridline {
+                stroke: $black;
+            }
+        }
+
+        .indicator {
+            stroke-linecap: round;
+            stroke-width: 3px;
+            stroke: $secondary-color;
+        }
+
+        .node {
+            //cursor: pointer;
         }
     }
 }

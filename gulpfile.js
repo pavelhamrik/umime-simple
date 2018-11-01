@@ -2,6 +2,7 @@ const gulp = require('gulp');
 const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
 const plumber = require('gulp-plumber');
+const babel = require('gulp-babel');
 const browserSync = require('browser-sync').create();
 const panini = require('panini');
 const webpack = require('webpack');
@@ -34,6 +35,19 @@ const PATHS = {
 
 const WEBPACK_CONFIG = {
     mode: 'development',
+    module: {
+        rules: [
+            {
+                test: require.resolve('snapsvg/dist/snap.svg.js'),
+                use: 'imports-loader?this=>window,fix=>module.exports=0',
+            },
+        ],
+    },
+    resolve: {
+        alias: {
+            snapsvg: 'snapsvg/dist/snap.svg.js',
+        },
+    },
 };
 
 function logError(error) {
@@ -49,12 +63,15 @@ gulp.task('scripts', function () {
     return gulp.src(PATHS.scripts.src)
         .pipe(plumber({errorHandler: logError()}))
         .pipe(named())
-        // .pipe(sourcemaps.init())
+        .pipe(sourcemaps.init())
+        .pipe(babel({
+            presets: ['@babel/env']
+        }))
         .pipe(webpackStream(WEBPACK_CONFIG, webpack, function(err, stats) {
             console.log(err);
         }))
         .on('error', logError)
-        // .pipe(sourcemaps.write())
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest(PATHS.scripts.dist))
         .pipe(browserSync.stream());
 });
