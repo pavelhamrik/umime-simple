@@ -1,4 +1,4 @@
-@import '../custom-settings';
+@import '../../styles/custom-settings';
 
 #gridcross {
     margin: 0 auto;
@@ -21,14 +21,16 @@
         line {
             stroke-linecap: round;
             stroke-width: 1px;
+            stroke: $medium-gray;
 
-            &.gridline {
-                stroke: $medium-gray;
-            }
+            &.gridline {}
 
             &.userline {
                 stroke: $black;
+                stroke-width: 2px;
             }
+
+            &.axisline {}
 
             pointer-events: none;
         }
@@ -36,25 +38,22 @@
         .indicator {
             stroke-linecap: round;
             stroke-width: 3px;
-            stroke: $secondary-color;
+            stroke: $black;
 
             &.snapped {
-                stroke: $warning-color;
-                stroke-width: 4px;
+                stroke: $secondary-color;
             }
         }
 
         .node {
-            &.gridnode {
-                fill: transparent;
-            }
+            fill: transparent;
+
+            &.gridnode {}
 
             &.usernode {
                 stroke: $black;
                 fill: $white;
                 stroke-width: 2;
-                position: relative;
-                z-index: 2;
             }
         }
     }
