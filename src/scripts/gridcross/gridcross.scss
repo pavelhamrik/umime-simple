@@ -1,0 +1,60 @@
+@import '../../styles/custom-settings';
+
+#gridcross {
+    margin: 0 auto;
+    padding: 1rem;
+
+    #canvas-wrapper {
+        background: bisque;
+        border-radius: $global-radius;
+        box-sizing: content-box;
+        margin: 0 auto;
+        //padding: 10px;
+        width: fit-content;
+    }
+
+    #canvas {
+        box-sizing: border-box;
+        display: block;
+
+        path,
+        line {
+            stroke-linecap: round;
+            stroke-width: 1px;
+            stroke: $medium-gray;
+
+            &.gridline {}
+
+            &.userline {
+                stroke: $black;
+                stroke-width: 2px;
+            }
+
+            &.axisline {}
+
+            pointer-events: none;
+        }
+
+        .indicator {
+            stroke-linecap: round;
+            stroke-width: 3px;
+            stroke: $black;
+
+            &.snapped {
+                stroke: $secondary-color;
+            }
+        }
+
+        .node {
+            fill: transparent;
+
+            &.gridnode {}
+
+            &.usernode {
+                stroke: $black;
+                fill: $white;
+                stroke-width: 2;
+            }
+        }
+    }
+}
