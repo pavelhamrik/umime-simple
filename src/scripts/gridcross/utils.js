@@ -7,7 +7,7 @@ import {
     PAPER_PADDING,
     RIGHT_EDGE,
     SNAP_THRESHOLD, TOP_EDGE
-} from "./gridcross.constants";
+} from "./constants";
 import { intersectLineLine } from "./intersections";
 
 svgDraggableInit(SVG);
@@ -20,15 +20,7 @@ export function svgLineToPoints(line) {
     ]
 }
 
-export function roundPoint(point) {
-    const {x, y} = point;
-    return {
-        x: Math.round(x),
-        y: Math.round(y),
-    };
-}
-
-export function bootstrap() {
+export function svgjsInit() {
     const root = document.getElementById('gridcross');
     const canvasWrapper = document.createElement('div');
     canvasWrapper.id = 'canvas-wrapper';

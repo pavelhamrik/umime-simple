@@ -1,6 +1,6 @@
 // from https://github.com/thelonious/kld-intersections
 
-import { OK, ERROR, PARALLEL, COINCIDENT, NO_INTERSECTION } from "./gridcross.constants";
+import { OK, ERROR, PARALLEL, COINCIDENT, NO_INTERSECTION } from "./constants";
 
 export const intersectLineLine = function (a1, a2, b1, b2) {
     let intersections = [];

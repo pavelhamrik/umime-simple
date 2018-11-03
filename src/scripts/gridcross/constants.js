@@ -21,3 +21,7 @@ export const NO_INTERSECTION = 'NO_INTERSECTION';
 export const SNAP_THRESHOLD = 10;
 export const DUPLICATE_NODE_THRESHOLD = 0.1;
 export const DUPLICATE_LINE_THRESHOLD = 0.1;
+
+export const NODE = 'NODE';
+export const LINE = 'LINE';
+export const CIRCLE = 'CIRCLE';
