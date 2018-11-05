@@ -3,17 +3,21 @@
 #gridcross {
     margin: 0 auto;
     padding: 1rem;
+    user-select: none;
 
     #canvas-wrapper {
-        background: bisque;
+        background: url('https://www.umimeto.org/asset/global/img/pozadi_svetlejsi.png') blanchedalmond;
+        background-size: cover;
         border-radius: $global-radius;
         box-sizing: content-box;
         margin: 0 auto;
-        //padding: 10px;
         width: fit-content;
+        position: relative;
     }
 
     #canvas {
+        background: rgba($white, 0.65);
+        border-radius: inherit;
         box-sizing: border-box;
         display: block;
 
@@ -22,6 +26,7 @@
             stroke-linecap: round;
             stroke-width: 1px;
             stroke: $medium-gray;
+            pointer-events: none;
 
             &.gridline {}
 
@@ -32,13 +37,30 @@
 
             &.axisline {}
 
-            pointer-events: none;
+            &.taskline {
+                stroke: $black;
+                stroke-width: 2px;
+            }
         }
 
-        .indicator {
-            stroke-linecap: round;
+        $indicator-transition: fill $custom-lightning-speed $custom-default-easing,
+            stroke $custom-lightning-speed $custom-default-easing;
+
+        circle.indicator {
+            fill: $white;
+            stroke-width: 1px;
+            stroke: $black;
+            transition: $indicator-transition;
+
+            &.snapped {
+                stroke: $secondary-color;
+            }
+        }
+
+        line.indicator {
             stroke-width: 3px;
             stroke: $black;
+            transition: $indicator-transition;
 
             &.snapped {
                 stroke: $secondary-color;
@@ -53,8 +75,64 @@
             &.usernode {
                 stroke: $black;
                 fill: $white;
+            }
+
+            &.tasknode {
+                stroke: $black;
+                fill: $white;
                 stroke-width: 2;
             }
+        }
+    }
+
+    .undoButton {
+        margin: $custom-vertical-padding auto 0;
+        display: block;
+        background-color: $button-suppressed-background;
+        border-radius: $button-radius;
+        padding: $button-padding;
+        cursor: pointer;
+        font-size: $small-font-size;
+        transition: $button-transition;
+        outline: none;
+
+        &:hover {
+            background-color: $button-suppressed-background-hover;
+        }
+    }
+
+    .loadingIndicator {
+        border-radius: $global-radius;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:after {
+            content: '';
+            background-color: $primary-color;
+            display: block;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: $global-radius / 2;
+            animation: sk-rotateplane 1.2s infinite ease-in-out;
+        }
+    }
+
+    // from http://tobiasahlin.com/spinkit/
+    @keyframes sk-rotateplane {
+        0% {
+            transform: perspective(6rem) rotateX(0deg) rotateY(0deg);
+        }
+        50% {
+            transform: perspective(6rem) rotateX(-180.1deg) rotateY(0deg);
+        }
+        100% {
+            transform: perspective(6rem) rotateX(-180deg) rotateY(-179.9deg);
         }
     }
 }

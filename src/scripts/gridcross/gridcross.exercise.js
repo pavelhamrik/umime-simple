@@ -1,196 +1,162 @@
-import SVG from 'svg.js';
-
-import { intersectLineLine } from './intersections';
 import {
-    svgLineToPoints,
-    bootstrap,
-    draggableSnap,
     getNearestNode,
-    extendLineCoordinates, calculateDistance,
-} from './gridcross.utils';
-
+    extendLineCoordinates,
+    generateGridLines,
+    generateGridNodes,
+    render,
+    updateElemClassInObject,
+    composeStateObject,
+    createStateId,
+    findLine,
+    parseAssignment,
+} from './functions';
+import { intersectLineLine } from './intersections';
+import { bootstrap } from './bootstrap';
+import StateProvider from './StateProvider';
 import {
-    GRID_HEIGHT,
-    RESOLUTION,
-    GRID_WIDTH,
-    TOP_EDGE,
-    BOTTOM_EDGE,
-    LEFT_EDGE,
-    RIGHT_EDGE,
-    PAPER_PADDING,
+    API_URL,
     DUPLICATE_NODE_THRESHOLD,
-    DUPLICATE_LINE_THRESHOLD,
-    NODE_RADIUS,
-} from './gridcross.constants';
+    LINE,
+    NODE,
+    NODE_GROUP,
+    PATH_GROUP,
+    WORK_GROUP,
+} from './constants';
 
 
 // bootstrapping
 
-const canvas = bootstrap();
+const { canvas, loadingIndicator } = bootstrap();
 
+// these won't change, so we won't store them in the state
+const groups = {};
+groups[PATH_GROUP] = canvas.group().addClass(PATH_GROUP);
+groups[WORK_GROUP] = canvas.group().addClass(WORK_GROUP);
+groups[NODE_GROUP] = canvas.group().addClass(NODE_GROUP);
 
-// drawing the grid
+const initialState = {
+    'nodes': generateGridNodes('node gridnode', 'nodes', NODE_GROUP),
+    'paths': generateGridLines('gridline', 'paths', PATH_GROUP),
+};
 
-const pathGroup = canvas.group().addClass('pathGroup');
-const workGroup = canvas.group().addClass('workGroup');
-const nodeGroup = canvas.group().addClass('nodeGroup');
+const state = new StateProvider(initialState);
 
-const xGrid = Array.from(Array(GRID_WIDTH + 1), (value, xGridline) => {
-    return pathGroup.line(xGridline * RESOLUTION + PAPER_PADDING, TOP_EDGE, xGridline * RESOLUTION + PAPER_PADDING, BOTTOM_EDGE)
-        .addClass('gridline');
-});
+function getAssignment() {
+    const request = new XMLHttpRequest();
+    request.open('GET', API_URL);
+    request.responseType = 'json';
+    request.send();
+    request.onload = function() {
+        // compose the state update based on the assignment data
+        state.set(parseAssignment(request.response, state.get()));
 
-const yGrid = Array.from(Array(GRID_HEIGHT + 1), (value, yGridline) => {
-    return pathGroup.line(LEFT_EDGE, yGridline * RESOLUTION + PAPER_PADDING, RIGHT_EDGE, yGridline * RESOLUTION + PAPER_PADDING)
-        .addClass('gridline');
-});
+        loadingIndicator.remove();
 
-
-// mutable
-
-let paths = xGrid.concat(yGrid);
-
-let nodes = xGrid.map(xLine => {
-    return yGrid.map(yLine => {
-        const xLinePoints = svgLineToPoints(xLine);
-        const yLinePoints = svgLineToPoints(yLine);
-        return intersectLineLine(xLinePoints[0], xLinePoints[1], yLinePoints[0], yLinePoints[1],).intersections
-            .map(intersection => (
-                addNode({x: intersection.x, y: intersection.y}, nodeGroup, [], ['gridnode'])
-            ));
-    }).flat();
-}).flat();
-
-let dragIndicator = {};
-
-
-// node manipulation
-
-function findLine(point1, point2, paths) {
-    return paths.filter(path => {
-        const pathPoints = svgLineToPoints(path);
-        const distance1 = Math.min(calculateDistance(pathPoints[0], point1), calculateDistance(pathPoints[0], point2));
-        const distance2 = Math.min(calculateDistance(pathPoints[1], point1), calculateDistance(pathPoints[1], point2));
-
-        console.log('distances', distance1, distance2, distance1 < DUPLICATE_LINE_THRESHOLD && distance2 < DUPLICATE_LINE_THRESHOLD);
-
-        return distance1 < DUPLICATE_LINE_THRESHOLD && distance2 < DUPLICATE_LINE_THRESHOLD;
-    })
-}
-
-function addNode(coords, group, nodes, classes = ['gridnode']) {
-    const nearestNode = getNearestNode(coords.x, coords.y, nodes);
-    if (typeof nearestNode.distance !== 'undefined' && nearestNode.distance < DUPLICATE_NODE_THRESHOLD) return;
-
-    const node = group.circle(NODE_RADIUS * 2)
-        .move(coords.x - NODE_RADIUS, coords.y - NODE_RADIUS)
-        .addClass('node')
-        .addClass(classes.join(' '));
-
-    return attachDraggable(node);
-}
-
-function addLine(point1, point2, classes, paths, pathGroup, nodes, nodeGroup) {
-
-    console.time('addLine');
-
-    if (findLine(point1, point2, paths).length !== 0) return {paths: paths, nodes: nodes};
-
-    const newLine = pathGroup.line(point1.x, point1.y, point2.x, point2.y)
-        .addClass('line')
-        .addClass(classes.join(' '));
-
-    const axisCoords = extendLineCoordinates(point1, point2);
-
-    console.log(findLine(axisCoords[0], axisCoords[1], paths).length);
-
-    const axisLine = findLine(axisCoords[0], axisCoords[1], paths).length === 0
-        ? pathGroup.line(axisCoords[0].x, axisCoords[0].y, axisCoords[1].x, axisCoords[1].y).addClass('axisline')
-        : undefined;
-
-    const newNodes = paths.reduce((accumulator, line) => {
-        const linePoints = svgLineToPoints(line);
-        return accumulator.concat(
-            intersectLineLine(linePoints[0], linePoints[1], axisCoords[0], axisCoords[1])
-                .intersections
-                .map(node => {
-                    const classList = line.hasClass('gridline') || line.hasClass('axisline') ? [] : ['usernode'];
-                    return addNode({x: node.x, y: node.y}, nodeGroup, nodes, classList);
-                })
-                .filter(node => typeof node !== 'undefined')
-        );
-    }, []);
-
-    const pathsWithAxisLine = typeof axisLine !== 'undefined'
-        ? paths.concat([newLine, axisLine])
-        : paths.concat([newLine]);
-
-    console.timeEnd('addLine');
-
-    return {
-        paths: pathsWithAxisLine,
-        nodes: nodes.concat(newNodes),
+        // initial render
+        render(state, groups);
     };
 }
 
-// dragging
+getAssignment();
 
-function attachDraggable(node) {
-    node.draggable();
 
-    node.on('dragstart', function (event) {
-        const originNode = SVG.get(event.detail.handler.el.node.id);
-        const origin = originNode.attr();
-        originNode.addClass('usernode');
-        dragIndicator = workGroup.line(origin.cx, origin.cy, origin.cx, origin.cy).addClass('indicator');
-    });
+// working with the geometry interactions
 
-    node.on('dragmove', function (event) {
-        event.preventDefault();
+// todo: className strings and state object identifiers should use constants; then move away as pure, agnostic functions
+export function composeNewStateForNode(point, className, stateSnapshot) {
+    const nearestNode = getNearestNode(point, stateSnapshot.nodes);
+    if (typeof nearestNode.distance === 'undefined') return;
 
-        const snapTo = draggableSnap(event.detail.p.x, event.detail.p.y, nodes);
-        dragIndicator
-            .attr('x2', snapTo.x)
-            .attr('y2', snapTo.y);
-        if (snapTo.snapped) {
-            dragIndicator.addClass('snapped');
-            snapTo.node.addClass('snapped');
-        }
-        else {
-            dragIndicator.removeClass('snapped');
-        }
-    });
+    // node is considered duplicate
+    if (nearestNode.distance < DUPLICATE_NODE_THRESHOLD) {
+        if (className === undefined) return stateSnapshot;
+        return Object.assign({}, stateSnapshot, {
+            nodes: updateElemClassInObject(stateSnapshot.nodes, nearestNode.node.id, className)
+        })
+    }
+    // node doesn't exist yet
+    const newNodeClassName = className === undefined ? 'node' : className;
+    return Object.assign({}, stateSnapshot, {
+        nodes: stateSnapshot.nodes.concat(
+            composeStateObject(
+                createStateId('nodes', stateSnapshot),
+                NODE, newNodeClassName, 'nodes', NODE_GROUP, {p1: point}
+            )
+        )
+    })
+}
 
-    node.on('dragend', function (event) {
-        const originNode = SVG.get(event.detail.handler.el.node.id);
-        const origin = originNode.attr();
-        const snapTo = draggableSnap(event.detail.p.x, event.detail.p.y, nodes);
+// todo: className strings and state object identifiers should use constants; then move away as pure, agnostic functions
+export function composeNewStateForLine(p1, p2, className = 'userline', stateSnapshot) {
+    if (findLine(p1, p2, stateSnapshot['paths']).length !== 0) return stateSnapshot;
+    const workingState = [];
 
-        dragIndicator.remove();
-        dragIndicator = {};
+    // create the line which the player just drew
+    workingState.push(
+        Object.assign({}, stateSnapshot, {
+            paths: stateSnapshot.paths.concat(
+                composeStateObject(
+                    createStateId('paths', stateSnapshot),
+                    LINE, className, 'lines', NODE_GROUP, {p1: p1, p2: p2}
+                )
+            )
+        })
+    );
 
-        if (snapTo.snapped) {
-            originNode.addClass('usernode');
+    // create the hinting 'axisline'
+    const axisLine = extendLineCoordinates(p1, p2);
+    if (findLine(axisLine.p1, axisLine.p2, workingState[workingState.length - 1]['paths']).length === 0) {
+        workingState.push(
+            Object.assign({}, workingState[workingState.length - 1], {
+                paths: workingState[workingState.length - 1].paths.concat(
+                    composeStateObject(
+                        createStateId('paths', stateSnapshot),
+                        LINE, 'axisline', 'lines', NODE_GROUP, {p1: axisLine.p1, p2: axisLine.p2}
+                    )
+                )
+            })
+        );
+    }
 
-            if (originNode !== snapTo.node) {
-                snapTo.node.addClass('usernode');
-                const nodesAndPaths = addLine(
-                    {x: origin.cx, y: origin.cy},
-                    {x: snapTo.x, y: snapTo.y},
-                    ['userline'],
-                    paths,
-                    pathGroup,
-                    nodes,
-                    nodeGroup
+    // create or update nodes at intersections of existing lines with the new line
+    stateSnapshot.paths.forEach(path => {
+        intersectLineLine(path.geometry.p1, path.geometry.p2, axisLine.p1, axisLine.p2).intersections
+            .forEach(intersection => {
+                const className = path.className.indexOf('userline') !== -1 ? 'node usernode' : undefined;
+                workingState.push(
+                    composeNewStateForNode(intersection, className, workingState[workingState.length - 1])
                 );
-                nodes = nodesAndPaths.nodes;
-                paths = nodesAndPaths.paths;
-            }
-        }
-        else {
-            originNode.removeClass('usernode');
-        }
+            })
     });
 
-    return node;
+    return workingState[workingState.length - 1];
+}
+
+
+// node manipulation; expect access to the file-scoped state object
+
+export function handleNewPath(p1, p2) {
+    const currentState = state.get();
+    const workingState = [];
+
+    workingState.push(composeNewStateForNode(p1, 'node usernode', currentState, 'nodes'));
+
+    if (!p1.equals(p2)) {
+        workingState.push(composeNewStateForNode(p2, 'node usernode', workingState[workingState.length - 1]));
+        workingState.push(composeNewStateForLine(p1, p2, 'userline', workingState[workingState.length - 1]));
+    }
+
+    // we only want one state change leading to one history entry, so we store all the stacked changes at once
+    state.set(workingState[workingState.length - 1]);
+
+    render(state, groups);
+}
+
+
+export function undo(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    state.rewind(1);
+    render(state, groups);
 }

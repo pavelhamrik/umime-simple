@@ -1,0 +1,6 @@
+{
+    "text": "Doplň další dva body, aby vznikl čtverec.",
+    "points": {"A": [3, 1], "B": [5, 1] },
+    "lines": [["A", "B"]],
+    "config": {"show-point-names": 1}
+}
