@@ -68,10 +68,15 @@ export function attachDraggable(node, layer, nodes) {
     return node;
 }
 
-export function holdScroll() {
+export function holdScroll(event) {
+    event.stopPropagation();
+    event.preventDefault();
     document.getElementsByTagName('body')[0].classList.add('dragging');
+
 }
 
 export function releaseScroll() {
+    event.stopPropagation();
+    event.preventDefault();
     document.getElementsByTagName('body')[0].classList.remove('dragging');
 }
