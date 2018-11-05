@@ -220,6 +220,7 @@ export function parseAssignment(json, stateSnapshot) {
         );
     });
 
+    console.log('ssdssdf');
 
     return workingState[workingState.length - 1];
 }
