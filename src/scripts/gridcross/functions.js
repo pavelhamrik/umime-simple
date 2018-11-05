@@ -184,7 +184,7 @@ export function findLine(point1, point2, stateCollection) {
 
 
 export function parseAssignment(json, stateSnapshot) {
-    console.log(json);
+    console.log('Data received:', json);
 
     const workingState = [stateSnapshot];
 
@@ -219,8 +219,6 @@ export function parseAssignment(json, stateSnapshot) {
             )
         );
     });
-
-    console.log('ssdssdf');
 
     return workingState[workingState.length - 1];
 }

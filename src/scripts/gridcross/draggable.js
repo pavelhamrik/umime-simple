@@ -13,6 +13,7 @@ export function attachDraggable(node, layer, nodes) {
     node.on('dragstart', function (event) {
         event.preventDefault();
         event.stopPropagation();
+        document.getElementsByTagName('body')[0].classList.add('dragging');
 
         const origin = SVG.get(event.detail.handler.el.node.id).attr();
 
@@ -48,6 +49,8 @@ export function attachDraggable(node, layer, nodes) {
     });
 
     node.on('dragend', function (event) {
+        document.getElementsByTagName('body')[0].classList.remove('dragging');
+
         tool.shape.remove();
         tool.p1.remove();
         tool.p2.remove();

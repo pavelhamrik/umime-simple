@@ -16,11 +16,7 @@ import StateProvider from './StateProvider';
 import {
     API_URL,
     DUPLICATE_NODE_THRESHOLD,
-    LINE,
-    NODE,
-    NODE_GROUP,
-    PATH_GROUP,
-    WORK_GROUP,
+    LINE, NODE, NODE_GROUP, PATH_GROUP, WORK_GROUP,
 } from './constants';
 
 

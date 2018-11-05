@@ -1,8 +1,15 @@
 @import '../../styles/custom-settings';
 
+body.dragging {
+    overflow: hidden;
+}
+
 #gridcross {
     margin: 0 auto;
     padding: 1rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
 
     #canvas-wrapper {
@@ -126,13 +133,13 @@
     // from http://tobiasahlin.com/spinkit/
     @keyframes sk-rotateplane {
         0% {
-            transform: perspective(6rem) rotateX(0deg) rotateY(0deg);
+            transform: perspective(120px) rotateX(0deg) rotateY(0deg);
         }
         50% {
-            transform: perspective(6rem) rotateX(-180.1deg) rotateY(0deg);
+            transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
         }
         100% {
-            transform: perspective(6rem) rotateX(-180deg) rotateY(-179.9deg);
+            transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
         }
     }
 }
