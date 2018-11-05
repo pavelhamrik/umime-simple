@@ -29,3 +29,19 @@ export const CIRCLE = 'CIRCLE';
 export const PATH_GROUP = 'pathGroup';
 export const NODE_GROUP = 'nodeGroup';
 export const WORK_GROUP = 'workGroup';
+
+export const NODE_STATE_COLLECTION = 'nodes';
+export const PATH_STATE_COLLECTION = 'paths';
+
+export const NODE_CLASS_NAME = 'node';
+export const GRID_NODE_CLASS_NAME = 'gridnode';
+export const USER_NODE_CLASS_NAME = 'usernode';
+export const TASK_NODE_CLASS_NAME = 'tasknode';
+
+// export const NODE_CLASS_NAME = 'node';
+export const GRID_LINE_CLASS_NAME = 'gridline';
+export const USER_LINE_CLASS_NAME = 'userline';
+export const TASK_LINE_CLASS_NAME = 'taskline';
+
+
+export const API_URL = 'https://5be0a54ef2ef840013994bff.mockapi.io/gridcross/assignment/';

@@ -8,14 +8,31 @@ import {
     composeStateObject,
     createStateId,
     findLine,
+    parseAssignment,
 } from './functions';
 import { intersectLineLine } from './intersections';
-import { svgjsInit } from './bootstrap';
+import { bootstrap } from './bootstrap';
 import StateProvider from './StateProvider';
-import { DUPLICATE_NODE_THRESHOLD, LINE, NODE, NODE_GROUP, PATH_GROUP, WORK_GROUP, } from './constants';
+import {
+    API_URL,
+    DUPLICATE_NODE_THRESHOLD,
+    LINE,
+    NODE,
+    NODE_GROUP,
+    PATH_GROUP,
+    WORK_GROUP,
+} from './constants';
 
 
 // bootstrapping
+
+const { canvas, loadingIndicator } = bootstrap();
+
+// these won't change, so we won't store them in the state
+const groups = {};
+groups[PATH_GROUP] = canvas.group().addClass(PATH_GROUP);
+groups[WORK_GROUP] = canvas.group().addClass(WORK_GROUP);
+groups[NODE_GROUP] = canvas.group().addClass(NODE_GROUP);
 
 const initialState = {
     'nodes': generateGridNodes('node gridnode', 'nodes', NODE_GROUP),
@@ -24,16 +41,26 @@ const initialState = {
 
 const state = new StateProvider(initialState);
 
-// these won't change, so we won't store them in the state
-const canvas = svgjsInit();
-const groups = {};
-groups[PATH_GROUP] = canvas.group().addClass(PATH_GROUP);
-groups[WORK_GROUP] = canvas.group().addClass(WORK_GROUP);
-groups[NODE_GROUP] = canvas.group().addClass(NODE_GROUP);
+function getAssignment() {
+    const request = new XMLHttpRequest();
+    request.open('GET', API_URL);
+    request.responseType = 'json';
+    request.send();
+    request.onload = function() {
+        // compose the state update based on the assignment data
+        state.set(parseAssignment(request.response, state.get()));
 
-// initial render
-render(state, groups);
+        loadingIndicator.remove();
 
+        // initial render
+        render(state, groups);
+    };
+}
+
+getAssignment();
+
+
+// working with the geometry interactions
 
 // todo: className strings and state object identifiers should use constants; then move away as pure, agnostic functions
 export function composeNewStateForNode(point, className, stateSnapshot) {
@@ -97,7 +124,7 @@ export function composeNewStateForLine(p1, p2, className = 'userline', stateSnap
             .forEach(intersection => {
                 const className = path.className.indexOf('userline') !== -1 ? 'node usernode' : undefined;
                 workingState.push(
-                    composeNewStateForNode(intersection, className, workingState[workingState.length - 1], 'nodes')
+                    composeNewStateForNode(intersection, className, workingState[workingState.length - 1])
                 );
             })
     });
@@ -115,12 +142,21 @@ export function handleNewPath(p1, p2) {
     workingState.push(composeNewStateForNode(p1, 'node usernode', currentState, 'nodes'));
 
     if (!p1.equals(p2)) {
-        workingState.push(composeNewStateForNode(p2, 'node usernode', workingState[workingState.length - 1], 'nodes'));
-        workingState.push(composeNewStateForLine(p1, p2, 'userline', workingState[workingState.length - 1], 'paths'));
+        workingState.push(composeNewStateForNode(p2, 'node usernode', workingState[workingState.length - 1]));
+        workingState.push(composeNewStateForLine(p1, p2, 'userline', workingState[workingState.length - 1]));
     }
 
     // we only want one state change leading to one history entry, so we store all the stacked changes at once
     state.set(workingState[workingState.length - 1]);
 
+    render(state, groups);
+}
+
+
+export function undo(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    state.rewind(1);
     render(state, groups);
 }

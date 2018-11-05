@@ -17,10 +17,10 @@ export function attachDraggable(node, layer, nodes) {
         const origin = SVG.get(event.detail.handler.el.node.id).attr();
 
         tool = {
-            line: layer.line(origin.cx, origin.cy, origin.cx, origin.cy).addClass('indicator'),
-            start: layer.circle(NODE_RADIUS * 2)
+            shape: layer.line(origin.cx, origin.cy, origin.cx, origin.cy).addClass('indicator'),
+            p1: layer.circle(NODE_RADIUS * 2)
                 .move(origin.cx - NODE_RADIUS, origin.cy - NODE_RADIUS).addClass('indicator'),
-            end: layer.circle(NODE_RADIUS * 2)
+            p2: layer.circle(NODE_RADIUS * 2)
                 .move(origin.cx - NODE_RADIUS, origin.cy - NODE_RADIUS).addClass('indicator'),
             type: LINE,
         }
@@ -32,25 +32,25 @@ export function attachDraggable(node, layer, nodes) {
 
         const snappedTo = draggableSnap(new Point(event.detail.p.x, event.detail.p.y), nodes);
 
-        tool.line.attr('x2', snappedTo.point.x).attr('y2', snappedTo.point.y);
-        tool.end.attr('cx', snappedTo.point.x).attr('cy', snappedTo.point.y);
+        tool.shape.attr('x2', snappedTo.point.x).attr('y2', snappedTo.point.y);
+        tool.p2.attr('cx', snappedTo.point.x).attr('cy', snappedTo.point.y);
 
         if (snappedTo.snapped) {
-            tool.line.addClass('snapped');
-            tool.start.addClass('snapped');
-            tool.end.addClass('snapped');
+            tool.shape.addClass('snapped');
+            tool.p1.addClass('snapped');
+            tool.p2.addClass('snapped');
         }
         else {
-            tool.line.removeClass('snapped');
-            tool.start.removeClass('snapped');
-            tool.end.removeClass('snapped');
+            tool.shape.removeClass('snapped');
+            tool.p1.removeClass('snapped');
+            tool.p2.removeClass('snapped');
         }
     });
 
     node.on('dragend', function (event) {
-        tool.line.remove();
-        tool.start.remove();
-        tool.end.remove();
+        tool.shape.remove();
+        tool.p1.remove();
+        tool.p2.remove();
         tool = {};
 
         const originAttr = SVG.get(event.detail.handler.el.node.id).attr();

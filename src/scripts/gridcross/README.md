@@ -23,6 +23,8 @@ It should be fine to just put them into the `body` tag.
 
 - [x] detecting intersects for newly added lines 
 - [x] 'infinite' line helpers drawn for player-added line segments
+- [x] use state, unidirectional data flow and independent render based solely on state
+- [ ] create initial state from a JSON config 
 - [ ] drawing circles
 - [ ] end state detection
 - [x] use groups for layers
@@ -30,3 +32,8 @@ It should be fine to just put them into the `body` tag.
 - [ ] exercise assignment definitions
 - [ ] webpack production config
 - [ ] state management and undo, drawing from state
+
+### Bug fixes
+
+- [ ] node classes are being needlessly overwritten
+- [ ] an edge-to-edge user line doesn't get drawn or appear as one

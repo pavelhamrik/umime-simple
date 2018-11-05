@@ -5,8 +5,11 @@ import {
     TOP_EDGE, RIGHT_EDGE, BOTTOM_EDGE, LEFT_EDGE,
     LINE, NODE, NODE_GROUP, PATH_GROUP, WORK_GROUP,
     SNAP_THRESHOLD, NODE_RADIUS, DUPLICATE_LINE_THRESHOLD,
+    NODE_STATE_COLLECTION, PATH_STATE_COLLECTION,
+    NODE_CLASS_NAME, TASK_NODE_CLASS_NAME, TASK_LINE_CLASS_NAME,
 } from './constants';
 import { attachDraggable } from './draggable';
+import { composeNewStateForLine, composeNewStateForNode } from './gridcross.exercise';
 
 
 export function calculateDistance(p1, p2) {
@@ -69,14 +72,19 @@ export function extendLineCoordinates(point1, point2) {
 }
 
 
+export function toCanvasCoord(value) {
+    return value * RESOLUTION + CANVAS_PADDING
+}
+
+
 export function generateGridLines(className, stateType, svgGroup) {
     const xGrid = Array.from(Array(GRID_WIDTH + 1), (value, xLine) => {
         return {
             type: LINE, className: className, stateType: stateType, svgGroup: svgGroup,
             id: (xLine + 1) * 2 - 1,
             geometry: {
-                p1: new Point(xLine * RESOLUTION + CANVAS_PADDING, TOP_EDGE),
-                p2: new Point(xLine * RESOLUTION + CANVAS_PADDING, BOTTOM_EDGE),
+                p1: new Point(toCanvasCoord(xLine), TOP_EDGE),
+                p2: new Point(toCanvasCoord(xLine), BOTTOM_EDGE),
             }
         };
     });
@@ -85,8 +93,8 @@ export function generateGridLines(className, stateType, svgGroup) {
             type: LINE, className: className, stateType: stateType, svgGroup: svgGroup,
             id: (yLine + 1) * 2,
             geometry: {
-                p1: new Point(LEFT_EDGE, yLine * RESOLUTION + CANVAS_PADDING),
-                p2: new Point(RIGHT_EDGE, yLine * RESOLUTION + CANVAS_PADDING),
+                p1: new Point(LEFT_EDGE, toCanvasCoord(yLine)),
+                p2: new Point(RIGHT_EDGE, toCanvasCoord(yLine)),
             }
         };
     });
@@ -101,7 +109,7 @@ export function generateGridNodes(className, stateType, svgGroup) {
             return {
                 type: NODE, className: className, stateType: stateType, svgGroup: svgGroup,
                 id: xLine * (10 ** idMagnitude) + yLine,
-                geometry: {p1: new Point(xLine * RESOLUTION + CANVAS_PADDING, yLine * RESOLUTION + CANVAS_PADDING)}
+                geometry: {p1: new Point(toCanvasCoord(xLine), toCanvasCoord(yLine))}
             }
         })
     }).reduce((acc, nodeRow) => {
@@ -112,9 +120,7 @@ export function generateGridNodes(className, stateType, svgGroup) {
 
 export function render(state, groups) {
     console.time('render');
-    const debugState = state.get();
-    console.log('render:', debugState);
-    console.log(`render: nodes: ${debugState.nodes.length}, paths: ${debugState.paths.length}`);
+    console.log('render:', Object.assign({}, state.get(), {}));
 
     Object.keys(groups).forEach(key => {
         groups[key].clear();
@@ -174,4 +180,46 @@ export function findLine(point1, point2, stateCollection) {
         );
         return distance1 < DUPLICATE_LINE_THRESHOLD && distance2 < DUPLICATE_LINE_THRESHOLD;
     })
+}
+
+
+export function parseAssignment(json, stateSnapshot) {
+    console.log(json);
+
+    const workingState = [stateSnapshot];
+
+    Object.keys(json.points).forEach(point => {
+        workingState.push(
+            composeNewStateForNode(
+                new Point(
+                    toCanvasCoord(json.points[point][0]),
+                    toCanvasCoord(json.points[point][1])
+                ),
+                `${NODE_CLASS_NAME} ${TASK_NODE_CLASS_NAME}`,
+                workingState[workingState.length - 1]
+            )
+        );
+    });
+
+    json.lines.forEach(line => {
+        const p1 = new Point(
+            toCanvasCoord(json.points[line[0]][0]),
+            toCanvasCoord(json.points[line[0]][1])
+        );
+        const p2 = new Point(
+            toCanvasCoord(json.points[line[1]][0]),
+            toCanvasCoord(json.points[line[1]][1])
+        );
+
+        workingState.push(
+            composeNewStateForLine(
+                p1, p2,
+                TASK_LINE_CLASS_NAME,
+                workingState[workingState.length - 1]
+            )
+        );
+    });
+
+
+    return workingState[workingState.length - 1];
 }
