@@ -62,6 +62,9 @@
 
 @import 'util/util';
 
+// disable color contrast warnings from foundation
+$contrast-warnings: false;
+
 // 1. Global
 // ---------
 

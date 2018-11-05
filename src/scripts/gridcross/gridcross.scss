@@ -3,9 +3,12 @@
 #gridcross {
     margin: 0 auto;
     padding: 1rem;
+    user-select: none;
 
     #canvas-wrapper {
-        background: bisque;
+        //background: blanchedalmond;
+        background: url('https://www.umimeto.org/asset/global/img/pozadi_svetlejsi.png') blanchedalmond;
+        background-size: cover;
         border-radius: $global-radius;
         box-sizing: content-box;
         margin: 0 auto;
@@ -14,6 +17,8 @@
     }
 
     #canvas {
+        background: rgba($white, 0.65);
+        border-radius: inherit;
         box-sizing: border-box;
         display: block;
 
@@ -22,6 +27,7 @@
             stroke-linecap: round;
             stroke-width: 1px;
             stroke: $medium-gray;
+            pointer-events: none;
 
             &.gridline {}
 
@@ -31,14 +37,26 @@
             }
 
             &.axisline {}
-
-            pointer-events: none;
         }
 
-        .indicator {
-            stroke-linecap: round;
+        $indicator-transition: fill $custom-lightning-speed $custom-default-easing,
+            stroke $custom-lightning-speed $custom-default-easing;
+
+        circle.indicator {
+            fill: $white;
+            stroke-width: 1px;
+            stroke: $black;
+            transition: $indicator-transition;
+
+            &.snapped {
+                stroke: $secondary-color;
+            }
+        }
+
+        line.indicator {
             stroke-width: 3px;
             stroke: $black;
+            transition: $indicator-transition;
 
             &.snapped {
                 stroke: $secondary-color;
@@ -53,7 +71,7 @@
             &.usernode {
                 stroke: $black;
                 fill: $white;
-                stroke-width: 2;
+                //stroke-width: 2;
             }
         }
     }

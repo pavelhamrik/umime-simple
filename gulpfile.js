@@ -16,7 +16,7 @@ const PATHS = {
         dist: DIST + '/assets/'
     },
     scripts: {
-        src: ['./src/**/*.exercise.js', '!./src/**/_*.js'],
+        src: ['./src/**/*.exercise.js'],
         watch: ['./src/**/*.js'],
         dist: DIST + '/assets/scripts/',
     },

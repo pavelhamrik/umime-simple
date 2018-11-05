@@ -1,3 +1,5 @@
+// based on https://github.com/thelonious/kld-affine/blob/development/lib/Point2D.js
+
 export default function Point(x, y) {
     Object.defineProperties(this, {
         x: {
@@ -13,4 +15,15 @@ export default function Point(x, y) {
             configurable: false
         },
     });
+
+    Point.prototype.equals = function (point) {
+        return (this.x === point.x && this.y === point.y);
+    };
+
+    // Point.prototype.roughlyEquals = function(point, tolerance) {
+    //     return (
+    //         Math.abs(this.x - point.x) < tolerance &&
+    //         Math.abs(this.y - point.y) < tolerance
+    //     );
+    // };
 }

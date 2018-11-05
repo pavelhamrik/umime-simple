@@ -9,8 +9,11 @@ export default class StateProvider {
     }
 
     get(pastPoint = this.state.length - 1) {
-
-        console.log('getting state');
         return this.state[pastPoint];
+    }
+
+    rewind(steps = 0) {
+        this.state = this.state.slice(0, this.state.length - steps);
+        return this.state[this.state.length - 1];
     }
 }
