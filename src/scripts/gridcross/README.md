@@ -37,3 +37,4 @@ It should be fine to just put them into the `body` tag.
 
 - [ ] node classes are being needlessly overwritten
 - [ ] an edge-to-edge user line doesn't get drawn or appear as one
+- [ ] vertical lines on right and left edge overreach the top
