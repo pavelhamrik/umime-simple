@@ -43,5 +43,6 @@ export const GRID_LINE_CLASS_NAME = 'gridline';
 export const USER_LINE_CLASS_NAME = 'userline';
 export const TASK_LINE_CLASS_NAME = 'taskline';
 
+export const BACK_BUTTON_LABEL = 'Zpět1';
 
 export const API_URL = 'https://5be0a54ef2ef840013994bff.mockapi.io/gridcross/assignment/';

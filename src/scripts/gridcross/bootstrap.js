@@ -2,8 +2,7 @@ import SVG from 'svg.js';
 import svgDraggableInit from "./svg.draggable";
 
 import { undo } from './gridcross.exercise';
-import { holdScroll, releaseScroll } from './draggable';
-import { CANVAS_PADDING, RIGHT_EDGE, BOTTOM_EDGE, API_URL } from './constants';
+import { CANVAS_PADDING, RIGHT_EDGE, BOTTOM_EDGE, BACK_BUTTON_LABEL } from './constants';
 
 svgDraggableInit(SVG);
 
@@ -14,10 +13,6 @@ export function bootstrap() {
     const canvasWrapper = document.createElement('div');
     canvasWrapper.id = 'canvas-wrapper';
     canvasWrapper.style.width = RIGHT_EDGE + CANVAS_PADDING;
-    canvasWrapper.addEventListener('touchstart', holdScroll);
-    canvasWrapper.addEventListener('touchend', releaseScroll);
-    canvasWrapper.addEventListener('mousedown', holdScroll);
-    canvasWrapper.addEventListener('mouseup', releaseScroll);
     root.appendChild(canvasWrapper);
 
     // create the svg canvas to draw on
@@ -28,7 +23,7 @@ export function bootstrap() {
 
     // create the undo button
     const undoButton = document.createElement('button');
-    const undoButtonLabel = document.createTextNode('Zpět');
+    const undoButtonLabel = document.createTextNode(BACK_BUTTON_LABEL);
     undoButton.appendChild(undoButtonLabel);
     undoButton.classList.add('undoButton');
     undoButton.addEventListener('touchstart', undo);
