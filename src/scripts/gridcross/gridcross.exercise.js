@@ -17,6 +17,7 @@ import {
     API_URL,
     DUPLICATE_NODE_THRESHOLD,
     LINE, NODE, NODE_GROUP, PATH_GROUP, WORK_GROUP, BACK_GROUP,
+    PATH_STATE_COLLECTION, AXIS_LINE_CLASS_NAME, USER_LINE_CLASS_NAME
 } from './constants';
 
 
@@ -38,29 +39,32 @@ const initialState = {
 
 const state = new StateProvider(initialState);
 
-// function getAssignment() {
-//     const loadingIndicator = document.createElement('div');
-//     loadingIndicator.classList.add('loadingIndicator');
-//     canvasWrapper.appendChild(loadingIndicator);
-//
-//     const request = new XMLHttpRequest();
-//     request.open('GET', API_URL);
-//     request.responseType = 'json';
-//     request.send();
-//     request.onload = function() {
-//         // compose the state update based on the assignment data
-//         state.set(parseAssignment(request.response, state.get()));
-//
-//         loadingIndicator.remove();
-//
-//         // initial render
-//         render(state, groups);
-//     };
-// }
-//
-// getAssignment();
+function getAssignment() {
+    // initial render
+    render(state, groups);
 
-render(state, groups);
+    const loadingIndicator = document.createElement('div');
+    loadingIndicator.classList.add('loadingIndicator');
+    canvasWrapper.appendChild(loadingIndicator);
+
+    const request = new XMLHttpRequest();
+    request.open('GET', API_URL);
+    request.responseType = 'json';
+    request.send();
+    request.onload = function() {
+        // compose the state update based on the assignment data
+        state.set(parseAssignment(request.response, state.get()));
+
+        loadingIndicator.remove();
+
+        // render assignment
+        render(state, groups);
+    };
+}
+
+getAssignment();
+
+// render(state, groups);
 
 // working with the geometry interactions
 
@@ -89,31 +93,34 @@ export function composeNewStateForNode(point, className, stateSnapshot) {
 }
 
 // todo: className strings and state object identifiers should use constants; then move away as pure, agnostic functions
-export function composeNewStateForLine(p1, p2, className = 'userline', stateSnapshot) {
-    if (findLine(p1, p2, stateSnapshot['paths']).length !== 0) return stateSnapshot;
+export function composeNewStateForLine(p1, p2, className = USER_LINE_CLASS_NAME, stateSnapshot) {
+    // if (findLine(p1, p2, stateSnapshot[PATH_STATE_COLLECTION]).length !== 0) return stateSnapshot;
     const workingState = [];
 
     // create the line which the player just drew
+    const existingLine = findLine(p1, p2, stateSnapshot[PATH_STATE_COLLECTION]);
+    console.log(existingLine);
+
     workingState.push(
         Object.assign({}, stateSnapshot, {
             paths: stateSnapshot.paths.concat(
                 composeStateObject(
-                    createStateId('paths', stateSnapshot),
-                    LINE, className, 'lines', NODE_GROUP, {p1: p1, p2: p2}
+                    createStateId(PATH_STATE_COLLECTION, stateSnapshot),
+                    LINE, className, PATH_STATE_COLLECTION, NODE_GROUP, {p1: p1, p2: p2}
                 )
             )
         })
     );
 
-    // create the hinting 'axisline'
+    // create the hinting 'axis line'
     const axisLine = extendLineCoordinates(p1, p2);
     if (findLine(axisLine.p1, axisLine.p2, workingState[workingState.length - 1]['paths']).length === 0) {
         workingState.push(
             Object.assign({}, workingState[workingState.length - 1], {
                 paths: workingState[workingState.length - 1].paths.concat(
                     composeStateObject(
-                        createStateId('paths', stateSnapshot),
-                        LINE, 'axisline', 'lines', NODE_GROUP, {p1: axisLine.p1, p2: axisLine.p2}
+                        createStateId(PATH_STATE_COLLECTION, stateSnapshot),
+                        LINE, AXIS_LINE_CLASS_NAME, PATH_STATE_COLLECTION, NODE_GROUP, {p1: axisLine.p1, p2: axisLine.p2}
                     )
                 )
             })
@@ -145,7 +152,7 @@ export function handleNewPath(p1, p2) {
 
     if (!p1.equals(p2)) {
         workingState.push(composeNewStateForNode(p2, 'node usernode', workingState[workingState.length - 1]));
-        workingState.push(composeNewStateForLine(p1, p2, 'userline', workingState[workingState.length - 1]));
+        workingState.push(composeNewStateForLine(p1, p2, USER_LINE_CLASS_NAME, workingState[workingState.length - 1]));
     }
 
     // we only want one state change leading to one history entry, so we store all the stacked changes at once

@@ -39,8 +39,8 @@ export const GRID_NODE_CLASS_NAME = 'gridnode';
 export const USER_NODE_CLASS_NAME = 'usernode';
 export const TASK_NODE_CLASS_NAME = 'tasknode';
 
-// export const NODE_CLASS_NAME = 'node';
 export const GRID_LINE_CLASS_NAME = 'gridline';
+export const AXIS_LINE_CLASS_NAME = 'axisline';
 export const USER_LINE_CLASS_NAME = 'userline';
 export const TASK_LINE_CLASS_NAME = 'taskline';
 
