@@ -10,7 +10,7 @@ export const RIGHT_EDGE = GRID_WIDTH * RESOLUTION + CANVAS_PADDING;
 export const BOTTOM_EDGE = GRID_HEIGHT * RESOLUTION + CANVAS_PADDING;
 export const LEFT_EDGE = CANVAS_PADDING;
 
-export const NODE_RADIUS = 4;
+export const NODE_RADIUS = 10;
 
 export const OK = 'OK';
 export const ERROR = 'ERROR';
@@ -43,6 +43,6 @@ export const GRID_LINE_CLASS_NAME = 'gridline';
 export const USER_LINE_CLASS_NAME = 'userline';
 export const TASK_LINE_CLASS_NAME = 'taskline';
 
-export const BACK_BUTTON_LABEL = 'Zpět .';
+export const BACK_BUTTON_LABEL = 'Zpět';
 
 export const API_URL = 'https://5be0a54ef2ef840013994bff.mockapi.io/gridcross/assignment/';
