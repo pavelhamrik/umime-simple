@@ -16,16 +16,17 @@ import StateProvider from './StateProvider';
 import {
     API_URL,
     DUPLICATE_NODE_THRESHOLD,
-    LINE, NODE, NODE_GROUP, PATH_GROUP, WORK_GROUP,
+    LINE, NODE, NODE_GROUP, PATH_GROUP, WORK_GROUP, BACK_GROUP,
 } from './constants';
 
 
 // bootstrapping
 
-const { canvas, loadingIndicator } = bootstrap();
+const { canvas, canvasWrapper } = bootstrap();
 
 // these won't change, so we won't store them in the state
 const groups = {};
+groups[BACK_GROUP] = canvas.group().addClass(BACK_GROUP);
 groups[PATH_GROUP] = canvas.group().addClass(PATH_GROUP);
 groups[WORK_GROUP] = canvas.group().addClass(WORK_GROUP);
 groups[NODE_GROUP] = canvas.group().addClass(NODE_GROUP);
@@ -37,24 +38,29 @@ const initialState = {
 
 const state = new StateProvider(initialState);
 
-function getAssignment() {
-    const request = new XMLHttpRequest();
-    request.open('GET', API_URL);
-    request.responseType = 'json';
-    request.send();
-    request.onload = function() {
-        // compose the state update based on the assignment data
-        state.set(parseAssignment(request.response, state.get()));
+// function getAssignment() {
+//     const loadingIndicator = document.createElement('div');
+//     loadingIndicator.classList.add('loadingIndicator');
+//     canvasWrapper.appendChild(loadingIndicator);
+//
+//     const request = new XMLHttpRequest();
+//     request.open('GET', API_URL);
+//     request.responseType = 'json';
+//     request.send();
+//     request.onload = function() {
+//         // compose the state update based on the assignment data
+//         state.set(parseAssignment(request.response, state.get()));
+//
+//         loadingIndicator.remove();
+//
+//         // initial render
+//         render(state, groups);
+//     };
+// }
+//
+// getAssignment();
 
-        loadingIndicator.remove();
-
-        // initial render
-        render(state, groups);
-    };
-}
-
-getAssignment();
-
+render(state, groups);
 
 // working with the geometry interactions
 

@@ -6,9 +6,9 @@ import {
     LINE, NODE, NODE_GROUP, PATH_GROUP, WORK_GROUP,
     SNAP_THRESHOLD, NODE_RADIUS, DUPLICATE_LINE_THRESHOLD,
     NODE_STATE_COLLECTION, PATH_STATE_COLLECTION,
-    NODE_CLASS_NAME, TASK_NODE_CLASS_NAME, TASK_LINE_CLASS_NAME,
+    NODE_CLASS_NAME, TASK_NODE_CLASS_NAME, TASK_LINE_CLASS_NAME, BACK_GROUP,
 } from './constants';
-import { attachDraggable } from './draggable';
+import { attachDraggable, attachTouchSurfaceDraggable } from './draggable';
 import { composeNewStateForLine, composeNewStateForNode } from './gridcross.exercise';
 
 
@@ -141,6 +141,11 @@ export function render(state, groups) {
             }
         })
     });
+
+    const touchSurface = groups[BACK_GROUP].rect(GRID_WIDTH * RESOLUTION + CANVAS_PADDING * 2, GRID_HEIGHT * RESOLUTION + CANVAS_PADDING * 2)
+        .addClass('touchsurface');
+    attachTouchSurfaceDraggable(touchSurface, groups[WORK_GROUP], currentState.nodes);
+
     console.timeEnd('render');
 }
 

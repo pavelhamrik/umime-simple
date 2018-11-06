@@ -30,16 +30,10 @@ export function bootstrap() {
     undoButton.addEventListener('click', undo);
     root.appendChild(undoButton);
 
-    // create the loading indicator
-    const loadingIndicator = document.createElement('div');
-    loadingIndicator.classList.add('loadingIndicator');
-    canvasWrapper.appendChild(loadingIndicator);
-
     return {
         canvas: SVG('canvas').size(RIGHT_EDGE + CANVAS_PADDING, BOTTOM_EDGE + CANVAS_PADDING),
         undoButton: undoButton,
         root: root,
         canvasWrapper: canvasWrapper,
-        loadingIndicator: loadingIndicator,
     };
 }

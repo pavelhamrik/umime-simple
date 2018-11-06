@@ -10,7 +10,7 @@ export const RIGHT_EDGE = GRID_WIDTH * RESOLUTION + CANVAS_PADDING;
 export const BOTTOM_EDGE = GRID_HEIGHT * RESOLUTION + CANVAS_PADDING;
 export const LEFT_EDGE = CANVAS_PADDING;
 
-export const NODE_RADIUS = 10;
+export const NODE_RADIUS = 4;
 
 export const OK = 'OK';
 export const ERROR = 'ERROR';
@@ -26,6 +26,7 @@ export const NODE = 'NODE';
 export const LINE = 'LINE';
 export const CIRCLE = 'CIRCLE';
 
+export const BACK_GROUP = 'backGroup';
 export const PATH_GROUP = 'pathGroup';
 export const NODE_GROUP = 'nodeGroup';
 export const WORK_GROUP = 'workGroup';

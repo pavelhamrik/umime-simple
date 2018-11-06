@@ -11,6 +11,7 @@ body.dragging {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
 
     #canvas-wrapper {
         background: url('https://www.umimeto.org/asset/global/img/pozadi_svetlejsi.png') blanchedalmond;
@@ -27,6 +28,10 @@ body.dragging {
         border-radius: inherit;
         box-sizing: border-box;
         display: block;
+
+        .touchsurface {
+            fill: transparent;
+        }
 
         path,
         line {
