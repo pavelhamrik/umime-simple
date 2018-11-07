@@ -2,12 +2,19 @@ import SVG from 'svg.js';
 import svgDraggableInit from "./svg.draggable";
 
 import { undo } from './gridcross.exercise';
-import { CANVAS_PADDING, RIGHT_EDGE, BOTTOM_EDGE, BACK_BUTTON_LABEL } from './constants';
+import { CANVAS_PADDING, RIGHT_EDGE, BOTTOM_EDGE, BACK_BUTTON_LABEL, TASK_TEXT_DEFAULT } from './constants';
 
 svgDraggableInit(SVG);
 
 export function bootstrap() {
     const root = document.getElementById('gridcross');
+
+    // create the task text paragraph
+    const taskText = document.createElement('div');
+    const taskTextCopy = document.createTextNode(TASK_TEXT_DEFAULT);
+    taskText.appendChild(taskTextCopy);
+    taskText.classList.add('task-copy');
+    root.appendChild(taskText);
 
     // attach the exercise root element
     const canvasWrapper = document.createElement('div');
@@ -25,7 +32,7 @@ export function bootstrap() {
     const undoButton = document.createElement('button');
     const undoButtonLabel = document.createTextNode(BACK_BUTTON_LABEL);
     undoButton.appendChild(undoButtonLabel);
-    undoButton.classList.add('undoButton');
+    undoButton.classList.add('undo-button');
     undoButton.addEventListener('touchstart', undo);
     undoButton.addEventListener('click', undo);
     root.appendChild(undoButton);
@@ -35,5 +42,6 @@ export function bootstrap() {
         undoButton: undoButton,
         root: root,
         canvasWrapper: canvasWrapper,
+        taskText: taskText,
     };
 }

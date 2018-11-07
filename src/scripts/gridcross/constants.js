@@ -1,7 +1,7 @@
 export const GRID_WIDTH = 6;
 export const GRID_HEIGHT = 6;
 
-export const RESOLUTION = 40;
+export const RESOLUTION = 50;
 
 export const CANVAS_PADDING = 20;
 
@@ -45,5 +45,7 @@ export const USER_LINE_CLASS_NAME = 'userline';
 export const TASK_LINE_CLASS_NAME = 'taskline';
 
 export const BACK_BUTTON_LABEL = 'Zpět';
+export const TASK_TEXT_DEFAULT = '…';
+
 
 export const API_URL = 'https://5be0a54ef2ef840013994bff.mockapi.io/gridcross/assignment/';

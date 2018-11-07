@@ -6,7 +6,7 @@ import {
     LINE, NODE, NODE_GROUP, PATH_GROUP, WORK_GROUP,
     SNAP_THRESHOLD, NODE_RADIUS, DUPLICATE_LINE_THRESHOLD,
     NODE_STATE_COLLECTION, PATH_STATE_COLLECTION,
-    NODE_CLASS_NAME, TASK_NODE_CLASS_NAME, TASK_LINE_CLASS_NAME, BACK_GROUP,
+    NODE_CLASS_NAME, TASK_NODE_CLASS_NAME, TASK_LINE_CLASS_NAME, BACK_GROUP, USER_NODE_CLASS_NAME,
 } from './constants';
 import { attachDraggable, attachTouchSurfaceDraggable } from './draggable';
 import { composeNewStateForLine, composeNewStateForNode } from './gridcross.exercise';
@@ -77,10 +77,10 @@ export function toCanvasCoord(value) {
 }
 
 
-export function generateGridLines(className, stateType, svgGroup) {
+export function generateGridLines(classes, stateType, svgGroup) {
     const xGrid = Array.from(Array(GRID_WIDTH + 1), (value, xLine) => {
         return {
-            type: LINE, className: className, stateType: stateType, svgGroup: svgGroup,
+            type: LINE, classes: classes, stateType: stateType, svgGroup: svgGroup,
             id: (xLine + 1) * 2 - 1,
             geometry: {
                 p1: new Point(toCanvasCoord(xLine), TOP_EDGE),
@@ -90,7 +90,7 @@ export function generateGridLines(className, stateType, svgGroup) {
     });
     const yGrid = Array.from(Array(GRID_WIDTH + 1), (value, yLine) => {
         return {
-            type: LINE, className: className, stateType: stateType, svgGroup: svgGroup,
+            type: LINE, classes: classes, stateType: stateType, svgGroup: svgGroup,
             id: (yLine + 1) * 2,
             geometry: {
                 p1: new Point(LEFT_EDGE, toCanvasCoord(yLine)),
@@ -102,12 +102,12 @@ export function generateGridLines(className, stateType, svgGroup) {
 }
 
 
-export function generateGridNodes(className, stateType, svgGroup) {
+export function generateGridNodes(classes, stateType, svgGroup) {
     const idMagnitude = Math.ceil(Math.log(GRID_WIDTH + 1) * Math.LOG10E);
     return Array.from(Array(GRID_WIDTH + 1), (value, xLine) => {
         return Array.from(Array(GRID_HEIGHT + 1), (value, yLine) => {
             return {
-                type: NODE, className: className, stateType: stateType, svgGroup: svgGroup,
+                type: NODE, classes: classes, stateType: stateType, svgGroup: svgGroup,
                 id: xLine * (10 ** idMagnitude) + yLine,
                 geometry: {p1: new Point(toCanvasCoord(xLine), toCanvasCoord(yLine))}
             }
@@ -131,37 +131,42 @@ export function render(state, groups) {
         currentState[elemGroup].map(elem => {
             if (elem.type === NODE) {
                 const node = groups[NODE_GROUP].circle(NODE_RADIUS * 2)
-                    .move(elem.geometry.p1.x - NODE_RADIUS, elem.geometry.p1.y - NODE_RADIUS)
-                    .addClass(elem.className);
+                    .move(elem.geometry.p1.x - NODE_RADIUS, elem.geometry.p1.y - NODE_RADIUS);
+                elem.classes.forEach(className => {node.addClass(className)});
                 attachDraggable(node, groups[WORK_GROUP], currentState.nodes);
             }
             if (elem.type === LINE) {
-                groups[PATH_GROUP].line(elem.geometry.p1.x, elem.geometry.p1.y, elem.geometry.p2.x, elem.geometry.p2.y)
-                    .addClass(elem.className);
+                const line = groups[PATH_GROUP].line(elem.geometry.p1.x, elem.geometry.p1.y, elem.geometry.p2.x, elem.geometry.p2.y);
+                elem.classes.forEach(className => {line.addClass(className)});
             }
         })
     });
 
-    const touchSurface = groups[BACK_GROUP].rect(GRID_WIDTH * RESOLUTION + CANVAS_PADDING * 2, GRID_HEIGHT * RESOLUTION + CANVAS_PADDING * 2)
-        .addClass('touchsurface');
+    const touchSurface = groups[BACK_GROUP].rect(
+        GRID_WIDTH * RESOLUTION + CANVAS_PADDING * 2,
+        GRID_HEIGHT * RESOLUTION + CANVAS_PADDING * 2
+    ).addClass('touchsurface');
     attachTouchSurfaceDraggable(touchSurface, groups[WORK_GROUP], currentState.nodes);
 
     console.timeEnd('render');
 }
 
 
-export function updateElemClassInObject(container, elemId, className) {
+export function addElemClassInObject(container, elemId, className) {
     return container.map(elem => {
-        return elem.id === elemId
-            ? Object.assign({}, elem, {className: className})
-            : elem
+        if (elem.id === elemId) {
+            const classes = new Set(elem.classes).add(className);
+            // console.log(classes);
+            return Object.assign({}, elem, {classes: classes});
+        }
+        return elem;
     });
 }
 
 
-export function composeStateObject(id, type, className, stateType, svgGroup, geometry) {
+export function composeStateObject(id, type, classes, stateType, svgGroup, geometry) {
     return {
-        type: type, className: className, stateType: stateType, svgGroup: svgGroup, id: id, geometry: geometry
+        type: type, classes: classes, stateType: stateType, svgGroup: svgGroup, id: id, geometry: geometry
     }
 }
 
@@ -193,37 +198,76 @@ export function parseAssignment(json, stateSnapshot) {
 
     const workingState = [stateSnapshot];
 
-    Object.keys(json.points).forEach(point => {
-        workingState.push(
-            composeNewStateForNode(
-                new Point(
-                    toCanvasCoord(json.points[point][0]),
-                    toCanvasCoord(json.points[point][1])
-                ),
-                `${NODE_CLASS_NAME} ${TASK_NODE_CLASS_NAME}`,
-                workingState[workingState.length - 1]
-            )
-        );
-    });
+    if (typeof json.problem.points !== 'undefined') {
+        json.problem.points.forEach(point => {
+            workingState.push(
+                composeNewStateForNode(
+                    new Point(
+                        toCanvasCoord(point[0]),
+                        toCanvasCoord(point[1])
+                    ),
+                    TASK_NODE_CLASS_NAME,
+                    workingState[workingState.length - 1]
+                )
+            );
+        });
+    }
 
-    json.lines.forEach(line => {
-        const p1 = new Point(
-            toCanvasCoord(json.points[line[0]][0]),
-            toCanvasCoord(json.points[line[0]][1])
-        );
-        const p2 = new Point(
-            toCanvasCoord(json.points[line[1]][0]),
-            toCanvasCoord(json.points[line[1]][1])
-        );
+    if (typeof json.problem.segments !== 'undefined') {
+        json.problem.segments.forEach(line => {
+            const p1 = new Point(
+                toCanvasCoord(line[0][0]),
+                toCanvasCoord(line[0][1])
+            );
+            const p2 = new Point(
+                toCanvasCoord(line[1][0]),
+                toCanvasCoord(line[1][1])
+            );
 
-        workingState.push(
-            composeNewStateForLine(
-                p1, p2,
-                TASK_LINE_CLASS_NAME,
-                workingState[workingState.length - 1]
-            )
-        );
-    });
+            workingState.push(
+                composeNewStateForLine(
+                    p1, p2,
+                    TASK_LINE_CLASS_NAME,
+                    workingState[workingState.length - 1]
+                )
+            );
+            workingState.push(
+                composeNewStateForNode(p1,
+                    TASK_NODE_CLASS_NAME,
+                    workingState[workingState.length - 1],
+                    NODE_STATE_COLLECTION
+                )
+            );
+            workingState.push(
+                composeNewStateForNode(p2,
+                    TASK_NODE_CLASS_NAME,
+                    workingState[workingState.length - 1],
+                    NODE_STATE_COLLECTION
+                )
+            );
+        });
+    }
+
+    if (typeof json.problem.lines !== 'undefined') {
+        json.problem.lines.forEach(line => {
+            const p1 = new Point(
+                toCanvasCoord(line[0][0]),
+                toCanvasCoord(line[0][1])
+            );
+            const p2 = new Point(
+                toCanvasCoord(line[1][0]),
+                toCanvasCoord(line[1][1])
+            );
+
+            workingState.push(
+                composeNewStateForLine(
+                    p1, p2,
+                    TASK_LINE_CLASS_NAME,
+                    workingState[workingState.length - 1]
+                )
+            );
+        });
+    }
 
     return workingState[workingState.length - 1];
 }

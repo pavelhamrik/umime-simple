@@ -4,7 +4,7 @@ import {
     generateGridLines,
     generateGridNodes,
     render,
-    updateElemClassInObject,
+    addElemClassInObject,
     composeStateObject,
     createStateId,
     findLine,
@@ -16,14 +16,18 @@ import StateProvider from './StateProvider';
 import {
     API_URL,
     DUPLICATE_NODE_THRESHOLD,
-    LINE, NODE, NODE_GROUP, PATH_GROUP, WORK_GROUP, BACK_GROUP,
-    PATH_STATE_COLLECTION, AXIS_LINE_CLASS_NAME, USER_LINE_CLASS_NAME
+    LINE, NODE,
+    NODE_GROUP, PATH_GROUP, WORK_GROUP, BACK_GROUP,
+    AXIS_LINE_CLASS_NAME, USER_LINE_CLASS_NAME, NODE_CLASS_NAME, GRID_NODE_CLASS_NAME, USER_NODE_CLASS_NAME,
+    PATH_STATE_COLLECTION, NODE_STATE_COLLECTION, GRID_LINE_CLASS_NAME,
 } from './constants';
 
 
 // bootstrapping
 
-const { canvas, canvasWrapper } = bootstrap();
+console.time('init');
+
+const { canvas, canvasWrapper, taskText } = bootstrap();
 
 // these won't change, so we won't store them in the state
 const groups = {};
@@ -32,10 +36,13 @@ groups[PATH_GROUP] = canvas.group().addClass(PATH_GROUP);
 groups[WORK_GROUP] = canvas.group().addClass(WORK_GROUP);
 groups[NODE_GROUP] = canvas.group().addClass(NODE_GROUP);
 
-const initialState = {
-    'nodes': generateGridNodes('node gridnode', 'nodes', NODE_GROUP),
-    'paths': generateGridLines('gridline', 'paths', PATH_GROUP),
-};
+const initialState = {};
+initialState[NODE_STATE_COLLECTION] = generateGridNodes(
+    new Set([NODE_CLASS_NAME, GRID_NODE_CLASS_NAME]), NODE_STATE_COLLECTION, NODE_GROUP
+);
+initialState[PATH_STATE_COLLECTION] = generateGridLines(
+    new Set([GRID_LINE_CLASS_NAME]), PATH_STATE_COLLECTION, PATH_GROUP
+);
 
 const state = new StateProvider(initialState);
 
@@ -44,7 +51,7 @@ function getAssignment() {
     render(state, groups);
 
     const loadingIndicator = document.createElement('div');
-    loadingIndicator.classList.add('loadingIndicator');
+    loadingIndicator.classList.add('loading-indicator');
     canvasWrapper.appendChild(loadingIndicator);
 
     const request = new XMLHttpRequest();
@@ -55,6 +62,8 @@ function getAssignment() {
         // compose the state update based on the assignment data
         state.set(parseAssignment(request.response, state.get()));
 
+        taskText.textContent = request.response.text;
+
         loadingIndicator.remove();
 
         // render assignment
@@ -63,6 +72,8 @@ function getAssignment() {
 }
 
 getAssignment();
+
+console.timeEnd('init');
 
 // render(state, groups);
 
@@ -75,18 +86,18 @@ export function composeNewStateForNode(point, className, stateSnapshot) {
 
     // node is considered duplicate
     if (nearestNode.distance < DUPLICATE_NODE_THRESHOLD) {
-        if (className === undefined) return stateSnapshot;
+        // if (className === undefined) return stateSnapshot;
         return Object.assign({}, stateSnapshot, {
-            nodes: updateElemClassInObject(stateSnapshot.nodes, nearestNode.node.id, className)
+            nodes: addElemClassInObject(stateSnapshot.nodes, nearestNode.node.id, className)
         })
     }
     // node doesn't exist yet
-    const newNodeClassName = className === undefined ? 'node' : className;
+    const newNodeClasses = className === undefined ? new Set([NODE_CLASS_NAME]) : new Set([NODE_CLASS_NAME, className]);
     return Object.assign({}, stateSnapshot, {
         nodes: stateSnapshot.nodes.concat(
             composeStateObject(
-                createStateId('nodes', stateSnapshot),
-                NODE, newNodeClassName, 'nodes', NODE_GROUP, {p1: point}
+                createStateId(NODE_STATE_COLLECTION, stateSnapshot),
+                NODE, newNodeClasses, NODE_STATE_COLLECTION, NODE_GROUP, {p1: point}
             )
         )
     })
@@ -106,7 +117,7 @@ export function composeNewStateForLine(p1, p2, className = USER_LINE_CLASS_NAME,
             paths: stateSnapshot.paths.concat(
                 composeStateObject(
                     createStateId(PATH_STATE_COLLECTION, stateSnapshot),
-                    LINE, className, PATH_STATE_COLLECTION, NODE_GROUP, {p1: p1, p2: p2}
+                    LINE, new Set([NODE_CLASS_NAME, className]), PATH_STATE_COLLECTION, NODE_GROUP, {p1: p1, p2: p2}
                 )
             )
         })
@@ -120,7 +131,8 @@ export function composeNewStateForLine(p1, p2, className = USER_LINE_CLASS_NAME,
                 paths: workingState[workingState.length - 1].paths.concat(
                     composeStateObject(
                         createStateId(PATH_STATE_COLLECTION, stateSnapshot),
-                        LINE, AXIS_LINE_CLASS_NAME, PATH_STATE_COLLECTION, NODE_GROUP, {p1: axisLine.p1, p2: axisLine.p2}
+                        LINE, new Set([AXIS_LINE_CLASS_NAME]), PATH_STATE_COLLECTION, NODE_GROUP,
+                        {p1: axisLine.p1, p2: axisLine.p2}
                     )
                 )
             })
@@ -131,9 +143,8 @@ export function composeNewStateForLine(p1, p2, className = USER_LINE_CLASS_NAME,
     stateSnapshot.paths.forEach(path => {
         intersectLineLine(path.geometry.p1, path.geometry.p2, axisLine.p1, axisLine.p2).intersections
             .forEach(intersection => {
-                const className = path.className.indexOf('userline') !== -1 ? 'node usernode' : undefined;
                 workingState.push(
-                    composeNewStateForNode(intersection, className, workingState[workingState.length - 1])
+                    composeNewStateForNode(intersection, GRID_NODE_CLASS_NAME, workingState[workingState.length - 1])
                 );
             })
     });
@@ -148,10 +159,10 @@ export function handleNewPath(p1, p2) {
     const currentState = state.get();
     const workingState = [];
 
-    workingState.push(composeNewStateForNode(p1, 'node usernode', currentState, 'nodes'));
+    workingState.push(composeNewStateForNode(p1, USER_NODE_CLASS_NAME, currentState, NODE_STATE_COLLECTION));
 
     if (!p1.equals(p2)) {
-        workingState.push(composeNewStateForNode(p2, 'node usernode', workingState[workingState.length - 1]));
+        workingState.push(composeNewStateForNode(p2, USER_NODE_CLASS_NAME, workingState[workingState.length - 1]));
         workingState.push(composeNewStateForLine(p1, p2, USER_LINE_CLASS_NAME, workingState[workingState.length - 1]));
     }
 

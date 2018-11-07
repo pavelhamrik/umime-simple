@@ -6,21 +6,32 @@ body.dragging {
 
 #gridcross {
     margin: 0 auto;
-    padding: 1rem;
+    padding: 1rem 0;
+    //max-width: 100%;
+
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
 
+    .task-copy {
+        text-align: center;
+        margin: $custom-vertical-padding auto $custom-vertical-padding * 2;
+        max-width: 320px;
+        min-height: 3rem;
+    }
+
     #canvas-wrapper {
         background: url('https://www.umimeto.org/asset/global/img/pozadi_svetlejsi.png') blanchedalmond;
         background-size: cover;
         border-radius: $global-radius;
+        box-shadow: $custom-soft-shadow, 0 2px 7px 0 rgba(0,0,0,.08);
         box-sizing: content-box;
         margin: 0 auto;
         width: fit-content;
         position: relative;
+        //max-width: 100%;
     }
 
     #canvas {
@@ -50,7 +61,8 @@ body.dragging {
             &.axisline {}
 
             &.taskline {
-                stroke: $black;
+                //stroke: $black;
+                stroke: #9B59B6;
                 stroke-width: 2px;
             }
         }
@@ -90,15 +102,16 @@ body.dragging {
             }
 
             &.tasknode {
-                stroke: $black;
+                //stroke: $black;
+                stroke: #9B59B6;
                 fill: $white;
                 stroke-width: 2;
             }
         }
     }
 
-    .undoButton {
-        margin: $custom-vertical-padding auto 0;
+    .undo-button {
+        margin: $custom-vertical-padding * 1.5 auto 0;
         display: block;
         background-color: $button-suppressed-background;
         border-radius: $button-radius;
@@ -113,7 +126,7 @@ body.dragging {
         }
     }
 
-    .loadingIndicator {
+    .loading-indicator {
         border-radius: $global-radius;
         position: absolute;
         top: 0;
@@ -128,8 +141,8 @@ body.dragging {
             content: '';
             background-color: $primary-color;
             display: block;
-            width: 2.5rem;
-            height: 2.5rem;
+            width: 3rem;
+            height: 3rem;
             border-radius: $global-radius / 2;
             animation: sk-rotateplane 1.2s infinite ease-in-out;
         }
