@@ -23,7 +23,7 @@ body.dragging {
     }
 
     #canvas-wrapper {
-        background: url('https://www.umimeto.org/asset/global/img/pozadi_svetlejsi.png') blanchedalmond;
+        background: url('../../img/gridcross-background.jpg') blanchedalmond 55% 50%;
         background-size: cover;
         border-radius: $global-radius;
         box-shadow: $custom-soft-shadow, 0 2px 7px 0 rgba(0,0,0,.08);
