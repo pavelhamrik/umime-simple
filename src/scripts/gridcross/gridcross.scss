@@ -47,23 +47,35 @@ body.dragging {
         path,
         line {
             stroke-linecap: round;
-            stroke-width: 1px;
+            stroke-width: 1;
             stroke: $medium-gray;
             pointer-events: none;
 
-            &.gridline {}
-
             &.userline {
                 stroke: $black;
-                stroke-width: 2px;
+                stroke-width: 3;
             }
-
-            &.axisline {}
 
             &.taskline {
                 //stroke: $black;
-                stroke: #9B59B6;
-                stroke-width: 2px;
+                stroke: map-get($custom-apps, 'english');
+                stroke-width: 3;
+            }
+        }
+
+        .node {
+            fill: transparent;
+
+            &.usernode {
+                stroke: $black;
+                fill: $white;
+            }
+
+            &.tasknode {
+                //stroke: $black;
+                stroke: map-get($custom-apps, 'english');
+                fill: $white;
+                stroke-width: 2;
             }
         }
 
@@ -77,7 +89,7 @@ body.dragging {
             transition: $indicator-transition;
 
             &.snapped {
-                stroke: $secondary-color;
+                stroke: map-get($foundation-palette, secondary);
             }
         }
 
@@ -87,25 +99,7 @@ body.dragging {
             transition: $indicator-transition;
 
             &.snapped {
-                stroke: $secondary-color;
-            }
-        }
-
-        .node {
-            fill: transparent;
-
-            &.gridnode {}
-
-            &.usernode {
-                stroke: $black;
-                fill: $white;
-            }
-
-            &.tasknode {
-                //stroke: $black;
-                stroke: #9B59B6;
-                fill: $white;
-                stroke-width: 2;
+                stroke: map-get($foundation-palette, secondary);
             }
         }
     }
@@ -139,7 +133,7 @@ body.dragging {
 
         &:after {
             content: '';
-            background-color: $primary-color;
+            background-color: map-get($foundation-palette, primary);
             display: block;
             width: 3rem;
             height: 3rem;

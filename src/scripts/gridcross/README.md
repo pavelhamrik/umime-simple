@@ -24,17 +24,20 @@ It should be fine to just put them into the `body` tag.
 - [x] detecting intersects for newly added lines 
 - [x] 'infinite' line helpers drawn for player-added line segments
 - [x] use state, unidirectional data flow and independent render based solely on state
-- [ ] create initial state from a JSON config 
-- [ ] drawing circles
-- [ ] end state detection
+- [x] create initial state from a JSON config 
+- [ ] **end state detection**
 - [x] use groups for layers
 - [x] use SVG.Nested for better node indicators
-- [ ] exercise assignment definitions
-- [ ] webpack production config
-- [ ] state management and undo, drawing from state
+- [x] exercise assignment definitions
+- [x] webpack production config
+- [x] state management and undo, drawing from state
+
+## Next up
+
+- [ ] drawing circles
 
 ### Bug fixes
 
-- [ ] node classes are being needlessly overwritten
-- [ ] an edge-to-edge user line doesn't get drawn or appear as one
-- [ ] vertical lines on right and left edge overreach the top
+- [x] node classes are being needlessly overwritten
+- [x] an edge-to-edge user line doesn't get drawn or appear as one
+- [x] vertical lines on right and left edge overreach the top

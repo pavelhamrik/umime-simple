@@ -110,7 +110,6 @@ export function composeNewStateForLine(p1, p2, className = USER_LINE_CLASS_NAME,
 
     // create the line which the player just drew
     const existingLine = findLine(p1, p2, stateSnapshot[PATH_STATE_COLLECTION]);
-    console.log(existingLine);
 
     workingState.push(
         Object.assign({}, stateSnapshot, {

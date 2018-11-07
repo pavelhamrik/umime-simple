@@ -41,34 +41,34 @@ export function pointAtXByLine(p1, p2, x) {
 }
 
 
-export function extendLineCoordinates(point1, point2) {
-    const edgePoint1 = pointAtXByLine(point1, point2, LEFT_EDGE);
-    const edgePoint2 = pointAtXByLine(point1, point2, RIGHT_EDGE);
+export function extendLineCoordinates(p1, p2) {
+    const edgeP1 = pointAtXByLine(p1, p2, LEFT_EDGE);
+    const edgeP2 = pointAtXByLine(p1, p2, RIGHT_EDGE);
 
     // corrections for edge cases of the points
 
-    const infCorrPoint1 = edgePoint1.y === Infinity || edgePoint1.y === -Infinity
-        ? {x: point1.x, y: BOTTOM_EDGE}
-        : edgePoint1;
-    const infCorrPoint2 = edgePoint2.y === Infinity || edgePoint2.y === -Infinity
-        ? {x: point2.x, y: TOP_EDGE}
-        : edgePoint2;
+    const infCorrP1 = edgeP1.y === Infinity || edgeP1.y === -Infinity || isNaN(edgeP1.y)
+        ? {x: p1.x, y: BOTTOM_EDGE}
+        : edgeP1;
+    const infCorrP2 = edgeP2.y === Infinity || edgeP2.y === -Infinity || isNaN(edgeP2.y)
+        ? {x: p2.x, y: TOP_EDGE}
+        : edgeP2;
 
-    const topCorrPoint1 = infCorrPoint1.y < TOP_EDGE
-        ? intersectLineLine(infCorrPoint1, infCorrPoint2, {x: LEFT_EDGE, y: TOP_EDGE}, {x: RIGHT_EDGE, y: TOP_EDGE}).intersections[0]
-        : infCorrPoint1;
-    const bottomCorrPoint1 = topCorrPoint1.y > BOTTOM_EDGE
-        ? intersectLineLine(infCorrPoint1, infCorrPoint2, {x: LEFT_EDGE, y: BOTTOM_EDGE}, {x: RIGHT_EDGE, y: BOTTOM_EDGE}).intersections[0]
-        : topCorrPoint1;
+    const topCorrP1 = infCorrP1.y < TOP_EDGE
+        ? intersectLineLine(infCorrP1, infCorrP2, {x: LEFT_EDGE, y: TOP_EDGE}, {x: RIGHT_EDGE, y: TOP_EDGE}).intersections[0]
+        : infCorrP1;
+    const bottomCorrP1 = topCorrP1.y > BOTTOM_EDGE
+        ? intersectLineLine(infCorrP1, infCorrP2, {x: LEFT_EDGE, y: BOTTOM_EDGE}, {x: RIGHT_EDGE, y: BOTTOM_EDGE}).intersections[0]
+        : topCorrP1;
 
-    const topCorrPoint2 = infCorrPoint2.y < TOP_EDGE
-        ? intersectLineLine(infCorrPoint1, infCorrPoint2, {x: LEFT_EDGE, y: TOP_EDGE}, {x: RIGHT_EDGE, y: TOP_EDGE}).intersections[0]
-        : infCorrPoint2;
-    const bottomCorrPoint2 = infCorrPoint2.y > BOTTOM_EDGE
-        ? intersectLineLine(infCorrPoint1, infCorrPoint2, {x: LEFT_EDGE, y: BOTTOM_EDGE}, {x: RIGHT_EDGE, y: BOTTOM_EDGE}).intersections[0]
-        : topCorrPoint2;
+    const topCorrP2 = infCorrP2.y < TOP_EDGE
+        ? intersectLineLine(infCorrP1, infCorrP2, {x: LEFT_EDGE, y: TOP_EDGE}, {x: RIGHT_EDGE, y: TOP_EDGE}).intersections[0]
+        : infCorrP2;
+    const bottomCorrP2 = infCorrP2.y > BOTTOM_EDGE
+        ? intersectLineLine(infCorrP1, infCorrP2, {x: LEFT_EDGE, y: BOTTOM_EDGE}, {x: RIGHT_EDGE, y: BOTTOM_EDGE}).intersections[0]
+        : topCorrP2;
 
-    return {p1: bottomCorrPoint1, p2: bottomCorrPoint2};
+    return {p1: bottomCorrP1, p2: bottomCorrP2};
 }
 
 
@@ -130,13 +130,16 @@ export function render(state, groups) {
     Object.keys(currentState).map(elemGroup => {
         currentState[elemGroup].map(elem => {
             if (elem.type === NODE) {
-                const node = groups[NODE_GROUP].circle(NODE_RADIUS * 2)
+                const node = groups[NODE_GROUP]
+                    .circle(NODE_RADIUS * 2)
                     .move(elem.geometry.p1.x - NODE_RADIUS, elem.geometry.p1.y - NODE_RADIUS);
                 elem.classes.forEach(className => {node.addClass(className)});
                 attachDraggable(node, groups[WORK_GROUP], currentState.nodes);
             }
             if (elem.type === LINE) {
-                const line = groups[PATH_GROUP].line(elem.geometry.p1.x, elem.geometry.p1.y, elem.geometry.p2.x, elem.geometry.p2.y);
+                const line = groups[PATH_GROUP].line(
+                    elem.geometry.p1.x, elem.geometry.p1.y, elem.geometry.p2.x, elem.geometry.p2.y
+                );
                 elem.classes.forEach(className => {line.addClass(className)});
             }
         })
@@ -194,7 +197,7 @@ export function findLine(point1, point2, stateCollection) {
 
 
 export function parseAssignment(json, stateSnapshot) {
-    console.log('Data received:', json);
+    console.log('data received:', json);
 
     const workingState = [stateSnapshot];
 
