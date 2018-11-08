@@ -1,6 +1,7 @@
 export default class StateProvider {
     constructor(initialState = {}) {
-        this.state = [initialState];
+        this.initialState = initialState;
+        this.state = [this.initialState];
     }
 
     set(entry) {
@@ -18,5 +19,9 @@ export default class StateProvider {
 
         this.state = this.state.slice(0, this.state.length - steps);
         return this.state[this.state.length - 1];
+    }
+
+    wipe() {
+        this.state = [this.initialState];
     }
 }

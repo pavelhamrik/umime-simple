@@ -8,7 +8,7 @@ import {
     composeStateObject,
     createStateId,
     findLine,
-    parseAssignment,
+    parseAssignment, checkSolution, isEmptyObject,
 } from './functions';
 import { intersectLineLine } from './intersections';
 import { bootstrap } from './bootstrap';
@@ -19,7 +19,7 @@ import {
     LINE, NODE,
     NODE_GROUP, PATH_GROUP, WORK_GROUP, BACK_GROUP,
     AXIS_LINE_CLASS_NAME, USER_LINE_CLASS_NAME, NODE_CLASS_NAME, GRID_NODE_CLASS_NAME, USER_NODE_CLASS_NAME,
-    PATH_STATE_COLLECTION, NODE_STATE_COLLECTION, GRID_LINE_CLASS_NAME,
+    PATH_STATE_COLLECTION, NODE_STATE_COLLECTION, GRID_LINE_CLASS_NAME, API_LOAD_ERROR_TEXT,
 } from './constants';
 
 
@@ -47,6 +47,11 @@ initialState[PATH_STATE_COLLECTION] = generateGridLines(
 const state = new StateProvider(initialState);
 
 function getAssignment() {
+    function handleError() {
+        taskText.textContent = API_LOAD_ERROR_TEXT;
+        loadingIndicator.remove();
+    }
+
     // initial render
     render(state, groups);
 
@@ -57,25 +62,26 @@ function getAssignment() {
     const request = new XMLHttpRequest();
     request.open('GET', API_URL);
     request.responseType = 'json';
-    request.send();
+    request.onerror = handleError;
+    request.ontimeout = handleError;
+    request.onabort = handleError;
     request.onload = function() {
         // compose the state update based on the assignment data
         state.set(parseAssignment(request.response, state.get()));
 
         taskText.textContent = request.response.text;
-
         loadingIndicator.remove();
 
         // render assignment
         render(state, groups);
     };
+    request.send();
 }
 
 getAssignment();
 
 console.timeEnd('init');
 
-// render(state, groups);
 
 // working with the geometry interactions
 
@@ -105,11 +111,11 @@ export function composeNewStateForNode(point, className, stateSnapshot) {
 
 // todo: className strings and state object identifiers should use constants; then move away as pure, agnostic functions
 export function composeNewStateForLine(p1, p2, className = USER_LINE_CLASS_NAME, stateSnapshot) {
-    // if (findLine(p1, p2, stateSnapshot[PATH_STATE_COLLECTION]).length !== 0) return stateSnapshot;
     const workingState = [];
 
     // create the line which the player just drew
-    const existingLine = findLine(p1, p2, stateSnapshot[PATH_STATE_COLLECTION]);
+
+    // todo: update the line's class if it alrady exists
 
     workingState.push(
         Object.assign({}, stateSnapshot, {
@@ -155,6 +161,7 @@ export function composeNewStateForLine(p1, p2, className = USER_LINE_CLASS_NAME,
 // node manipulation; expect access to the file-scoped state object
 
 export function handleNewPath(p1, p2) {
+    console.time('new path');
     const currentState = state.get();
     const workingState = [];
 
@@ -167,6 +174,11 @@ export function handleNewPath(p1, p2) {
 
     // we only want one state change leading to one history entry, so we store all the stacked changes at once
     state.set(workingState[workingState.length - 1]);
+
+    const validSolution = checkSolution(workingState[workingState.length - 1]);
+    console.log('valid solution', !isEmptyObject(validSolution));
+
+    console.timeEnd('new path');
 
     render(state, groups);
 }

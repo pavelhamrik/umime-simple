@@ -57,9 +57,9 @@ body.dragging {
             }
 
             &.taskline {
-                //stroke: $black;
                 stroke: map-get($custom-apps, 'english');
                 stroke-width: 3;
+                pointer-events: auto;
             }
         }
 

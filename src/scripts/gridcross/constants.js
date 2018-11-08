@@ -24,7 +24,7 @@ export const DUPLICATE_LINE_THRESHOLD = 0.1;
 
 export const NODE = 'NODE';
 export const LINE = 'LINE';
-export const CIRCLE = 'CIRCLE';
+// export const CIRCLE = 'CIRCLE';
 
 export const BACK_GROUP = 'backGroup';
 export const PATH_GROUP = 'pathGroup';
@@ -33,6 +33,7 @@ export const WORK_GROUP = 'workGroup';
 
 export const NODE_STATE_COLLECTION = 'nodes';
 export const PATH_STATE_COLLECTION = 'paths';
+export const SOLUTION_STATE_COLLECTION = 'solutions';
 
 export const NODE_CLASS_NAME = 'node';
 export const GRID_NODE_CLASS_NAME = 'gridnode';
@@ -41,11 +42,19 @@ export const TASK_NODE_CLASS_NAME = 'tasknode';
 
 export const GRID_LINE_CLASS_NAME = 'gridline';
 export const AXIS_LINE_CLASS_NAME = 'axisline';
-export const USER_LINE_CLASS_NAME = 'userline';
 export const TASK_LINE_CLASS_NAME = 'taskline';
+export const USER_LINE_CLASS_NAME = 'userline';
+
+export const LINE_RENDERING_ORDER = [
+    GRID_LINE_CLASS_NAME,
+    AXIS_LINE_CLASS_NAME,
+    TASK_LINE_CLASS_NAME,
+    USER_LINE_CLASS_NAME,
+];
 
 export const BACK_BUTTON_LABEL = 'Zpět';
 export const TASK_TEXT_DEFAULT = '…';
+export const API_LOAD_ERROR_TEXT = 'Nepodařilo se stáhnout zadání. Zkuste prosím obnovit stránku.';
 
 
-export const API_URL = 'https://5be0a54ef2ef840013994bff.mockapi.io/gridcross/assignment/';
+export const API_URL = 'https://5be0a54ef2ef840013994bff.mockapi.io/gridcross/assignment2/';

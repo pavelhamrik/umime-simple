@@ -31,10 +31,14 @@ It should be fine to just put them into the `body` tag.
 - [x] exercise assignment definitions
 - [x] webpack production config
 - [x] state management and undo, drawing from state
+- [x] handling erroneous HTTP requests
+- [ ] loading of the next assignment
 
 ## Next up
 
+- [ ] selecting lines
 - [ ] drawing circles
+- [ ] point labels
 
 ### Bug fixes
 
