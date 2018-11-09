@@ -39,11 +39,13 @@ export const NODE_CLASS_NAME = 'node';
 export const GRID_NODE_CLASS_NAME = 'gridnode';
 export const USER_NODE_CLASS_NAME = 'usernode';
 export const TASK_NODE_CLASS_NAME = 'tasknode';
+export const SOLVED_NODE_CLASS_NAME = 'solvednode';
 
 export const GRID_LINE_CLASS_NAME = 'gridline';
 export const AXIS_LINE_CLASS_NAME = 'axisline';
 export const TASK_LINE_CLASS_NAME = 'taskline';
 export const USER_LINE_CLASS_NAME = 'userline';
+export const SOLVED_LINE_CLASS_NAME = 'solvedline';
 
 export const LINE_RENDERING_ORDER = [
     GRID_LINE_CLASS_NAME,
@@ -53,8 +55,8 @@ export const LINE_RENDERING_ORDER = [
 ];
 
 export const BACK_BUTTON_LABEL = 'Zpět';
+export const NEXT_BUTTON_LABEL = 'Další';
 export const TASK_TEXT_DEFAULT = '…';
 export const API_LOAD_ERROR_TEXT = 'Nepodařilo se stáhnout zadání. Zkuste prosím obnovit stránku.';
 
-
-export const API_URL = 'https://5be0a54ef2ef840013994bff.mockapi.io/gridcross/assignment2/';
+export const API_URL = 'https://5be0a54ef2ef840013994bff.mockapi.io/gridcross/assignment1/';

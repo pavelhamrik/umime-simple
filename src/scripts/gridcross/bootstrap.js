@@ -1,8 +1,15 @@
 import SVG from 'svg.js';
 import svgDraggableInit from "./svg.draggable";
 
-import { undo } from './gridcross.exercise';
-import { CANVAS_PADDING, RIGHT_EDGE, BOTTOM_EDGE, BACK_BUTTON_LABEL, TASK_TEXT_DEFAULT } from './constants';
+import { undo, nextAssignment } from './gridcross.exercise';
+import {
+    CANVAS_PADDING,
+    RIGHT_EDGE,
+    BOTTOM_EDGE,
+    BACK_BUTTON_LABEL,
+    TASK_TEXT_DEFAULT,
+    NEXT_BUTTON_LABEL
+} from './constants';
 
 svgDraggableInit(SVG);
 
@@ -28,18 +35,33 @@ export function bootstrap() {
     canvas.setAttribute('version', '1.1');
     canvasWrapper.appendChild(canvas);
 
+    // create the button wrapper
+    const buttonWrapper = document.createElement('div');
+    buttonWrapper.classList.add('button-wrapper');
+    root.appendChild(buttonWrapper);
+
     // create the undo button
     const undoButton = document.createElement('button');
-    const undoButtonLabel = document.createTextNode(BACK_BUTTON_LABEL);
-    undoButton.appendChild(undoButtonLabel);
     undoButton.classList.add('undo-button');
+    undoButton.setAttribute('title', BACK_BUTTON_LABEL);
     undoButton.addEventListener('touchstart', undo);
     undoButton.addEventListener('click', undo);
-    root.appendChild(undoButton);
+    buttonWrapper.appendChild(undoButton);
+
+    // create the next assignment button
+    const nextButton = document.createElement('button');
+    const nextButtonLabel = document.createTextNode(NEXT_BUTTON_LABEL);
+    nextButton.appendChild(nextButtonLabel);
+    nextButton.classList.add('next-button');
+    nextButton.addEventListener('touchstart', nextAssignment);
+    nextButton.addEventListener('click', nextAssignment);
+    nextButton.disabled = true;
+    buttonWrapper.appendChild(nextButton);
 
     return {
         canvas: SVG('canvas').size(RIGHT_EDGE + CANVAS_PADDING, BOTTOM_EDGE + CANVAS_PADDING),
         undoButton: undoButton,
+        nextButton: nextButton,
         root: root,
         canvasWrapper: canvasWrapper,
         taskText: taskText,

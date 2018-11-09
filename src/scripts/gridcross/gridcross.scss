@@ -5,6 +5,9 @@ body.dragging {
 }
 
 #gridcross {
+    $transition: fill $custom-lightning-speed $custom-default-easing,
+    stroke $custom-lightning-speed $custom-default-easing;
+
     margin: 0 auto;
     padding: 1rem 0;
     //max-width: 100%;
@@ -51,20 +54,27 @@ body.dragging {
             stroke: $medium-gray;
             pointer-events: none;
 
-            &.userline {
-                stroke: $black;
-                stroke-width: 3;
-            }
-
             &.taskline {
                 stroke: map-get($custom-apps, 'english');
                 stroke-width: 3;
                 pointer-events: auto;
             }
+
+            &.userline {
+                stroke: $black;
+                stroke-width: 3;
+            }
+
+            &.solvedline {
+                //stroke: map-get($foundation-palette, warning);
+                animation: $custom-fast-speed $custom-fadein-easing solved-path forwards;
+            }
         }
 
         .node {
             fill: transparent;
+            transition: $transition;
+
 
             &.usernode {
                 stroke: $black;
@@ -72,21 +82,28 @@ body.dragging {
             }
 
             &.tasknode {
-                //stroke: $black;
                 stroke: map-get($custom-apps, 'english');
                 fill: $white;
                 stroke-width: 2;
             }
-        }
 
-        $indicator-transition: fill $custom-lightning-speed $custom-default-easing,
-            stroke $custom-lightning-speed $custom-default-easing;
+            &.usernode {
+                stroke: $black;
+                fill: $white;
+            }
+
+            &.usernode.solvednode,
+            &.tasknode.solvednode {
+                //stroke: map-get($foundation-palette, warning);
+                animation: $custom-fast-speed $custom-fadein-easing solved-node forwards;
+            }
+        }
 
         circle.indicator {
             fill: $white;
-            stroke-width: 1px;
+            stroke-width: 1;
             stroke: $black;
-            transition: $indicator-transition;
+            transition: $transition;
 
             &.snapped {
                 stroke: map-get($foundation-palette, secondary);
@@ -96,7 +113,20 @@ body.dragging {
         line.indicator {
             stroke-width: 3px;
             stroke: $black;
-            transition: $indicator-transition;
+            transition: $transition;
+
+            &.crosshair {
+                stroke-width: 0;
+                stroke: rgba($black, 0.5);
+
+                &.snapped {
+                    stroke: rgba(map-get($foundation-palette, secondary), 0.75);
+                }
+
+                @include breakpoint(small only) {
+                    stroke-width: 1;
+                }
+            }
 
             &.snapped {
                 stroke: map-get($foundation-palette, secondary);
@@ -104,19 +134,45 @@ body.dragging {
         }
     }
 
-    .undo-button {
-        margin: $custom-vertical-padding * 1.5 auto 0;
-        display: block;
+    .button-wrapper {
+        margin: $custom-vertical-padding * 2 auto 0;
+        text-align: center;
+    }
+
+    .undo-button:before {
+        font-family: 'umime-to';
+        content: "\e908";
+    }
+
+    .undo-button,
+    .next-button {
+        margin: 0 0.75rem;
         background-color: $button-suppressed-background;
         border-radius: $button-radius;
         padding: $button-padding;
-        cursor: pointer;
-        font-size: $small-font-size;
         transition: $button-transition;
         outline: none;
+        min-height: 2.75rem;
 
-        &:hover {
+        &:disabled {
+            color: $medium-gray;
+        }
+
+        &:not(:disabled):hover,
+        &:not(:disabled):active {
             background-color: $button-suppressed-background-hover;
+            cursor: pointer;
+        }
+
+        &.next-button:not(:disabled) {
+            opacity: 1;
+            background-color: map-get($foundation-palette, primary);
+            color: $white;
+
+            &:hover,
+            &:active {
+                background-color: scale-color(map-get($foundation-palette, primary), $lightness: -15%);
+            }
         }
     }
 
@@ -139,6 +195,27 @@ body.dragging {
             height: 3rem;
             border-radius: $global-radius / 2;
             animation: sk-rotateplane 1.2s infinite ease-in-out;
+        }
+    }
+
+    @keyframes solved-path {
+        0% {
+            stroke: $black;
+        }
+        100% {
+            stroke: map-get($foundation-palette, primary);
+            stroke-width: 4;
+        }
+    }
+
+    @keyframes solved-node {
+        0% {
+            stroke: $black;
+        }
+        100% {
+            stroke: map-get($foundation-palette, primary);
+            stroke-width: 2;
+            //fill: scale-color(map-get($foundation-palette, primary), $lightness: 80%);
         }
     }
 

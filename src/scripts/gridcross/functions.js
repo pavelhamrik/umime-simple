@@ -11,23 +11,9 @@ import {
     LEFT_EDGE,
     LINE,
     NODE,
-    NODE_GROUP,
-    PATH_GROUP,
-    WORK_GROUP,
     SNAP_THRESHOLD,
-    NODE_RADIUS,
     DUPLICATE_LINE_THRESHOLD,
-    NODE_STATE_COLLECTION,
-    PATH_STATE_COLLECTION,
-    TASK_NODE_CLASS_NAME,
-    TASK_LINE_CLASS_NAME,
-    BACK_GROUP,
-    SOLUTION_STATE_COLLECTION,
-    USER_NODE_CLASS_NAME,
-    USER_LINE_CLASS_NAME, LINE_RENDERING_ORDER,
 } from './constants';
-import { attachDraggable, attachTouchSurfaceDraggable } from './draggable';
-import { composeNewStateForLine, composeNewStateForNode } from './gridcross.exercise';
 
 
 export function calculateDistance(p1, p2) {
@@ -136,53 +122,6 @@ export function generateGridNodes(classes, stateType, svgGroup) {
 }
 
 
-export function render(state, groups) {
-    console.time('render');
-    console.log('render:', Object.assign({}, state.get(), {}));
-
-    Object.keys(groups).forEach(key => {
-        groups[key].clear();
-    });
-
-    const currentState = state.get();
-    Object.keys(currentState).forEach(elemGroup => {
-        if (elemGroup === NODE_STATE_COLLECTION) {
-            currentState[elemGroup].forEach(elem => {
-                const node = groups[NODE_GROUP]
-                    .circle(NODE_RADIUS * 2)
-                    .move(elem.geometry.p1.x - NODE_RADIUS, elem.geometry.p1.y - NODE_RADIUS);
-                elem.classes.forEach(className => {
-                    node.addClass(className)
-                });
-                attachDraggable(node, groups[WORK_GROUP], currentState.nodes);
-            })
-        }
-        if (elemGroup === PATH_STATE_COLLECTION) {
-            LINE_RENDERING_ORDER.forEach(group => {
-                currentState[elemGroup]
-                    .filter(elem => elem.classes.has(group))
-                    .forEach(elem => {
-                        const line = groups[PATH_GROUP].line(
-                            elem.geometry.p1.x, elem.geometry.p1.y, elem.geometry.p2.x, elem.geometry.p2.y
-                        );
-                        // todo: selecting lines
-                        // line.on('click', function() {console.log('line clicked')});
-                        elem.classes.forEach(className => {line.addClass(className)});
-                    });
-            });
-        }
-    });
-
-    const touchSurface = groups[BACK_GROUP].rect(
-        GRID_WIDTH * RESOLUTION + CANVAS_PADDING * 2,
-        GRID_HEIGHT * RESOLUTION + CANVAS_PADDING * 2
-    ).addClass('touchsurface');
-    attachTouchSurfaceDraggable(touchSurface, groups[WORK_GROUP], currentState.nodes);
-
-    console.timeEnd('render');
-}
-
-
 export function addElemClassInObject(container, elemId, className) {
     return container.map(elem => {
         if (elem.id === elemId) {
@@ -200,6 +139,7 @@ export function composeStateObject(id, type, classes, stateType, svgGroup, geome
         type: type, classes: classes, stateType: stateType, svgGroup: svgGroup, id: id, geometry: geometry
     }
 }
+
 
 export function createStateId(stateType, stateSnapshot) {
     const lastId = stateSnapshot[stateType].reduce((acc, cur) => {
@@ -222,144 +162,6 @@ export function findLine(point1, point2, stateCollection, exact = false) {
         );
         return distance1 <= tolerance && distance2 <= tolerance;
     })
-}
-
-
-export function parseAssignment(json, stateSnapshot) {
-    console.log('data received:', json);
-
-    const workingState = [stateSnapshot];
-
-    if (typeof json.problem.points !== 'undefined') {
-        json.problem.points.forEach(point => {
-            workingState.push(
-                composeNewStateForNode(
-                    new Point(
-                        toCanvasCoord(point[0]),
-                        toCanvasCoord(point[1])
-                    ),
-                    TASK_NODE_CLASS_NAME,
-                    workingState[workingState.length - 1]
-                )
-            );
-        });
-    }
-
-    if (typeof json.problem.segments !== 'undefined') {
-        json.problem.segments.forEach(line => {
-            const p1 = new Point(
-                toCanvasCoord(line[0][0]),
-                toCanvasCoord(line[0][1])
-            );
-            const p2 = new Point(
-                toCanvasCoord(line[1][0]),
-                toCanvasCoord(line[1][1])
-            );
-
-            workingState.push(
-                composeNewStateForLine(
-                    p1, p2,
-                    TASK_LINE_CLASS_NAME,
-                    workingState[workingState.length - 1]
-                )
-            );
-            workingState.push(
-                composeNewStateForNode(p1,
-                    TASK_NODE_CLASS_NAME,
-                    workingState[workingState.length - 1],
-                    NODE_STATE_COLLECTION
-                )
-            );
-            workingState.push(
-                composeNewStateForNode(p2,
-                    TASK_NODE_CLASS_NAME,
-                    workingState[workingState.length - 1],
-                    NODE_STATE_COLLECTION
-                )
-            );
-        });
-    }
-
-    if (typeof json.problem.lines !== 'undefined') {
-        json.problem.lines.forEach(line => {
-            const p1 = new Point(
-                toCanvasCoord(line[0][0]),
-                toCanvasCoord(line[0][1])
-            );
-            const p2 = new Point(
-                toCanvasCoord(line[1][0]),
-                toCanvasCoord(line[1][1])
-            );
-
-            workingState.push(
-                composeNewStateForLine(
-                    p1, p2,
-                    TASK_LINE_CLASS_NAME,
-                    workingState[workingState.length - 1]
-                )
-            );
-        });
-    }
-
-    workingState[workingState.length - 1][SOLUTION_STATE_COLLECTION] = json.solutions.map(solution => {
-        const transformed = {};
-        if (typeof solution.points !== 'undefined') {
-            transformed[NODE_STATE_COLLECTION] = solution.points.map(point => (
-                new Point(
-                    toCanvasCoord(point[0]),
-                    toCanvasCoord(point[1])
-                )
-            ));
-        }
-
-        const segments = typeof solution.segments !== 'undefined' ? solution.segments : [];
-        const lines = typeof solution.lines !== 'undefined' ? solution.lines: [];
-        const paths = segments.concat(lines);
-
-        if (paths.length !== 0) {
-            transformed[PATH_STATE_COLLECTION] = paths.map(path => (
-                {
-                    p1: new Point(
-                        toCanvasCoord(path[0][0]),
-                        toCanvasCoord(path[0][1])
-                    ),
-                    p2: new Point(
-                        toCanvasCoord(path[1][0]),
-                        toCanvasCoord(path[1][1])
-                    ),
-                }
-            ));
-        }
-
-        return transformed;
-    });
-
-    return workingState[workingState.length - 1]
-}
-
-
-export function checkSolution(stateSnapshot) {
-    for (const solution of stateSnapshot.solutions) {
-        const pointCheck = typeof solution[NODE_STATE_COLLECTION] !== 'undefined'
-            ? solution[NODE_STATE_COLLECTION].filter(point => (
-                stateSnapshot[NODE_STATE_COLLECTION].filter(userPoint => (
-                    userPoint.classes.has(USER_NODE_CLASS_NAME) && userPoint.geometry.p1.equals(point)
-                )).length === 0
-            )).length === 0
-            : true;
-
-        const pathCheck = typeof solution[PATH_STATE_COLLECTION] !== 'undefined'
-            ? solution[PATH_STATE_COLLECTION].filter(path => {
-                const matches = findLine(path.p1, path.p2, stateSnapshot.paths, true);
-                return matches.length === 0
-                    || matches.filter(match => match.classes.has(USER_LINE_CLASS_NAME)
-                        || match.classes.has(TASK_LINE_CLASS_NAME)).length === 0;
-            }).length === 0
-            : true;
-
-        if (pointCheck && pathCheck) return solution;
-    }
-    return {};
 }
 
 

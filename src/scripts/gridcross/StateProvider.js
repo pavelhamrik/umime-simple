@@ -24,4 +24,8 @@ export default class StateProvider {
     wipe() {
         this.state = [this.initialState];
     }
+
+    get length() {
+        return this.state.length;
+    }
 }

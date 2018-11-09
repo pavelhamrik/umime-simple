@@ -24,6 +24,18 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-reload:before {
+    content: "\e907";
+}
+
+.icon-undo:before {
+    content: "\e908";
+}
+
+.icon-redo:before {
+    content: "\e909";
+}
+
 .icon-menu:before {
     content: "\e907";
 }

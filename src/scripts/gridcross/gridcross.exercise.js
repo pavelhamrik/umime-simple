@@ -3,23 +3,35 @@ import {
     extendLineCoordinates,
     generateGridLines,
     generateGridNodes,
-    render,
     addElemClassInObject,
     composeStateObject,
     createStateId,
     findLine,
-    parseAssignment, checkSolution, isEmptyObject,
+    isEmptyObject,
 } from './functions';
+import { parseAssignment, checkSolution, highlightSolution } from './assignment';
+import { render } from './render';
 import { intersectLineLine } from './intersections';
 import { bootstrap } from './bootstrap';
 import StateProvider from './StateProvider';
 import {
     API_URL,
     DUPLICATE_NODE_THRESHOLD,
-    LINE, NODE,
-    NODE_GROUP, PATH_GROUP, WORK_GROUP, BACK_GROUP,
-    AXIS_LINE_CLASS_NAME, USER_LINE_CLASS_NAME, NODE_CLASS_NAME, GRID_NODE_CLASS_NAME, USER_NODE_CLASS_NAME,
-    PATH_STATE_COLLECTION, NODE_STATE_COLLECTION, GRID_LINE_CLASS_NAME, API_LOAD_ERROR_TEXT,
+    LINE,
+    NODE,
+    NODE_GROUP,
+    PATH_GROUP,
+    WORK_GROUP,
+    BACK_GROUP,
+    AXIS_LINE_CLASS_NAME,
+    USER_LINE_CLASS_NAME,
+    NODE_CLASS_NAME,
+    GRID_NODE_CLASS_NAME,
+    USER_NODE_CLASS_NAME,
+    PATH_STATE_COLLECTION,
+    NODE_STATE_COLLECTION,
+    GRID_LINE_CLASS_NAME,
+    API_LOAD_ERROR_TEXT,
 } from './constants';
 
 
@@ -27,7 +39,7 @@ import {
 
 console.time('init');
 
-const { canvas, canvasWrapper, taskText } = bootstrap();
+const { canvas, canvasWrapper, taskText, nextButton, undoButton } = bootstrap();
 
 // these won't change, so we won't store them in the state
 const groups = {};
@@ -72,6 +84,9 @@ function getAssignment() {
         taskText.textContent = request.response.text;
         loadingIndicator.remove();
 
+        nextButton.disabled = true;
+        undoButton.disabled = true;
+
         // render assignment
         render(state, groups);
     };
@@ -113,18 +128,20 @@ export function composeNewStateForNode(point, className, stateSnapshot) {
 export function composeNewStateForLine(p1, p2, className = USER_LINE_CLASS_NAME, stateSnapshot) {
     const workingState = [];
 
-    // create the line which the player just drew
+    // create or update the line which the player just drew
 
-    // todo: update the line's class if it alrady exists
-
+    const foundLines = findLine(p1, p2, stateSnapshot.paths);
+    const newPathsStateObject = foundLines.length !== 0
+        ? addElemClassInObject(stateSnapshot.paths, foundLines[0].id, className)
+        : stateSnapshot.paths.concat(
+            composeStateObject(
+                createStateId(PATH_STATE_COLLECTION, stateSnapshot),
+                LINE, new Set([NODE_CLASS_NAME, className]), PATH_STATE_COLLECTION, NODE_GROUP, {p1: p1, p2: p2}
+            )
+        );
     workingState.push(
         Object.assign({}, stateSnapshot, {
-            paths: stateSnapshot.paths.concat(
-                composeStateObject(
-                    createStateId(PATH_STATE_COLLECTION, stateSnapshot),
-                    LINE, new Set([NODE_CLASS_NAME, className]), PATH_STATE_COLLECTION, NODE_GROUP, {p1: p1, p2: p2}
-                )
-            )
+            paths: newPathsStateObject
         })
     );
 
@@ -135,7 +152,7 @@ export function composeNewStateForLine(p1, p2, className = USER_LINE_CLASS_NAME,
             Object.assign({}, workingState[workingState.length - 1], {
                 paths: workingState[workingState.length - 1].paths.concat(
                     composeStateObject(
-                        createStateId(PATH_STATE_COLLECTION, stateSnapshot),
+                        createStateId(PATH_STATE_COLLECTION, workingState[workingState.length - 1]),
                         LINE, new Set([AXIS_LINE_CLASS_NAME]), PATH_STATE_COLLECTION, NODE_GROUP,
                         {p1: axisLine.p1, p2: axisLine.p2}
                     )
@@ -161,24 +178,28 @@ export function composeNewStateForLine(p1, p2, className = USER_LINE_CLASS_NAME,
 // node manipulation; expect access to the file-scoped state object
 
 export function handleNewPath(p1, p2) {
-    console.time('new path');
     const currentState = state.get();
-    const workingState = [];
+    const workingState = [currentState];
 
-    workingState.push(composeNewStateForNode(p1, USER_NODE_CLASS_NAME, currentState, NODE_STATE_COLLECTION));
+    undoButton.disabled = false;
+
+    workingState.push(composeNewStateForNode(p1, USER_NODE_CLASS_NAME, workingState[workingState.length - 1], NODE_STATE_COLLECTION));
 
     if (!p1.equals(p2)) {
         workingState.push(composeNewStateForNode(p2, USER_NODE_CLASS_NAME, workingState[workingState.length - 1]));
         workingState.push(composeNewStateForLine(p1, p2, USER_LINE_CLASS_NAME, workingState[workingState.length - 1]));
     }
 
+    const validSolution = checkSolution(workingState[workingState.length - 1]);
+    if (!isEmptyObject(validSolution)) {
+        console.log('%cvalid solution:', 'color: wheat', validSolution);
+        workingState.push(highlightSolution(validSolution, workingState[workingState.length - 1]))
+        nextButton.disabled = false;
+        undoButton.disabled = true;
+    }
+
     // we only want one state change leading to one history entry, so we store all the stacked changes at once
     state.set(workingState[workingState.length - 1]);
-
-    const validSolution = checkSolution(workingState[workingState.length - 1]);
-    console.log('valid solution', !isEmptyObject(validSolution));
-
-    console.timeEnd('new path');
 
     render(state, groups);
 }
@@ -189,5 +210,14 @@ export function undo(event) {
     event.preventDefault();
 
     state.rewind(1);
+
+    if (state.length === 2) undoButton.disabled = true;
+
     render(state, groups);
+}
+
+
+export function nextAssignment() {
+    state.wipe();
+    getAssignment();
 }

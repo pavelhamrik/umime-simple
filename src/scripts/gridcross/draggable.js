@@ -3,9 +3,9 @@ import SVG from 'svg.js';
 import Point from "./Point";
 import { handleNewPath } from './gridcross.exercise';
 import { draggableSnap, getNearestNode } from './functions';
-import { LINE, NODE_RADIUS } from "./constants";
+import { BOTTOM_EDGE, CANVAS_PADDING, LEFT_EDGE, LINE, NODE_RADIUS, RIGHT_EDGE, TOP_EDGE } from "./constants";
 
-let tool = {};
+const tool = {};
 
 export function attachDraggable(node, layer, nodes) {
     node.draggable();
@@ -56,14 +56,23 @@ function handleDragStart(event, point, layer) {
     event.stopPropagation();
     holdScroll();
 
-    tool = {
-        shape: layer.line(point.x, point.y, point.x, point.y).addClass('indicator'),
-        p1: layer.circle(NODE_RADIUS * 2)
-            .move(point.x - NODE_RADIUS, point.y - NODE_RADIUS).addClass('indicator'),
-        p2: layer.circle(NODE_RADIUS * 2)
-            .move(point.x - NODE_RADIUS, point.y - NODE_RADIUS).addClass('indicator'),
-        type: LINE,
-    }
+    tool['geometry'] = {
+        'shape': layer.line(point.x, point.y, point.x, point.y)
+            .addClass('indicator'),
+        'vertical': layer.line(point.x, 0, point.x, BOTTOM_EDGE + CANVAS_PADDING)
+            .addClass('indicator')
+            .addClass('crosshair'),
+        'horizontal': layer.line(0, point.y, RIGHT_EDGE + CANVAS_PADDING, point.y)
+            .addClass('indicator')
+            .addClass('crosshair'),
+        'p1': layer.circle(NODE_RADIUS * 2)
+            .move(point.x - NODE_RADIUS, point.y - NODE_RADIUS)
+            .addClass('indicator'),
+        'p2': layer.circle(NODE_RADIUS * 2)
+            .move(point.x - NODE_RADIUS, point.y - NODE_RADIUS)
+            .addClass('indicator'),
+    };
+    tool['type'] = LINE;
 }
 
 
@@ -73,18 +82,16 @@ function handleDragMove(event, nodes) {
 
     const snappedTo = draggableSnap(new Point(event.detail.p.x, event.detail.p.y), nodes);
 
-    tool.shape.attr('x2', snappedTo.point.x).attr('y2', snappedTo.point.y);
-    tool.p2.attr('cx', snappedTo.point.x).attr('cy', snappedTo.point.y);
+    tool.geometry.shape.attr('x2', snappedTo.point.x).attr('y2', snappedTo.point.y);
+    tool.geometry.p2.attr('cx', snappedTo.point.x).attr('cy', snappedTo.point.y);
+    tool.geometry.vertical.attr('x1', snappedTo.point.x).attr('x2', snappedTo.point.x);
+    tool.geometry.horizontal.attr('y1', snappedTo.point.y).attr('y2', snappedTo.point.y);
 
     if (snappedTo.snapped) {
-        tool.shape.addClass('snapped');
-        tool.p1.addClass('snapped');
-        tool.p2.addClass('snapped');
+        Object.keys(tool.geometry).forEach(shape => tool.geometry[shape].addClass('snapped'));
     }
     else {
-        tool.shape.removeClass('snapped');
-        tool.p1.removeClass('snapped');
-        tool.p2.removeClass('snapped');
+        Object.keys(tool.geometry).forEach(shape => tool.geometry[shape].removeClass('snapped'));
     }
 }
 
@@ -92,10 +99,9 @@ function handleDragMove(event, nodes) {
 function handleDragEnd(event, origin, nodes) {
     releaseScroll();
 
-    tool.shape.remove();
-    tool.p1.remove();
-    tool.p2.remove();
-    tool = {};
+    Object.keys(tool.geometry).forEach(shape => tool.geometry[shape].remove());
+    delete tool['geometry'];
+    delete tool['type'];
 
     const snappedTo = draggableSnap(new Point(event.detail.p.x, event.detail.p.y), nodes);
     if (snappedTo.snapped) {
@@ -108,6 +114,7 @@ export function holdScroll() {
     document.getElementsByTagName('body')[0].classList.add('dragging');
 
 }
+
 
 export function releaseScroll() {
     document.getElementsByTagName('body')[0].classList.remove('dragging');

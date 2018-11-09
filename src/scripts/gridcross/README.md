@@ -4,20 +4,56 @@ An interactive exercise teaching you about planar geometry and applications of t
 
 ## Deployment
 
-Include the following three lines in your HTML file.
+Include the following three lines in your HTML file, making sure the paths point where the corresponding files are.
 
-```$xslt
+```
 <div id="gridcross"></div>
 <link rel="stylesheet" href="gridcross.css">
 <script src="gridcross.exercise.js"></script>
 ```
-It should be fine to just put them into the `body` tag.
+It's' be fine to simply put them into the `body` tag, grouped like this.
 
-### Packaging
+### API
+
+The app loads the assignments over standard XMLHttpRequest in JSON format.
+
+The format it expects it:
+
+```
+{
+    "text": "Description of the exercise",
+    "problem": {
+        "points": [
+            [4, 3]
+        ],
+        "lines": [
+            [[1, 6], [3, 0]]
+        ]
+    },
+    "solutions": [
+        {
+            "lines": [
+                [[3, 6], [5, 0]]
+            ]
+        }
+    ]
+}
+```
+
+Recognized keys for both `problem` and `solutions` are `points`, `segments` and `lines`. `solutions` must be an array, even if it contains just one element.
+
+The `text` top-level key is displayed as assignment text to the player. Other keys in the object are allowed and ignored.
+
+### Development
+
+Ask for a demo, docs TBD thereafter.
+
+### Non-standard dependencies
 
 - `svg.draggable.js` plugin for `svg.js` had to be modified to work in a ES6 module environment
 - Uhe `intersections.js` file contains a syntactically modified part of the [KLD Intersections](https://github.com/thelonious/kld-intersections) library 
-- Ultimately, if you are using only the dist version of gridcross, you don't have to worry about this as they are both included in the package
+- If you are using only the distribution version of gridcross, you don't have to worry about this as they are both included in the package.
+- Both modified libraries are checked into the repository.
 
 ## Todos
 
@@ -25,14 +61,14 @@ It should be fine to just put them into the `body` tag.
 - [x] 'infinite' line helpers drawn for player-added line segments
 - [x] use state, unidirectional data flow and independent render based solely on state
 - [x] create initial state from a JSON config 
-- [ ] **end state detection**
+- [x] end state detection
 - [x] use groups for layers
 - [x] use SVG.Nested for better node indicators
 - [x] exercise assignment definitions
 - [x] webpack production config
 - [x] state management and undo, drawing from state
 - [x] handling erroneous HTTP requests
-- [ ] loading of the next assignment
+- [x] loading of the next assignment
 
 ## Next up
 
