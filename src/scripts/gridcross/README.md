@@ -70,7 +70,7 @@ Ask for a demo, docs TBD thereafter.
 - [x] handling erroneous HTTP requests
 - [x] loading of the next assignment
 
-## Next up
+### Next up
 
 - [ ] selecting lines
 - [ ] drawing circles
