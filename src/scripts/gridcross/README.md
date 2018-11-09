@@ -11,7 +11,7 @@ Include the following three lines in your HTML file, making sure the paths point
 <link rel="stylesheet" href="gridcross.css">
 <script src="gridcross.exercise.js"></script>
 ```
-It's' be fine to simply put them into the `body` tag, grouped like this.
+It's fine to simply put them into the `body` tag, grouped like this.
 
 ### API
 
