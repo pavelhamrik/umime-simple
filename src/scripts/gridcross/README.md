@@ -69,15 +69,20 @@ Ask for a demo, docs TBD thereafter.
 - [x] state management and undo, drawing from state
 - [x] handling erroneous HTTP requests
 - [x] loading of the next assignment
+- [x] export paths and lined to console
+- [x] makes canvas non-interactive when a valid solution is found
+- [x] import solution locally
 
 ### Next up
 
 - [ ] selecting lines
 - [ ] drawing circles
 - [ ] point labels
+- [ ] getting the background image from assignment
 
 ### Bug fixes
 
 - [x] node classes are being needlessly overwritten
 - [x] an edge-to-edge user line doesn't get drawn or appear as one
 - [x] vertical lines on right and left edge overreach the top
+- [x] button presses are being registered even when the buttons are disabled; handle listeners

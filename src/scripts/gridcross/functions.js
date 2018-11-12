@@ -77,7 +77,12 @@ export function extendLineCoordinates(p1, p2) {
 
 
 export function toCanvasCoord(value) {
-    return value * RESOLUTION + CANVAS_PADDING
+    return value * RESOLUTION + CANVAS_PADDING;
+}
+
+
+export function fromCanvasCoord(value) {
+    return (value - CANVAS_PADDING) / RESOLUTION;
 }
 
 
@@ -167,4 +172,22 @@ export function findLine(point1, point2, stateCollection, exact = false) {
 
 export function isEmptyObject(object) {
     return Object.keys(object).length === 0 && object.constructor === Object;
+}
+
+
+export function enableButton(button, handlers = []) {
+    button.disabled = false;
+    handlers.forEach(handler => {
+        button.addEventListener('touchstart', handler);
+        button.addEventListener('click', handler);
+    })
+}
+
+
+export function disableButton(button, handlers = []) {
+    button.disabled = true;
+    handlers.forEach(handler => {
+        button.removeEventListener('touchstart', handler);
+        button.removeEventListener('click', handler);
+    })
 }

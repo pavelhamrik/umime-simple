@@ -1,4 +1,5 @@
 import {
+    LOG,
     NODE_STATE_COLLECTION,
     PATH_STATE_COLLECTION,
     SOLUTION_STATE_COLLECTION,
@@ -14,7 +15,7 @@ import { findLine, toCanvasCoord } from './functions';
 import { composeNewStateForLine, composeNewStateForNode } from './gridcross.exercise';
 
 export function parseAssignment(json, stateSnapshot) {
-    console.log('%cdata received:', 'color: cornflowerblue', json);
+    if (LOG) console.log('%cdata received:', 'color: cornflowerblue', json);
 
     const workingState = [stateSnapshot];
 
@@ -154,7 +155,6 @@ export function highlightSolution(solution, stateSnapshot) {
     const workingState = [stateSnapshot];
 
     Object.keys(solution).forEach(collection => {
-        console.log(collection);
         if (collection === NODE_STATE_COLLECTION) {
             solution[collection].forEach(node => {
                 workingState.push(composeNewStateForNode(

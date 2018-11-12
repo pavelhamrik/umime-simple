@@ -3,7 +3,7 @@ import SVG from 'svg.js';
 import Point from "./Point";
 import { handleNewPath } from './gridcross.exercise';
 import { draggableSnap, getNearestNode } from './functions';
-import { BOTTOM_EDGE, CANVAS_PADDING, LEFT_EDGE, LINE, NODE_RADIUS, RIGHT_EDGE, TOP_EDGE } from "./constants";
+import { BOTTOM_EDGE, CANVAS_PADDING, LINE, NODE_RADIUS, RIGHT_EDGE } from "./constants";
 
 const tool = {};
 

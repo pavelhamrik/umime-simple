@@ -8,6 +8,8 @@ import {
     createStateId,
     findLine,
     isEmptyObject,
+    enableButton,
+    disableButton,
 } from './functions';
 import { parseAssignment, checkSolution, highlightSolution } from './assignment';
 import { render } from './render';
@@ -31,13 +33,14 @@ import {
     PATH_STATE_COLLECTION,
     NODE_STATE_COLLECTION,
     GRID_LINE_CLASS_NAME,
-    API_LOAD_ERROR_TEXT,
+    API_LOAD_ERROR_TEXT, LOG, LOCAL_IO,
 } from './constants';
+import { createLocalInput } from './util';
 
 
 // bootstrapping
 
-console.time('init');
+if (LOG) console.time('init');
 
 const { canvas, canvasWrapper, taskText, nextButton, undoButton } = bootstrap();
 
@@ -57,6 +60,29 @@ initialState[PATH_STATE_COLLECTION] = generateGridLines(
 );
 
 const state = new StateProvider(initialState);
+
+if (LOCAL_IO) createLocalInput();
+
+getAssignment();
+
+if (LOG) console.timeEnd('init');
+
+
+// present the assignment
+
+export function presentAssignment(assignment) {
+    // compose the state update based on the assignment data
+    state.set(parseAssignment(assignment, state.get()));
+
+    taskText.textContent = assignment.text;
+
+    disableButton(nextButton, [nextAssignment]);
+    disableButton(undoButton, [undo]);
+
+    // render assignment
+    render(state, groups);
+}
+
 
 function getAssignment() {
     function handleError() {
@@ -78,24 +104,11 @@ function getAssignment() {
     request.ontimeout = handleError;
     request.onabort = handleError;
     request.onload = function() {
-        // compose the state update based on the assignment data
-        state.set(parseAssignment(request.response, state.get()));
-
-        taskText.textContent = request.response.text;
         loadingIndicator.remove();
-
-        nextButton.disabled = true;
-        undoButton.disabled = true;
-
-        // render assignment
-        render(state, groups);
+        presentAssignment(request.response);
     };
     request.send();
 }
-
-getAssignment();
-
-console.timeEnd('init');
 
 
 // working with the geometry interactions
@@ -147,7 +160,7 @@ export function composeNewStateForLine(p1, p2, className = USER_LINE_CLASS_NAME,
 
     // create the hinting 'axis line'
     const axisLine = extendLineCoordinates(p1, p2);
-    if (findLine(axisLine.p1, axisLine.p2, workingState[workingState.length - 1]['paths']).length === 0) {
+    if (findLine(axisLine.p1, axisLine.p2, workingState[workingState.length - 1][PATH_STATE_COLLECTION]).length === 0) {
         workingState.push(
             Object.assign({}, workingState[workingState.length - 1], {
                 paths: workingState[workingState.length - 1].paths.concat(
@@ -162,7 +175,7 @@ export function composeNewStateForLine(p1, p2, className = USER_LINE_CLASS_NAME,
     }
 
     // create or update nodes at intersections of existing lines with the new line
-    stateSnapshot.paths.forEach(path => {
+    stateSnapshot[PATH_STATE_COLLECTION].forEach(path => {
         intersectLineLine(path.geometry.p1, path.geometry.p2, axisLine.p1, axisLine.p2).intersections
             .forEach(intersection => {
                 workingState.push(
@@ -181,7 +194,7 @@ export function handleNewPath(p1, p2) {
     const currentState = state.get();
     const workingState = [currentState];
 
-    undoButton.disabled = false;
+    enableButton(undoButton, [undo]);
 
     workingState.push(composeNewStateForNode(p1, USER_NODE_CLASS_NAME, workingState[workingState.length - 1], NODE_STATE_COLLECTION));
 
@@ -194,14 +207,14 @@ export function handleNewPath(p1, p2) {
     if (!isEmptyObject(validSolution)) {
         console.log('%cvalid solution:', 'color: wheat', validSolution);
         workingState.push(highlightSolution(validSolution, workingState[workingState.length - 1]))
-        nextButton.disabled = false;
-        undoButton.disabled = true;
+        enableButton(nextButton, [nextAssignment]);
+        disableButton(undoButton, [undo]);
     }
 
     // we only want one state change leading to one history entry, so we store all the stacked changes at once
     state.set(workingState[workingState.length - 1]);
 
-    render(state, groups);
+    render(state, groups, isEmptyObject(validSolution));
 }
 
 
@@ -211,13 +224,21 @@ export function undo(event) {
 
     state.rewind(1);
 
-    if (state.length === 2) undoButton.disabled = true;
+    if (state.length === 2) disableButton(undoButton, [undo]);
 
     render(state, groups);
 }
 
 
-export function nextAssignment() {
+export function nextAssignment(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    handleAssignment();
+}
+
+export function handleAssignment(assignment) {
     state.wipe();
-    getAssignment();
+
+    if (typeof assignment === 'undefined') getAssignment();
+    else presentAssignment(assignment);
 }

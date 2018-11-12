@@ -3,7 +3,7 @@ import {
     CANVAS_PADDING,
     GRID_HEIGHT,
     GRID_WIDTH,
-    LINE_RENDERING_ORDER,
+    LINE_RENDERING_ORDER, LOG,
     NODE_GROUP,
     NODE_RADIUS,
     NODE_STATE_COLLECTION,
@@ -13,10 +13,15 @@ import {
     WORK_GROUP
 } from './constants';
 import { attachDraggable, attachTouchSurfaceDraggable } from './draggable';
+import { exportGeometry } from './util';
 
-export function render(state, groups) {
-    console.time('render');
-    console.log('%crender:', 'color: plum' , Object.assign({}, state.get(), {}));
+export function render(state, groups, interactive = true) {
+    if (LOG) {
+        const stateSnapshot =  Object.assign({}, state.get(), {});
+        console.time('render');
+        console.log('%crender:', 'color: plum' , stateSnapshot);
+        exportGeometry(stateSnapshot);
+    }
 
     Object.keys(groups).forEach(key => {
         groups[key].clear();
@@ -32,7 +37,7 @@ export function render(state, groups) {
                 elem.classes.forEach(className => {
                     node.addClass(className)
                 });
-                attachDraggable(node, groups[WORK_GROUP], currentState.nodes);
+                if (interactive) attachDraggable(node, groups[WORK_GROUP], currentState.nodes);
             })
         }
         if (elemGroup === PATH_STATE_COLLECTION) {
@@ -55,7 +60,7 @@ export function render(state, groups) {
         GRID_WIDTH * RESOLUTION + CANVAS_PADDING * 2,
         GRID_HEIGHT * RESOLUTION + CANVAS_PADDING * 2
     ).addClass('touchsurface');
-    attachTouchSurfaceDraggable(touchSurface, groups[WORK_GROUP], currentState.nodes);
+    if (interactive) attachTouchSurfaceDraggable(touchSurface, groups[WORK_GROUP], currentState.nodes);
 
-    console.timeEnd('render');
+    if (LOG) console.timeEnd('render');
 }

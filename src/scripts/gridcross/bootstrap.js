@@ -8,7 +8,7 @@ import {
     BOTTOM_EDGE,
     BACK_BUTTON_LABEL,
     TASK_TEXT_DEFAULT,
-    NEXT_BUTTON_LABEL
+    NEXT_BUTTON_LABEL, LOCAL_IO
 } from './constants';
 
 svgDraggableInit(SVG);
@@ -44,8 +44,7 @@ export function bootstrap() {
     const undoButton = document.createElement('button');
     undoButton.classList.add('undo-button');
     undoButton.setAttribute('title', BACK_BUTTON_LABEL);
-    undoButton.addEventListener('touchstart', undo);
-    undoButton.addEventListener('click', undo);
+    undoButton.disabled = true;
     buttonWrapper.appendChild(undoButton);
 
     // create the next assignment button
@@ -53,8 +52,6 @@ export function bootstrap() {
     const nextButtonLabel = document.createTextNode(NEXT_BUTTON_LABEL);
     nextButton.appendChild(nextButtonLabel);
     nextButton.classList.add('next-button');
-    nextButton.addEventListener('touchstart', nextAssignment);
-    nextButton.addEventListener('click', nextAssignment);
     nextButton.disabled = true;
     buttonWrapper.appendChild(nextButton);
 
