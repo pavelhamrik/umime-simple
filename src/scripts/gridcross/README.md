@@ -76,8 +76,9 @@ Ask for a demo, docs TBD thereafter.
 ### Next up
 
 - [ ] selecting lines
+- [ ] extending segments to lines based on assignment config
 - [ ] drawing circles
-- [ ] point labels
+- [ ] point labels?
 - [ ] getting the background image from assignment
 
 ### Bug fixes
