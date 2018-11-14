@@ -1,4 +1,5 @@
 import {
+    BACK_BUTTON_LABEL,
     LOCAL_IO,
     NODE_STATE_COLLECTION,
     PATH_STATE_COLLECTION,
@@ -34,36 +35,50 @@ export function exportGeometry(stateSnapshot) {
         ));
 
     console.log(
-        JSON.stringify(log, (key, value) => (
-            value instanceof Array
+        JSON.stringify(log, (key, value) => {
+                return value instanceof Array
                 ? value.map(value => (
                     value instanceof Array ? JSON.stringify(value) : value
                 ))
                 : value
-        ), 2)
+        }, 2).replace(/"\[/g, '[').replace(/]"/g, ']')
     );
 }
 
 
 export function createLocalInput() {
-    // if (!LOCAL_IO) return {};
+    const container = document.createElement('div');
+    container.id = 'local-io';
 
-    const input = document.createElement('textarea');
-    input.id = 'local-io';
-    input.placeholder = 'Enter an assignment in JSON format';
+    const inputField = document.createElement('textarea');
+    inputField.id = 'local-io-input';
+    inputField.placeholder = 'Enter an assignment in JSON format';
 
-    input.addEventListener('keyup', handleLocalInput);
-    input.addEventListener('change', handleLocalInput);
+    inputField.addEventListener('keyup', resizeInputField);
+    inputField.addEventListener('change', resizeInputField);
 
-    document.getElementById('gridcross').appendChild(input);
+    const applyButton = document.createElement('button');
+    applyButton.id = 'local-io-apply-button';
+    applyButton.setAttribute('title', 'Vložit');
+
+    applyButton.addEventListener('touchstart', handleLocalInput);
+    applyButton.addEventListener('click', handleLocalInput);
+
+    document.getElementById('gridcross').appendChild(container);
+    container.appendChild(inputField);
+    container.appendChild(applyButton);
+}
+
+
+function resizeInputField() {
+    this.style.height = `calc(${this.scrollHeight + 2}px)`;
 }
 
 
 function handleLocalInput() {
-    this.style.height = `calc(${this.scrollHeight + 2}px)`;
-
-    if (isValidJSON(this.value)) {
-        handleAssignment(JSON.parse(this.value));
+    const inputField = document.getElementById('local-io-input');
+    if (isValidJSON(inputField.value)) {
+        handleAssignment(JSON.parse(inputField.value));
     }
 }
 

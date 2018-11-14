@@ -32,7 +32,7 @@ export function attachTouchSurfaceDraggable(surface, layer, nodes) {
     surface.draggable();
 
     surface.on('dragstart', function (event) {
-        const nearestNode = getNearestNode(new Point(event.detail.p.x, event.detail.p.y), nodes);
+        const nearestNode = getNearestNode(new Point(event.detail.p.x, event.detail.p.y - window.pageYOffset), nodes);
         handleDragStart(event, nearestNode.point, layer);
     });
 
@@ -42,7 +42,7 @@ export function attachTouchSurfaceDraggable(surface, layer, nodes) {
 
     surface.on('dragend', function (event) {
         const nearestNode = getNearestNode(
-            new Point(event.detail.handler.startPoints.point.x, event.detail.handler.startPoints.point.y),
+            new Point(event.detail.handler.startPoints.point.x, event.detail.handler.startPoints.point.y - window.pageYOffset),
             nodes
         );
         handleDragEnd(event, nearestNode.point, nodes);
@@ -80,7 +80,7 @@ function handleDragMove(event, nodes) {
     event.preventDefault();
     event.stopPropagation();
 
-    const snappedTo = draggableSnap(new Point(event.detail.p.x, event.detail.p.y), nodes);
+    const snappedTo = draggableSnap(new Point(event.detail.p.x, event.detail.p.y - window.pageYOffset), nodes);
 
     tool.geometry.shape.attr('x2', snappedTo.point.x).attr('y2', snappedTo.point.y);
     tool.geometry.p2.attr('cx', snappedTo.point.x).attr('cy', snappedTo.point.y);
@@ -103,7 +103,7 @@ function handleDragEnd(event, origin, nodes) {
     delete tool['geometry'];
     delete tool['type'];
 
-    const snappedTo = draggableSnap(new Point(event.detail.p.x, event.detail.p.y), nodes);
+    const snappedTo = draggableSnap(new Point(event.detail.p.x, event.detail.p.y - window.pageYOffset), nodes);
     if (snappedTo.snapped) {
         handleNewPath(origin, snappedTo.point);
     }

@@ -24,46 +24,36 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-menu:before {
+    content: "\e90a";
+}
 .icon-reload:before {
     content: "\e907";
 }
-
 .icon-undo:before {
     content: "\e908";
 }
-
 .icon-redo:before {
     content: "\e909";
 }
-
-.icon-menu:before {
-    content: "\e907";
-}
-
 .icon-arc-up:before {
     content: "\e903";
 }
-
 .icon-arc-right:before {
     content: "\e902";
 }
-
 .icon-arc-down:before {
     content: "\e900";
 }
-
 .icon-arc-left:before {
     content: "\e901";
 }
-
 .icon-cross:before {
     content: "\e904";
 }
-
 .icon-cross-small:before {
     content: "\e906";
 }
-
 .icon-magnifying-glass:before {
     content: "\e905";
 }

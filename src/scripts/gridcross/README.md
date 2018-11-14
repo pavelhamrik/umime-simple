@@ -72,13 +72,14 @@ Ask for a demo, docs TBD thereafter.
 - [x] export paths and lined to console
 - [x] makes canvas non-interactive when a valid solution is found
 - [x] import solution locally
+- [ ] assignment's 'lines' are extended to edges regardless of their original coords; same for solutions
+- [ ] extending segments to lines based on assignment config
+- [ ] selecting lines, configurable 'select only' mode
 
 ### Next up
 
-- [ ] selecting lines
-- [ ] extending segments to lines based on assignment config
+- [ ] point and line labels
 - [ ] drawing circles
-- [ ] point labels?
 - [ ] getting the background image from assignment
 
 ### Bug fixes
@@ -87,3 +88,7 @@ Ask for a demo, docs TBD thereafter.
 - [x] an edge-to-edge user line doesn't get drawn or appear as one
 - [x] vertical lines on right and left edge overreach the top
 - [x] button presses are being registered even when the buttons are disabled; handle listeners
+- [x] `fixed, nov 14` draggable is offset by window scroll position
+- [x] `fixed, nov 14` arrays are exported to console as strings
+- [ ] `misreported, nov 14` solution checker doesn't validate for nodes
+
