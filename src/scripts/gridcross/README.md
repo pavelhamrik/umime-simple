@@ -24,10 +24,10 @@ The format it expects it:
     "text": "Description of the exercise",
     "problem": {
         "points": [
-            [4, 3]
+            {geometry: [4, 3], label: {text: "A", position: [1, 0]}}
         ],
         "lines": [
-            [[1, 6], [3, 0]]
+            {geometry: [[1, 6], [3, 0]], label: {text: "l"}}
         ]
     },
     "solutions": [
@@ -47,6 +47,8 @@ The format it expects it:
 Recognized keys for both `problem` and `solutions` are `points`, `segments` and `lines`. `solutions` must be an array, even if it contains just one element.
 
 The `text` top-level key is displayed as assignment text to the player. Other keys in the object are allowed and ignored.
+
+The `label` optional attribute displays the associated object. `position` is optional and defaults to `[1, -1]` (to the left and top from the object). 
 
 #### Config attributes
 
