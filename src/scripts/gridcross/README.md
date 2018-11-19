@@ -84,11 +84,11 @@ Ask for a demo, docs TBD thereafter.
 - [x] import solution locally
 - [x] `done, nov 15` assignment's 'lines' are extended to edges regardless of their original coords; same for solutions
 - [x] `done, nov 15` extending segments to lines based on assignment config
-- [ ] `done, nov 19` selecting & deselecting lines, configurable 'select only' mode
-- [ ] `done, nov 19` selecting & deselecting nodes, configurable 'select only' mode
-- [ ] `done, nov 19` point and line labels
-- [ ] repeat XHR on timeout
-- [ ] implement stats and sending response back to the backend
+- [x] `done, nov 19` selecting & deselecting lines, configurable 'select only' mode
+- [x] `done, nov 19` selecting & deselecting nodes, configurable 'select only' mode
+- [x] `done, nov 19` point and line labels
+- [ ] repeat the XHR on timeout
+- [ ] implement stats, logging and sending a response back to the backend
 - [ ] consider transpiling into a 'safer' JS version (babel)
 
 ### Next up
