@@ -76,5 +76,5 @@ export const NEXT_BUTTON_LABEL = 'Další';
 export const TASK_TEXT_DEFAULT = '…';
 export const API_LOAD_ERROR_TEXT = 'Nepodařilo se stáhnout zadání. Zkuste prosím obnovit stránku.';
 
-export const API_URL = 'http://localhost:3443/api/v2/assignments/';
-// export const API_URL = 'https://phapi.herokuapp.com/api/v2/assignments';
+// export const API_URL = 'http://localhost:3443/api/v2/assignments/';
+export const API_URL = 'https://phapi.herokuapp.com/api/v2/assignments/';
