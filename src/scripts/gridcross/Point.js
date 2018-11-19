@@ -16,14 +16,18 @@ export default function Point(x, y) {
         },
     });
 
-    Point.prototype.equals = function (point) {
-        return (this.x === point.x && this.y === point.y);
+    Point.prototype.equals = function (point, tolerance = 0) {
+        return (
+            Math.abs(this.x - point.x) <= tolerance &&
+            Math.abs(this.y - point.y) <= tolerance
+        );
     };
 
-    // Point.prototype.roughlyEquals = function(point, tolerance) {
-    //     return (
-    //         Math.abs(this.x - point.x) < tolerance &&
-    //         Math.abs(this.y - point.y) < tolerance
-    //     );
-    // };
+    Point.prototype.lerp = function(point, t) {
+        const omt = 1.0 - t;
+        return new this.constructor(
+            this.x * omt + point.x * t,
+            this.y * omt + point.y * t
+        );
+    };
 }

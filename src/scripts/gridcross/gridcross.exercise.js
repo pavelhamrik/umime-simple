@@ -3,13 +3,12 @@ import {
     extendLineCoordinates,
     generateGridLines,
     generateGridNodes,
-    addElemClassInObject,
     composeStateObject,
     createStateId,
     findLine,
     isEmptyObject,
     enableButton,
-    disableButton,
+    disableButton, updateElemClassesForState,
 } from './functions';
 import { parseAssignment, checkSolution, highlightSolution } from './assignment';
 import { render } from './render';
@@ -19,8 +18,6 @@ import StateProvider from './StateProvider';
 import {
     API_URL,
     DUPLICATE_NODE_THRESHOLD,
-    LINE,
-    NODE,
     NODE_GROUP,
     PATH_GROUP,
     WORK_GROUP,
@@ -33,7 +30,13 @@ import {
     PATH_STATE_COLLECTION,
     NODE_STATE_COLLECTION,
     GRID_LINE_CLASS_NAME,
-    API_LOAD_ERROR_TEXT, LOG, LOCAL_IO,
+    API_LOAD_ERROR_TEXT,
+    LOG,
+    LOCAL_IO,
+    SELECTED_NODE_CLASS_NAME,
+    SELECTED_LINE_CLASS_NAME,
+    LABEL_GROUP,
+    ASSIGNMENT_TARGETING,
 } from './constants';
 import { createLocalInput } from './util';
 
@@ -50,6 +53,7 @@ groups[BACK_GROUP] = canvas.group().addClass(BACK_GROUP);
 groups[PATH_GROUP] = canvas.group().addClass(PATH_GROUP);
 groups[WORK_GROUP] = canvas.group().addClass(WORK_GROUP);
 groups[NODE_GROUP] = canvas.group().addClass(NODE_GROUP);
+groups[LABEL_GROUP] = canvas.group().addClass(LABEL_GROUP);
 
 const initialState = {};
 initialState[NODE_STATE_COLLECTION] = generateGridNodes(
@@ -97,13 +101,29 @@ function getAssignment() {
     loadingIndicator.classList.add('loading-indicator');
     canvasWrapper.appendChild(loadingIndicator);
 
+    let requestUrl = API_URL;
+
+    if(ASSIGNMENT_TARGETING) {
+        const assignmentFromUrl = window.location.search.match(/assignment=([a-z-]+)/);
+        requestUrl = assignmentFromUrl !== null
+            ? API_URL + assignmentFromUrl[1]
+            : API_URL;
+    }
+
+    if (LOG) console.log(`%crequesting assignment: ${requestUrl}`, 'color: cornflowerblue');
+
     const request = new XMLHttpRequest();
-    request.open('GET', API_URL);
+    request.open('GET', requestUrl);
     request.responseType = 'json';
     request.onerror = handleError;
     request.ontimeout = handleError;
     request.onabort = handleError;
     request.onload = function() {
+        if (LOG) console.log('%cassignment received:', 'color: cornflowerblue', request.status, request.response);
+        if (request.status !== 200) {
+            handleError();
+            return;
+        }
         loadingIndicator.remove();
         presentAssignment(request.response);
     };
@@ -114,42 +134,47 @@ function getAssignment() {
 // working with the geometry interactions
 
 // todo: className strings and state object identifiers should use constants; then move away as pure, agnostic functions
-export function composeNewStateForNode(point, className, stateSnapshot) {
+export function composeNewStateForNode(point, classes, stateSnapshot, label = {}) {
     const nearestNode = getNearestNode(point, stateSnapshot.nodes);
     if (typeof nearestNode.distance === 'undefined') return;
 
     // node is considered duplicate
     if (nearestNode.distance < DUPLICATE_NODE_THRESHOLD) {
-        // if (className === undefined) return stateSnapshot;
         return Object.assign({}, stateSnapshot, {
-            nodes: addElemClassInObject(stateSnapshot.nodes, nearestNode.node.id, className)
+            nodes: updateElemClassesForState(stateSnapshot.nodes, nearestNode.node.id, classes)
         })
     }
     // node doesn't exist yet
-    const newNodeClasses = className === undefined ? new Set([NODE_CLASS_NAME]) : new Set([NODE_CLASS_NAME, className]);
+    const newNodeClasses = classes.add === undefined
+        ? new Set([NODE_CLASS_NAME])
+        : new Set([NODE_CLASS_NAME].concat(classes.add));
     return Object.assign({}, stateSnapshot, {
         nodes: stateSnapshot.nodes.concat(
             composeStateObject(
                 createStateId(NODE_STATE_COLLECTION, stateSnapshot),
-                NODE, newNodeClasses, NODE_STATE_COLLECTION, NODE_GROUP, {p1: point}
+                newNodeClasses,
+                {p1: point},
+                label
             )
         )
     })
 }
 
 // todo: className strings and state object identifiers should use constants; then move away as pure, agnostic functions
-export function composeNewStateForLine(p1, p2, className = USER_LINE_CLASS_NAME, stateSnapshot) {
+export function composeNewStateForLine(p1, p2, classes, stateSnapshot, label = {}) {
     const workingState = [];
 
     // create or update the line which the player just drew
 
     const foundLines = findLine(p1, p2, stateSnapshot.paths);
     const newPathsStateObject = foundLines.length !== 0
-        ? addElemClassInObject(stateSnapshot.paths, foundLines[0].id, className)
+        ? updateElemClassesForState(stateSnapshot.paths, foundLines[0].id, classes)
         : stateSnapshot.paths.concat(
             composeStateObject(
                 createStateId(PATH_STATE_COLLECTION, stateSnapshot),
-                LINE, new Set([NODE_CLASS_NAME, className]), PATH_STATE_COLLECTION, NODE_GROUP, {p1: p1, p2: p2}
+                new Set(classes.add),
+                {p1: p1, p2: p2},
+                label
             )
         );
     workingState.push(
@@ -160,16 +185,25 @@ export function composeNewStateForLine(p1, p2, className = USER_LINE_CLASS_NAME,
 
     // create the hinting 'axis line'
     const axisLine = extendLineCoordinates(p1, p2);
-    if (findLine(axisLine.p1, axisLine.p2, workingState[workingState.length - 1][PATH_STATE_COLLECTION]).length === 0) {
+    const existingAxisLine = findLine(axisLine.p1, axisLine.p2, workingState[workingState.length - 1][PATH_STATE_COLLECTION]);
+    if (existingAxisLine.length === 0) {
         workingState.push(
             Object.assign({}, workingState[workingState.length - 1], {
                 paths: workingState[workingState.length - 1].paths.concat(
                     composeStateObject(
                         createStateId(PATH_STATE_COLLECTION, workingState[workingState.length - 1]),
-                        LINE, new Set([AXIS_LINE_CLASS_NAME]), PATH_STATE_COLLECTION, NODE_GROUP,
+                        new Set([AXIS_LINE_CLASS_NAME]),
                         {p1: axisLine.p1, p2: axisLine.p2}
                     )
                 )
+            })
+        );
+    }
+    else {
+        workingState.push(
+            Object.assign({}, workingState[workingState.length - 1], {
+                paths: updateElemClassesForState(workingState[workingState.length - 1][PATH_STATE_COLLECTION],
+                    existingAxisLine[0].id, {add: [AXIS_LINE_CLASS_NAME]})
             })
         );
     }
@@ -179,7 +213,7 @@ export function composeNewStateForLine(p1, p2, className = USER_LINE_CLASS_NAME,
         intersectLineLine(path.geometry.p1, path.geometry.p2, axisLine.p1, axisLine.p2).intersections
             .forEach(intersection => {
                 workingState.push(
-                    composeNewStateForNode(intersection, GRID_NODE_CLASS_NAME, workingState[workingState.length - 1])
+                    composeNewStateForNode(intersection, {add: [GRID_NODE_CLASS_NAME]}, workingState[workingState.length - 1])
                 );
             })
     });
@@ -196,17 +230,17 @@ export function handleNewPath(p1, p2) {
 
     enableButton(undoButton, [undo]);
 
-    workingState.push(composeNewStateForNode(p1, USER_NODE_CLASS_NAME, workingState[workingState.length - 1], NODE_STATE_COLLECTION));
+    workingState.push(composeNewStateForNode(p1, {add: [USER_NODE_CLASS_NAME]}, workingState[workingState.length - 1], NODE_STATE_COLLECTION));
 
     if (!p1.equals(p2)) {
-        workingState.push(composeNewStateForNode(p2, USER_NODE_CLASS_NAME, workingState[workingState.length - 1]));
-        workingState.push(composeNewStateForLine(p1, p2, USER_LINE_CLASS_NAME, workingState[workingState.length - 1]));
+        workingState.push(composeNewStateForNode(p2, {add: [USER_NODE_CLASS_NAME]}, workingState[workingState.length - 1]));
+        workingState.push(composeNewStateForLine(p1, p2, {add: [USER_LINE_CLASS_NAME]}, workingState[workingState.length - 1]));
     }
 
     const validSolution = checkSolution(workingState[workingState.length - 1]);
     if (!isEmptyObject(validSolution)) {
         console.log('%cvalid solution:', 'color: wheat', validSolution);
-        workingState.push(highlightSolution(validSolution, workingState[workingState.length - 1]))
+        workingState.push(highlightSolution(validSolution, workingState[workingState.length - 1]));
         enableButton(nextButton, [nextAssignment]);
         disableButton(undoButton, [undo]);
     }
@@ -214,6 +248,31 @@ export function handleNewPath(p1, p2) {
     // we only want one state change leading to one history entry, so we store all the stacked changes at once
     state.set(workingState[workingState.length - 1]);
 
+    render(state, groups, isEmptyObject(validSolution));
+}
+
+
+export function handleSelectedElem(p1, p2) {
+    const workingState = [state.get()];
+
+    enableButton(undoButton, [undo]);
+
+    if (typeof p2 !== 'undefined') {
+        workingState.push(composeNewStateForLine(p1, p2, {toggle: [SELECTED_LINE_CLASS_NAME]}, workingState[workingState.length - 1]));
+    }
+    else {
+        workingState.push(composeNewStateForNode(p1, {toggle: [SELECTED_NODE_CLASS_NAME]}, workingState[workingState.length - 1]));
+    }
+
+    const validSolution = checkSolution(workingState[workingState.length - 1]);
+    if (!isEmptyObject(validSolution)) {
+        console.log('%cvalid solution:', 'color: wheat', validSolution);
+        workingState.push(highlightSolution(validSolution, workingState[workingState.length - 1]));
+        enableButton(nextButton, [nextAssignment]);
+        disableButton(undoButton, [undo]);
+    }
+
+    state.set(workingState[workingState.length - 1]);
     render(state, groups, isEmptyObject(validSolution));
 }
 

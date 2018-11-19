@@ -1,4 +1,4 @@
-import { intersectLineLine } from './intersections';
+import { intersectCircleCircle, intersectLineLine } from './intersections';
 import Point from './Point';
 import {
     GRID_WIDTH,
@@ -22,12 +22,36 @@ export function calculateDistance(p1, p2) {
 
 
 export function getNearestNode(point, nodes) {
-    return nodes.map(node => {
-        const distance = calculateDistance(point, node.geometry.p1);
-        return {point: new Point(node.geometry.p1.x, node.geometry.p1.y), distance: distance, node: node};
-    }).reduce((accumulator, node) => (
-        accumulator.distance > node.distance ? node : accumulator
-    ), {point: new Point(Infinity, Infinity), distance: Infinity, node: {}});
+    return nodes
+        .map(node => {
+            const distance = calculateDistance(point, node.geometry.p1);
+            return {point: new Point(node.geometry.p1.x, node.geometry.p1.y), distance: distance, node: node};
+        })
+        .reduce((accumulator, node) => (
+            accumulator.distance > node.distance ? node : accumulator
+        ), {
+            point: new Point(Infinity, Infinity),
+            distance: Infinity,
+            node: {}
+        });
+}
+
+export function getNearestLine(point, lines) {
+    return lines
+        .map(line => {
+            const r1 = calculateDistance(point, line.geometry.p1);
+            const r2 = calculateDistance(point, line.geometry.p2);
+            const intersections = intersectCircleCircle(line.geometry.p1, r1, line.geometry.p2, r2);
+            const distance = calculateDistance(intersections[0], intersections[1]);
+            return {geometry: line.geometry, distance: distance, line: line}
+        })
+        .reduce((acc, line) => (
+            acc.distance > line.distance ? line : acc
+        ), {
+            geometry: {p1: new Point(Infinity, Infinity), p2: new Point(Infinity, Infinity)},
+            distance: Infinity,
+            node: {}
+        });
 }
 
 
@@ -72,7 +96,7 @@ export function extendLineCoordinates(p1, p2) {
         ? intersectLineLine(infCorrP1, infCorrP2, {x: LEFT_EDGE, y: BOTTOM_EDGE}, {x: RIGHT_EDGE, y: BOTTOM_EDGE}).intersections[0]
         : topCorrP2;
 
-    return {p1: bottomCorrP1, p2: bottomCorrP2};
+    return {p1: new Point(bottomCorrP1.x, bottomCorrP1.y), p2: new Point(bottomCorrP2.x, bottomCorrP2.y)};
 }
 
 
@@ -86,40 +110,40 @@ export function fromCanvasCoord(value) {
 }
 
 
-export function generateGridLines(classes, stateType, svgGroup) {
+export function generateGridLines(classes) {
     const xGrid = Array.from(Array(GRID_WIDTH + 1), (value, xLine) => {
-        return {
-            type: LINE, classes: classes, stateType: stateType, svgGroup: svgGroup,
-            id: (xLine + 1) * 2 - 1,
-            geometry: {
+        return composeStateObject(
+            (xLine + 1) * 2 - 1,
+            classes,
+            {
                 p1: new Point(toCanvasCoord(xLine), TOP_EDGE),
                 p2: new Point(toCanvasCoord(xLine), BOTTOM_EDGE),
             }
-        };
+        );
     });
     const yGrid = Array.from(Array(GRID_WIDTH + 1), (value, yLine) => {
-        return {
-            type: LINE, classes: classes, stateType: stateType, svgGroup: svgGroup,
-            id: (yLine + 1) * 2,
-            geometry: {
+        return composeStateObject(
+            (yLine + 1) * 2,
+            classes,
+            {
                 p1: new Point(LEFT_EDGE, toCanvasCoord(yLine)),
                 p2: new Point(RIGHT_EDGE, toCanvasCoord(yLine)),
             }
-        };
+        );
     });
     return xGrid.concat(yGrid);
 }
 
 
-export function generateGridNodes(classes, stateType, svgGroup) {
+export function generateGridNodes(classes) {
     const idMagnitude = Math.ceil(Math.log(GRID_WIDTH + 1) * Math.LOG10E);
     return Array.from(Array(GRID_WIDTH + 1), (value, xLine) => {
         return Array.from(Array(GRID_HEIGHT + 1), (value, yLine) => {
-            return {
-                type: NODE, classes: classes, stateType: stateType, svgGroup: svgGroup,
-                id: xLine * (10 ** idMagnitude) + yLine,
-                geometry: {p1: new Point(toCanvasCoord(xLine), toCanvasCoord(yLine))}
-            }
+            return composeStateObject(
+                xLine * (10 ** idMagnitude) + yLine,
+                classes,
+                {p1: new Point(toCanvasCoord(xLine), toCanvasCoord(yLine))}
+            );
         })
     }).reduce((acc, nodeRow) => {
         return acc.concat(nodeRow)
@@ -127,21 +151,34 @@ export function generateGridNodes(classes, stateType, svgGroup) {
 }
 
 
-export function addElemClassInObject(container, elemId, className) {
+// export function addElemClassInObject(container, elemId, className) {
+//     return container.map(elem => {
+//         if (elem.id === elemId) {
+//             const classes = new Set(elem.classes).add(className);
+//             return Object.assign({}, elem, {classes: classes});
+//         }
+//         return elem;
+//     });
+// }
+
+export function updateElemClassesForState(container, elemId, classes) {
+    const { add = [], remove = [], toggle = [] } = classes;
     return container.map(elem => {
         if (elem.id === elemId) {
-            const classes = new Set(elem.classes).add(className);
-            // console.log(classes);
-            return Object.assign({}, elem, {classes: classes});
+            const updatedClasses = new Set(elem.classes);
+            add.map(className => updatedClasses.add(className));
+            remove.map(className => updatedClasses.delete(className));
+            toggle.map(className => elem.classes.has(className) ? updatedClasses.delete(className) : updatedClasses.add(className));
+            return Object.assign({}, elem, {classes: updatedClasses});
         }
         return elem;
     });
 }
 
 
-export function composeStateObject(id, type, classes, stateType, svgGroup, geometry) {
+export function composeStateObject(id, classes, geometry, label = {}) {
     return {
-        type: type, classes: classes, stateType: stateType, svgGroup: svgGroup, id: id, geometry: geometry
+        id: id, classes: classes, geometry: geometry, label: label
     }
 }
 
@@ -154,8 +191,7 @@ export function createStateId(stateType, stateSnapshot) {
 }
 
 
-export function findLine(point1, point2, stateCollection, exact = false) {
-    const tolerance = exact ? 0 : DUPLICATE_LINE_THRESHOLD;
+export function findLine(point1, point2, stateCollection, tolerance = DUPLICATE_LINE_THRESHOLD) {
     return stateCollection.filter(path => {
         const distance1 = Math.min(
             calculateDistance(path.geometry.p1, point1),
@@ -190,4 +226,10 @@ export function disableButton(button, handlers = []) {
         button.removeEventListener('touchstart', handler);
         button.removeEventListener('click', handler);
     })
+}
+
+
+export function noPointerEvents(elem) {
+    // elem.style.pointerEvents = 'none';
+    elem.addClass('no-pointer-events');
 }

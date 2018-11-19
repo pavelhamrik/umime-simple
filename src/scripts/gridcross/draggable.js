@@ -47,7 +47,6 @@ export function attachTouchSurfaceDraggable(surface, layer, nodes) {
         );
         handleDragEnd(event, nearestNode.point, nodes);
     });
-
 }
 
 

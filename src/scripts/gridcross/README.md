@@ -36,7 +36,11 @@ The format it expects it:
                 [[3, 6], [5, 0]]
             ]
         }
-    ]
+    ],
+    "config": {
+        "uiOnlySelect": true,
+        "uiEvalSegmentsAsLines": false
+    }
 }
 ```
 
@@ -44,7 +48,13 @@ Recognized keys for both `problem` and `solutions` are `points`, `segments` and 
 
 The `text` top-level key is displayed as assignment text to the player. Other keys in the object are allowed and ignored.
 
-### Development
+#### Config attributes
+
+- `uiOnlySelect` – the user is only allowed to select existing objects. Defaults to `false`.
+- `uiEvalSegmentsAsLines` – user's segments are considered lines when evaluating. Defaults to `false`.
+
+
+## Development
 
 Ask for a demo, docs TBD thereafter.
 
@@ -72,13 +82,17 @@ Ask for a demo, docs TBD thereafter.
 - [x] export paths and lined to console
 - [x] makes canvas non-interactive when a valid solution is found
 - [x] import solution locally
-- [ ] assignment's 'lines' are extended to edges regardless of their original coords; same for solutions
-- [ ] extending segments to lines based on assignment config
-- [ ] selecting lines, configurable 'select only' mode
+- [x] `done, nov 15` assignment's 'lines' are extended to edges regardless of their original coords; same for solutions
+- [x] `done, nov 15` extending segments to lines based on assignment config
+- [ ] `done, nov 19` selecting & deselecting lines, configurable 'select only' mode
+- [ ] `done, nov 19` selecting & deselecting nodes, configurable 'select only' mode
+- [ ] `done, nov 19` point and line labels
+- [ ] repeat XHR on timeout
+- [ ] implement stats and sending response back to the backend
+- [ ] consider transpiling into a 'safer' JS version (babel)
 
 ### Next up
 
-- [ ] point and line labels
 - [ ] drawing circles
 - [ ] getting the background image from assignment
 
@@ -90,5 +104,7 @@ Ask for a demo, docs TBD thereafter.
 - [x] button presses are being registered even when the buttons are disabled; handle listeners
 - [x] `fixed, nov 14` draggable is offset by window scroll position
 - [x] `fixed, nov 14` arrays are exported to console as strings
-- [ ] `misreported, nov 14` solution checker doesn't validate for nodes
-
+- [x] `misreported, nov 14` solution checker doesn't validate for nodes
+- [x] `fixed, nov 15` allow tolerance for small numerical errors when checking a solution
+- [x] `fixed, nov 15` some intersections threw 'Point.equals' is not a function error 
+- [x] `fixed, nov 19` gridlines coinciding with axislines are not updated with the axisline class  

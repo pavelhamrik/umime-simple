@@ -1,5 +1,4 @@
 import {
-    BACK_BUTTON_LABEL,
     LOCAL_IO,
     NODE_STATE_COLLECTION,
     PATH_STATE_COLLECTION,
@@ -9,7 +8,7 @@ import {
     USER_NODE_CLASS_NAME,
 } from './constants';
 import { fromCanvasCoord } from './functions';
-import { handleAssignment, nextAssignment, presentAssignment } from './gridcross.exercise';
+import { handleAssignment } from './gridcross.exercise';
 
 export function exportGeometry(stateSnapshot) {
     if (!LOCAL_IO) return;
@@ -54,8 +53,7 @@ export function createLocalInput() {
     inputField.id = 'local-io-input';
     inputField.placeholder = 'Enter an assignment in JSON format';
 
-    inputField.addEventListener('keyup', resizeInputField);
-    inputField.addEventListener('change', resizeInputField);
+    inputField.addEventListener('input', resizeInputField);
 
     const applyButton = document.createElement('button');
     applyButton.id = 'local-io-apply-button';

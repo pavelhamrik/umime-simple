@@ -1,14 +1,13 @@
 import SVG from 'svg.js';
 import svgDraggableInit from "./svg.draggable";
 
-import { undo, nextAssignment } from './gridcross.exercise';
 import {
     CANVAS_PADDING,
     RIGHT_EDGE,
     BOTTOM_EDGE,
     BACK_BUTTON_LABEL,
     TASK_TEXT_DEFAULT,
-    NEXT_BUTTON_LABEL, LOCAL_IO
+    NEXT_BUTTON_LABEL,
 } from './constants';
 
 svgDraggableInit(SVG);

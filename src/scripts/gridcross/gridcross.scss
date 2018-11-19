@@ -60,7 +60,8 @@ body.dragging {
                 pointer-events: auto;
             }
 
-            &.userline {
+            &.userline,
+            &.selectedline {
                 stroke: $black;
                 stroke-width: 3;
             }
@@ -75,25 +76,25 @@ body.dragging {
             fill: transparent;
             transition: $transition;
 
-
-            &.usernode {
-                stroke: $black;
-                fill: $white;
-            }
-
             &.tasknode {
                 stroke: map-get($custom-apps, 'english');
                 fill: $white;
                 stroke-width: 2;
             }
 
-            &.usernode {
+            &.usernode,
+            &.selectednode {
                 stroke: $black;
                 fill: $white;
             }
 
+            &.selectednode {
+                stroke-width: 2;
+            }
+
             &.usernode.solvednode,
-            &.tasknode.solvednode {
+            &.tasknode.solvednode,
+            &.selectednode.solvednode {
                 //stroke: map-get($foundation-palette, warning);
                 animation: $custom-fast-speed $custom-fadein-easing solved-node forwards;
             }
@@ -131,6 +132,18 @@ body.dragging {
             &.snapped {
                 stroke: map-get($foundation-palette, secondary);
             }
+        }
+
+        .label {
+            pointer-events: none;
+            font-size: $global-font-size;
+            font-weight: $global-weight-bold;
+            fill: map-get($custom-apps, 'english');
+            //fill: $black;
+        }
+
+        .no-pointer-events {
+            pointer-events: none !important;
         }
     }
 
@@ -221,7 +234,7 @@ body.dragging {
             width: 1.75rem;
             height: 1.75rem;
             position: absolute;
-            bottom: 0.375rem;
+            top: 0.375rem;
             right: 0.375rem;
             outline: none;
 
