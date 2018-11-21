@@ -1,6 +1,5 @@
 export const LOG = true;
-export const LOCAL_IO = true;
-export const ASSIGNMENT_TARGETING = true;
+export const LOCAL_IO = false;
 
 export const GRID_WIDTH = 6;
 export const GRID_HEIGHT = 6;
@@ -71,10 +70,23 @@ export const LINE_RENDERING_ORDER = [
     SOLVED_LINE_CLASS_NAME,
 ];
 
+export const APP_NAME = 'Umíme matiku';
+export const EXERCISE_NAME = 'Mřížkovaná';
+
 export const BACK_BUTTON_LABEL = 'Zpět';
 export const NEXT_BUTTON_LABEL = 'Další';
-export const TASK_TEXT_DEFAULT = '…';
-export const API_LOAD_ERROR_TEXT = 'Nepodařilo se stáhnout zadání. Zkuste prosím obnovit stránku.';
+export const TASK_TEXT_DEFAULT = 'Načítám zadání…';
+export const API_LOAD_ERROR_TEXT = 'Nepodařilo se načíst zadání. Zkuste prosím obnovit stránku.';
+export const API_LOAD_TIMEOUT_TEXT = 'Načítání zadání nám trochu trvá, ale zkoušíme dál…';
 
-// export const API_URL = 'http://localhost:3443/api/v2/assignments/';
-export const API_URL = 'https://phapi.herokuapp.com/api/v2/assignments/';
+export const FRONTEND_URL = 'https://www.umimematiku.cz/';
+
+export const API_URL = 'https://www.umimematiku.cz/ajax/';
+// export const API_URL = 'http://localhost:3443/';
+
+export const API_ITEMS_ENDPOINT = 'mrizkovanaLoadItems.php';
+// export const API_ITEMS_ENDPOINT = 'api/v2/bundle-assignments/';
+export const API_LOG_ENDPOINT = 'logItemDone.php';
+export const API_ERROR_ENDPOINT = 'errorProxy.php';
+
+

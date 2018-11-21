@@ -17,11 +17,28 @@ import { extendLineCoordinates, findLine, toCanvasCoord } from './functions';
 import { composeNewStateForLine, composeNewStateForNode } from './gridcross.exercise';
 import { isSubsegment } from './intersections';
 
-export function parseAssignment(json, stateSnapshot) {
+
+export function parseAssignmentBundle(json) {
+
+}
+
+
+export function parseAssignment(assignments, index, stateSnapshot) {
     const workingState = [stateSnapshot];
 
-    if (typeof json.problem.points !== 'undefined') {
-        json.problem.points.forEach(point => {
+    workingState.push(Object.assign({}, workingState[workingState.length - 1], {
+        id: assignments[index].id,
+        name: assignments[index].name,
+        text: assignments[index].item.text,
+        explanation: assignments[index].explanation,
+        index: index,
+        startTime: Date.now(),
+    }));
+
+    const assignment = assignments[index].item;
+
+    if (typeof assignment.problem.points !== 'undefined') {
+        assignment.problem.points.forEach(point => {
             workingState.push(
                 composeNewStateForNode(
                     new Point(
@@ -36,8 +53,8 @@ export function parseAssignment(json, stateSnapshot) {
         });
     }
 
-    if (typeof json.problem.segments !== 'undefined') {
-        json.problem.segments.forEach(line => {
+    if (typeof assignment.problem.segments !== 'undefined') {
+        assignment.problem.segments.forEach(line => {
             const p1 = new Point(
                 toCanvasCoord(line.geometry[0][0]),
                 toCanvasCoord(line.geometry[0][1])
@@ -72,8 +89,8 @@ export function parseAssignment(json, stateSnapshot) {
         });
     }
 
-    if (typeof json.problem.lines !== 'undefined') {
-        json.problem.lines.forEach(line => {
+    if (typeof assignment.problem.lines !== 'undefined') {
+        assignment.problem.lines.forEach(line => {
             const {p1, p2} = extendLineCoordinates(
                 new Point(
                     toCanvasCoord(line.geometry[0][0]),
@@ -96,7 +113,7 @@ export function parseAssignment(json, stateSnapshot) {
         });
     }
 
-    workingState[workingState.length - 1][SOLUTION_STATE_COLLECTION] = json.solutions.map(solution => {
+    workingState[workingState.length - 1][SOLUTION_STATE_COLLECTION] = assignment.solutions.map(solution => {
         const transformed = {};
 
         if (typeof solution.points !== 'undefined') {
@@ -147,7 +164,7 @@ export function parseAssignment(json, stateSnapshot) {
         return transformed;
     });
 
-    workingState[workingState.length - 1][CONFIG_STATE_COLLECTION] = typeof json.config !== 'undefined' ? json.config : {};
+    workingState[workingState.length - 1][CONFIG_STATE_COLLECTION] = typeof assignment.config !== 'undefined' ? assignment.config : {};
 
     return workingState[workingState.length - 1];
 }

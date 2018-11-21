@@ -36,7 +36,15 @@ import {
     SELECTED_NODE_CLASS_NAME,
     SELECTED_LINE_CLASS_NAME,
     LABEL_GROUP,
-    ASSIGNMENT_TARGETING,
+    API_ITEMS_ENDPOINT,
+    API_ERROR_ENDPOINT,
+    API_LOAD_TIMEOUT_TEXT,
+    API_LOG_ENDPOINT,
+    TASK_NODE_CLASS_NAME,
+    TASK_LINE_CLASS_NAME,
+    FRONTEND_URL,
+    EXERCISE_NAME,
+    APP_NAME,
 } from './constants';
 import { createLocalInput } from './util';
 
@@ -64,9 +72,11 @@ initialState[PATH_STATE_COLLECTION] = generateGridLines(
 );
 
 const state = new StateProvider(initialState);
+const assignments = [];
 
 if (LOCAL_IO) createLocalInput();
 
+// init
 getAssignment();
 
 if (LOG) console.timeEnd('init');
@@ -74,11 +84,18 @@ if (LOG) console.timeEnd('init');
 
 // present the assignment
 
-export function presentAssignment(assignment) {
+export function presentAssignment(index) {
     // compose the state update based on the assignment data
-    state.set(parseAssignment(assignment, state.get()));
+    state.set(parseAssignment(assignments, index, state.get()));
 
-    taskText.textContent = assignment.text;
+    taskText.textContent = assignments[index].item.text;
+
+    // there are some document-scoped variables in use
+    const historyStateObj = {html: `${FRONTEND_URL}${url}/${assignments[index].id}`};
+    const historyTitle = `${EXERCISE_NAME}: ${assignments[index].name} • ${APP_NAME}`;
+    const historyUrl = `/${url}/${assignments[index].id}`;
+    if (index === 0) window.history.replaceState(historyStateObj, historyTitle, historyUrl);
+    else window.history.pushState(historyStateObj, historyTitle, historyUrl);
 
     disableButton(nextButton, [nextAssignment]);
     disableButton(undoButton, [undo]);
@@ -92,6 +109,29 @@ function getAssignment() {
     function handleError() {
         taskText.textContent = API_LOAD_ERROR_TEXT;
         loadingIndicator.remove();
+        logErrorToRemote(requestUrl);
+    }
+
+    function handleTimeout() {
+        taskText.textContent = API_LOAD_TIMEOUT_TEXT;
+        request.open('GET', requestUrl);
+        request.send();
+        logErrorToRemote(requestUrl);
+    }
+
+    function handleLoad() {
+        if (LOG) console.log('%cassignment received:', 'color: cornflowerblue', request.status, request.response);
+        if (request.status !== 200) {
+            handleError();
+            return;
+        }
+        loadingIndicator.remove();
+
+        request.response.items.map(item => {
+            assignments.push(item);
+        });
+
+        if (assignments.length !== 0) presentAssignment(0);
     }
 
     // initial render
@@ -101,32 +141,17 @@ function getAssignment() {
     loadingIndicator.classList.add('loading-indicator');
     canvasWrapper.appendChild(loadingIndicator);
 
-    let requestUrl = API_URL;
-
-    if(ASSIGNMENT_TARGETING) {
-        const assignmentFromUrl = window.location.search.match(/assignment=([a-z-]+)/);
-        requestUrl = assignmentFromUrl !== null
-            ? API_URL + assignmentFromUrl[1]
-            : API_URL;
-    }
-
-    if (LOG) console.log(`%crequesting assignment: ${requestUrl}`, 'color: cornflowerblue');
-
+    // there are some document-scoped variables in use
+    const requestUrl = `${API_URL}${API_ITEMS_ENDPOINT}?user=${user}&ps=${ps}&chosenProblem=${chosenProblem}&cookieHash=${cookieHash}&deviceType=${deviceType}&source=${source}`;
     const request = new XMLHttpRequest();
     request.open('GET', requestUrl);
     request.responseType = 'json';
+    request.timeout = 5000;
     request.onerror = handleError;
-    request.ontimeout = handleError;
+    request.ontimeout = handleTimeout;
     request.onabort = handleError;
-    request.onload = function() {
-        if (LOG) console.log('%cassignment received:', 'color: cornflowerblue', request.status, request.response);
-        if (request.status !== 200) {
-            handleError();
-            return;
-        }
-        loadingIndicator.remove();
-        presentAssignment(request.response);
-    };
+    request.onloadstart = () => {if (LOG) console.log(`%crequesting assignment: ${requestUrl}`, 'color: cornflowerblue')};
+    request.onload = handleLoad;
     request.send();
 }
 
@@ -239,10 +264,8 @@ export function handleNewPath(p1, p2) {
 
     const validSolution = checkSolution(workingState[workingState.length - 1]);
     if (!isEmptyObject(validSolution)) {
-        console.log('%cvalid solution:', 'color: wheat', validSolution);
+        handleValidSolution(validSolution);
         workingState.push(highlightSolution(validSolution, workingState[workingState.length - 1]));
-        enableButton(nextButton, [nextAssignment]);
-        disableButton(undoButton, [undo]);
     }
 
     // we only want one state change leading to one history entry, so we store all the stacked changes at once
@@ -266,14 +289,31 @@ export function handleSelectedElem(p1, p2) {
 
     const validSolution = checkSolution(workingState[workingState.length - 1]);
     if (!isEmptyObject(validSolution)) {
-        console.log('%cvalid solution:', 'color: wheat', validSolution);
+        handleValidSolution(validSolution);
         workingState.push(highlightSolution(validSolution, workingState[workingState.length - 1]));
-        enableButton(nextButton, [nextAssignment]);
-        disableButton(undoButton, [undo]);
     }
 
     state.set(workingState[workingState.length - 1]);
     render(state, groups, isEmptyObject(validSolution));
+}
+
+
+function handleValidSolution(solution) {
+    console.log('%cvalid solution:', 'color: wheat', solution);
+
+    const stateSnapshot = state.get();
+
+    const nodesCount = stateSnapshot[NODE_STATE_COLLECTION].filter(node => (
+        node.classes.has(USER_NODE_CLASS_NAME) || node.classes.has(TASK_NODE_CLASS_NAME) || node.classes.has(SELECTED_NODE_CLASS_NAME)
+    )).length;
+    const pathsCount = stateSnapshot[PATH_STATE_COLLECTION].filter(path => (
+        path.classes.has(TASK_LINE_CLASS_NAME) || path.classes.has(USER_LINE_CLASS_NAME) || path.classes.has(SELECTED_LINE_CLASS_NAME)
+    )).length;
+
+    logSolutionToRemote(stateSnapshot.id, nodesCount + pathsCount, state.getOperationsCount(), Date.now() - stateSnapshot.startTime);
+
+    enableButton(nextButton, [nextAssignment]);
+    disableButton(undoButton, [undo]);
 }
 
 
@@ -295,9 +335,54 @@ export function nextAssignment(event) {
     handleAssignment();
 }
 
+
 export function handleAssignment(assignment) {
+    const stateSnapshot = Object.assign({}, state.get(), {});
     state.wipe();
 
-    if (typeof assignment === 'undefined') getAssignment();
-    else presentAssignment(assignment);
+    if (typeof assignment === 'undefined') {
+        if (assignments.length > stateSnapshot.index + 1) presentAssignment(stateSnapshot.index + 1);
+        else {
+            // document-scoped function and variable
+            showFinalBoardEndSet(mode);
+        }
+    }
+    else {
+        assignments.map(() => assignments.pop());
+        assignments.push({
+            item: assignment,
+            id: 0,
+            explanation: '',
+            name: assignment.text,
+        });
+        presentAssignment(0)
+    }
+}
+
+
+function logSolutionToRemote(itemId, geometryCount, moves, responseTime) {
+    function handleTimeout() {
+        request.open('GET', url);
+        request.send();
+        logErrorToRemote(url);
+    }
+
+    const url = `${API_URL}${API_LOG_ENDPOINT}?ps=${ps}&user=${user}&item=${itemId}&answer=${geometryCount}&correct=1&moves=${moves}&responseTime=${responseTime}&cookieHash=${cookieHash}&deviceType=${deviceType}`;
+    const request = new XMLHttpRequest();
+    request.open('GET', url);
+    request.timeout = 5000;
+    request.onerror = () => {logErrorToRemote(url)};
+    request.ontimeout = handleTimeout;
+    request.onabort = () => {logErrorToRemote(url)};
+    request.onloadstart = () => {if (LOG) console.log(`%clogging solution: ${url}`, 'color: wheat')};
+    request.onload = () => {if (LOG && request.status === 200) console.log(`%csolution logged`, 'color: wheat')};
+    request.send();
+}
+
+
+function logErrorToRemote(error) {
+    const errorLogUrl = `${API_URL}${API_ERROR_ENDPOINT}?user=${user}&description=${encodeURIComponent(error)}`;
+    const errorRequest = new XMLHttpRequest();
+    errorRequest.open('GET', errorLogUrl);
+    errorRequest.send();
 }
