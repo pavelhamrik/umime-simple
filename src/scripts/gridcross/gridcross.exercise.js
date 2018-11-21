@@ -53,15 +53,8 @@ import { createLocalInput } from './util';
 
 if (LOG) console.time('init');
 
-const { canvas, canvasWrapper, taskText, nextButton, undoButton } = bootstrap();
-
-// these won't change, so we won't store them in the state
+const ui = {};
 const groups = {};
-groups[BACK_GROUP] = canvas.group().addClass(BACK_GROUP);
-groups[PATH_GROUP] = canvas.group().addClass(PATH_GROUP);
-groups[WORK_GROUP] = canvas.group().addClass(WORK_GROUP);
-groups[NODE_GROUP] = canvas.group().addClass(NODE_GROUP);
-groups[LABEL_GROUP] = canvas.group().addClass(LABEL_GROUP);
 
 const initialState = {};
 initialState[NODE_STATE_COLLECTION] = generateGridNodes(
@@ -74,10 +67,27 @@ initialState[PATH_STATE_COLLECTION] = generateGridLines(
 const state = new StateProvider(initialState);
 const assignments = [];
 
-if (LOCAL_IO) createLocalInput();
 
 // init
-getAssignment();
+
+window.onload = () => {
+    const uiBootstrap = bootstrap();
+    ui.canvas = uiBootstrap.canvas;
+    ui.canvasWrapper = uiBootstrap.canvasWrapper;
+    ui.taskText =  uiBootstrap.taskText;
+    ui.nextButton = uiBootstrap.nextButton;
+    ui.undoButton = uiBootstrap.undoButton;
+
+    groups[BACK_GROUP] = ui.canvas.group().addClass(BACK_GROUP);
+    groups[PATH_GROUP] = ui.canvas.group().addClass(PATH_GROUP);
+    groups[WORK_GROUP] = ui.canvas.group().addClass(WORK_GROUP);
+    groups[NODE_GROUP] = ui.canvas.group().addClass(NODE_GROUP);
+    groups[LABEL_GROUP] = ui.canvas.group().addClass(LABEL_GROUP);
+
+    if (LOCAL_IO) createLocalInput();
+
+    getAssignment();
+};
 
 if (LOG) console.timeEnd('init');
 
@@ -88,17 +98,18 @@ export function presentAssignment(index) {
     // compose the state update based on the assignment data
     state.set(parseAssignment(assignments, index, state.get()));
 
-    taskText.textContent = assignments[index].item.text;
+    ui.taskText.textContent = assignments[index].item.text;
 
     // there are some document-scoped variables in use
     const historyStateObj = {html: `${FRONTEND_URL}${url}/${assignments[index].id}`};
-    const historyTitle = `${EXERCISE_NAME}: ${assignments[index].name} • ${APP_NAME}`;
+    const historyTitle = `${EXERCISE_NAME}: ${assignments[index].name} – ${APP_NAME}`;
     const historyUrl = `/${url}/${assignments[index].id}`;
     if (index === 0) window.history.replaceState(historyStateObj, historyTitle, historyUrl);
     else window.history.pushState(historyStateObj, historyTitle, historyUrl);
+    document.title = historyTitle;
 
-    disableButton(nextButton, [nextAssignment]);
-    disableButton(undoButton, [undo]);
+    disableButton(ui.nextButton, [nextAssignment]);
+    disableButton(ui.undoButton, [undo]);
 
     // render assignment
     render(state, groups);
@@ -107,13 +118,13 @@ export function presentAssignment(index) {
 
 function getAssignment() {
     function handleError() {
-        taskText.textContent = API_LOAD_ERROR_TEXT;
+        ui.taskText.textContent = API_LOAD_ERROR_TEXT;
         loadingIndicator.remove();
         logErrorToRemote(requestUrl);
     }
 
     function handleTimeout() {
-        taskText.textContent = API_LOAD_TIMEOUT_TEXT;
+        ui.taskText.textContent = API_LOAD_TIMEOUT_TEXT;
         request.open('GET', requestUrl);
         request.send();
         logErrorToRemote(requestUrl);
@@ -139,7 +150,7 @@ function getAssignment() {
 
     const loadingIndicator = document.createElement('div');
     loadingIndicator.classList.add('loading-indicator');
-    canvasWrapper.appendChild(loadingIndicator);
+    ui.canvasWrapper.appendChild(loadingIndicator);
 
     // there are some document-scoped variables in use
     const requestUrl = `${API_URL}${API_ITEMS_ENDPOINT}?user=${user}&ps=${ps}&chosenProblem=${chosenProblem}&cookieHash=${cookieHash}&deviceType=${deviceType}&source=${source}`;
@@ -253,7 +264,7 @@ export function handleNewPath(p1, p2) {
     const currentState = state.get();
     const workingState = [currentState];
 
-    enableButton(undoButton, [undo]);
+    enableButton(ui.undoButton, [undo]);
 
     workingState.push(composeNewStateForNode(p1, {add: [USER_NODE_CLASS_NAME]}, workingState[workingState.length - 1], NODE_STATE_COLLECTION));
 
@@ -278,7 +289,7 @@ export function handleNewPath(p1, p2) {
 export function handleSelectedElem(p1, p2) {
     const workingState = [state.get()];
 
-    enableButton(undoButton, [undo]);
+    enableButton(ui.undoButton, [undo]);
 
     if (typeof p2 !== 'undefined') {
         workingState.push(composeNewStateForLine(p1, p2, {toggle: [SELECTED_LINE_CLASS_NAME]}, workingState[workingState.length - 1]));
@@ -312,8 +323,8 @@ function handleValidSolution(solution) {
 
     logSolutionToRemote(stateSnapshot.id, nodesCount + pathsCount, state.getOperationsCount(), Date.now() - stateSnapshot.startTime);
 
-    enableButton(nextButton, [nextAssignment]);
-    disableButton(undoButton, [undo]);
+    enableButton(ui.nextButton, [nextAssignment]);
+    disableButton(ui.undoButton, [undo]);
 }
 
 
@@ -323,7 +334,7 @@ export function undo(event) {
 
     state.rewind(1);
 
-    if (state.length === 2) disableButton(undoButton, [undo]);
+    if (state.length === 2) disableButton(ui.undoButton, [undo]);
 
     render(state, groups);
 }

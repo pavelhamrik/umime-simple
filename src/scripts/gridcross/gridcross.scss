@@ -1,7 +1,14 @@
 @import '../../styles/custom-settings';
 
-body.dragging {
-    //overflow: hidden;
+@font-face {
+    font-family: 'umime-to-gridcross';
+    src: url('assets/umime-to.eot?cgqr3h');
+    src: url('assets/umime-to.eot?cgqr3h#iefix') format('embedded-opentype'),
+    url('assets/umime-to.ttf?cgqr3h') format('truetype'),
+    url('assets/umime-to.woff?cgqr3h') format('woff'),
+    url('assets/umime-to.svg?cgqr3h#umime-to') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
 
 #gridcross {
@@ -10,7 +17,7 @@ body.dragging {
 
     margin: 0 auto;
     padding: 1rem 0;
-    //max-width: 100%;
+    font-size: $global-font-size;
 
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -20,13 +27,13 @@ body.dragging {
 
     .task-copy {
         text-align: center;
-        margin: $custom-vertical-padding auto $custom-vertical-padding * 2;
+        margin: 0 auto $custom-vertical-padding * 2;
         max-width: 320px;
         min-height: 3rem;
     }
 
     #canvas-wrapper {
-        background: url('../../img/gridcross-background.jpg') blanchedalmond 55% 50%;
+        background: url('assets/gridcross-background.jpg') blanchedalmond 55% 50%;
         background-size: cover;
         border-radius: $global-radius;
         box-shadow: $custom-soft-shadow, 0 2px 7px 0 rgba(0,0,0,.08);
@@ -153,7 +160,7 @@ body.dragging {
     }
 
     .undo-button:before {
-        font-family: 'umime-to';
+        font-family: 'umime-to-gridcross';
         content: "\e908";
     }
 
@@ -161,11 +168,15 @@ body.dragging {
     .next-button {
         margin: 0 0.75rem;
         background-color: $button-suppressed-background;
+        border: none;
         border-radius: $button-radius;
         padding: $button-padding;
         transition: $button-transition;
         outline: none;
         min-height: 2.75rem;
+        font-size: $global-font-size;
+        text-transform: none;
+        -webkit-appearance: button;
 
         &:disabled {
             color: $medium-gray;
@@ -239,7 +250,7 @@ body.dragging {
             outline: none;
 
             &:before {
-                font-family: 'umime-to';
+                font-family: 'umime-to-gridcross';
                 content: "\e902";
             }
         }

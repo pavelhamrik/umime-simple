@@ -89,8 +89,10 @@ Ask for a demo, docs TBD thereafter.
 - [x] `done, nov 19` selecting & deselecting lines, configurable 'select only' mode
 - [x] `done, nov 19` selecting & deselecting nodes, configurable 'select only' mode
 - [x] `done, nov 19` point and line labels
-- [ ] repeat the XHR on timeout
-- [ ] implement stats, logging and sending a response back to the backend
+- [x] `done, nov 21` repeat the XHR on timeout
+- [x] `done, nov 21` implement stats, logging and sending a response back to the backend
+- [x] `done, nov 21` deploy to [umimematiku.cz](https://www.umimematiku.cz)
+- [ ] send better stats for selection-style assignments
 - [ ] consider transpiling into a 'safer' JS version (babel)
 
 ### Next up
