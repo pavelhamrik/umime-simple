@@ -1,7 +1,7 @@
 import {
     AXIS_LINE_CLASS_NAME,
     CONFIG_STATE_COLLECTION,
-    LOG,
+    // LOG,
     NODE_STATE_COLLECTION,
     PATH_STATE_COLLECTION, SELECTED_LINE_CLASS_NAME, SELECTED_NODE_CLASS_NAME,
     SOLUTION_STATE_COLLECTION,
@@ -16,11 +16,6 @@ import Point from './Point';
 import { extendLineCoordinates, findLine, toCanvasCoord } from './functions';
 import { composeNewStateForLine, composeNewStateForNode } from './gridcross.exercise';
 import { isSubsegment } from './intersections';
-
-
-export function parseAssignmentBundle(json) {
-
-}
 
 
 export function parseAssignment(assignments, index, stateSnapshot) {

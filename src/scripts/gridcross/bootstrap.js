@@ -17,8 +17,7 @@ export function bootstrap() {
 
     // create the task text paragraph
     const taskText = document.createElement('div');
-    const taskTextCopy = document.createTextNode(TASK_TEXT_DEFAULT);
-    taskText.appendChild(taskTextCopy);
+    taskText.innerHTML = TASK_TEXT_DEFAULT;
     taskText.classList.add('task-copy');
     root.appendChild(taskText);
 

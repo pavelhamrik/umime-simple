@@ -2,12 +2,13 @@ import Point from './Point';
 import { handleSelectedElem } from './gridcross.exercise';
 import { getNearestLine, getNearestNode, isEmptyObject, noPointerEvents } from './functions';
 import {
-    LOG,
+    // LOG,
     NODE_STATE_COLLECTION,
     PATH_STATE_COLLECTION,
     TASK_LINE_CLASS_NAME,
     TASK_NODE_CLASS_NAME, TOUCH_SELECT_TOLERANCE
 } from './constants';
+
 
 // export function attachSelectable(elem) {
 //     function handleSelect(event) {

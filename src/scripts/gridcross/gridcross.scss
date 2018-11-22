@@ -16,6 +16,9 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
 #gridcross {
     $transition: fill $custom-lightning-speed $custom-default-easing,
     stroke $custom-lightning-speed $custom-default-easing;
+    $flash-time: 0.35s;
+    $solved-flash-time: 0.55s;
+    $flash-easing: cubic-bezier(0,0,0,0.7);
 
     margin: 0 auto;
     padding: 1rem 0;
@@ -43,7 +46,6 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
         margin: 0 auto;
         width: fit-content;
         position: relative;
-        //max-width: 100%;
     }
 
     #canvas {
@@ -76,8 +78,16 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
             }
 
             &.solvedline {
-                //stroke: map-get($foundation-palette, warning);
                 animation: $custom-fast-speed $custom-fadein-easing solved-path forwards;
+            }
+
+            &.flashline {
+                pointer-events: none;
+                animation: $flash-time $flash-easing flash-selected-line forwards;
+
+                &.solvedline {
+                    animation: $solved-flash-time $flash-easing flash-solved-line forwards;
+                }
             }
         }
 
@@ -94,19 +104,26 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
             &.usernode,
             &.selectednode {
                 stroke: $black;
-                stroke-width: 3;
                 fill: $white;
             }
 
             &.selectednode {
-                stroke-width: 2;
+                stroke-width: 2.5;
             }
 
             &.usernode.solvednode,
             &.tasknode.solvednode,
             &.selectednode.solvednode {
-                //stroke: map-get($foundation-palette, warning);
                 animation: $custom-fast-speed $custom-fadein-easing solved-node forwards;
+            }
+
+            &.flashnode {
+                pointer-events: none;
+                animation: $flash-time $flash-easing flash-selected-node forwards;
+
+                &.solvednode {
+                    animation: $solved-flash-time $flash-easing flash-solved-node forwards;
+                }
             }
         }
 
@@ -149,7 +166,6 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
             font-size: $global-font-size;
             font-weight: $global-weight-bold;
             fill: map-get($custom-apps, 'english');
-            //fill: $black;
         }
 
         .no-pointer-events {
@@ -259,6 +275,45 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
         }
     }
 
+    @keyframes flash-selected-line {
+        0% {
+            stroke: rgba(map-get($foundation-palette, secondary), 0.5);
+        }
+        100% {
+            stroke: rgba(map-get($foundation-palette, secondary), 0);
+            stroke-width: 16;
+        }
+    }
+
+    @keyframes flash-solved-line {
+        0% {
+            stroke: rgba(map-get($foundation-palette, primary), 0.5);
+        }
+        100% {
+            stroke: rgba(map-get($foundation-palette, primary), 0);
+            stroke-width: 16;
+        }
+    }
+
+    @keyframes flash-selected-node {
+        0% {
+            stroke: rgba(map-get($foundation-palette, secondary), 0.5);
+        }
+        100% {
+            stroke: rgba(map-get($foundation-palette, secondary), 0);
+            stroke-width: 24;
+        }
+    }
+
+    @keyframes flash-solved-node {
+        0% {
+            stroke: rgba(map-get($foundation-palette, primary), 0.5);
+        }
+        100% {
+            stroke: rgba(map-get($foundation-palette, primary), 0);
+            stroke-width: 24;
+        }
+    }
 
     @keyframes solved-path {
         0% {

@@ -1,8 +1,8 @@
 import { determineResolution } from './functions';
 
-export const LOG = true;
-export const LOCAL_IO = true;
-export const CHANGE_BROWSER_HISTORY = false;
+// export const LOG = true;
+// export const LOCAL_IO = false;
+// export const CHANGE_BROWSER_HISTORY = true;
 
 export const GRID_WIDTH = 6;
 export const GRID_HEIGHT = 6;
@@ -56,6 +56,7 @@ export const USER_NODE_CLASS_NAME = 'usernode';
 export const TASK_NODE_CLASS_NAME = 'tasknode';
 export const SELECTED_NODE_CLASS_NAME = 'selectednode';
 export const SOLVED_NODE_CLASS_NAME = 'solvednode';
+export const FLASH_NODE_CLASS_NAME = 'flashnode';
 
 export const GRID_LINE_CLASS_NAME = 'gridline';
 export const AXIS_LINE_CLASS_NAME = 'axisline';
@@ -63,6 +64,7 @@ export const TASK_LINE_CLASS_NAME = 'taskline';
 export const USER_LINE_CLASS_NAME = 'userline';
 export const SELECTED_LINE_CLASS_NAME = 'selectedline';
 export const SOLVED_LINE_CLASS_NAME = 'solvedline';
+export const FLASH_LINE_CLASS_NAME = 'flashline';
 
 export const LINE_RENDERING_ORDER = [
     GRID_LINE_CLASS_NAME,
@@ -84,10 +86,10 @@ export const API_LOAD_TIMEOUT_TEXT = 'Načítání zadání nám trochu trvá, a
 
 export const FRONTEND_URL = 'https://www.umimematiku.cz/';
 
-export const API_URL = 'https://www.umimematiku.cz/ajax/';
+// export const API_URL = 'https://www.umimematiku.cz/ajax/';
 // export const API_URL = 'http://localhost:3443/';
 
-export const API_ITEMS_ENDPOINT = 'mrizkovanaLoadItems.php';
+// export const API_ITEMS_ENDPOINT = 'mrizkovanaLoadItems.php';
 // export const API_ITEMS_ENDPOINT = 'api/v2/bundle-assignments/';
 export const API_LOG_ENDPOINT = 'logItemDone.php';
 export const API_ERROR_ENDPOINT = 'errorProxy.php';

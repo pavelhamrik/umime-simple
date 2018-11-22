@@ -110,24 +110,16 @@ export function fromCanvasCoord(value) {
 
 export function generateGridLines(classes) {
     const xGrid = Array.from(Array(GRID_WIDTH + 1), (value, xLine) => {
-        return composeStateObject(
-            (xLine + 1) * 2 - 1,
-            classes,
-            {
-                p1: new Point(toCanvasCoord(xLine), TOP_EDGE),
-                p2: new Point(toCanvasCoord(xLine), BOTTOM_EDGE),
-            }
-        );
+        return composeStateObject((xLine + 1) * 2 - 1, classes, {
+            p1: new Point(toCanvasCoord(xLine), TOP_EDGE),
+            p2: new Point(toCanvasCoord(xLine), BOTTOM_EDGE),
+        }, 1);
     });
     const yGrid = Array.from(Array(GRID_WIDTH + 1), (value, yLine) => {
-        return composeStateObject(
-            (yLine + 1) * 2,
-            classes,
-            {
-                p1: new Point(LEFT_EDGE, toCanvasCoord(yLine)),
-                p2: new Point(RIGHT_EDGE, toCanvasCoord(yLine)),
-            }
-        );
+        return composeStateObject((yLine + 1) * 2, classes, {
+            p1: new Point(LEFT_EDGE, toCanvasCoord(yLine)),
+            p2: new Point(RIGHT_EDGE, toCanvasCoord(yLine)),
+        }, 1);
     });
     return xGrid.concat(yGrid);
 }
@@ -137,11 +129,7 @@ export function generateGridNodes(classes) {
     const idMagnitude = Math.ceil(Math.log(GRID_WIDTH + 1) * Math.LOG10E);
     return Array.from(Array(GRID_WIDTH + 1), (value, xLine) => {
         return Array.from(Array(GRID_HEIGHT + 1), (value, yLine) => {
-            return composeStateObject(
-                xLine * (10 ** idMagnitude) + yLine,
-                classes,
-                {p1: new Point(toCanvasCoord(xLine), toCanvasCoord(yLine))}
-            );
+            return composeStateObject(xLine * (10 ** idMagnitude) + yLine, classes, {p1: new Point(toCanvasCoord(xLine), toCanvasCoord(yLine))}, 1);
         })
     }).reduce((acc, nodeRow) => {
         return acc.concat(nodeRow)
@@ -149,7 +137,7 @@ export function generateGridNodes(classes) {
 }
 
 
-export function updateElemForState(container, elemId, classes, label) {
+export function updateElemForState(container, elemId, classes, updatedAt, label) {
     const { add = [], remove = [], toggle = [] } = classes;
     return container.map(elem => {
         if (elem.id === elemId) {
@@ -158,17 +146,17 @@ export function updateElemForState(container, elemId, classes, label) {
             remove.map(className => updatedClasses.delete(className));
             toggle.map(className => elem.classes.has(className) ? updatedClasses.delete(className) : updatedClasses.add(className));
             return !isEmptyObject(label)
-                ? Object.assign({}, elem, {classes: updatedClasses, label: label})
-                : Object.assign({}, elem, {classes: updatedClasses});
+                ? Object.assign({}, elem, {classes: updatedClasses, updatedAt: updatedAt, label: label})
+                : Object.assign({}, elem, {classes: updatedClasses, updatedAt: updatedAt});
         }
         return elem;
     });
 }
 
 
-export function composeStateObject(id, classes, geometry, label = {}) {
+export function composeStateObject(id, classes, geometry, updatedAt, label = {}) {
     return {
-        id: id, classes: classes, geometry: geometry, label: label
+        id: id, classes: classes, geometry: geometry, updatedAt: updatedAt, label: label
     }
 }
 

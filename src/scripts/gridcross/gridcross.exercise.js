@@ -16,7 +16,7 @@ import { intersectLineLine } from './intersections';
 import { bootstrap } from './bootstrap';
 import StateProvider from './StateProvider';
 import {
-    API_URL,
+    // API_URL,
     DUPLICATE_NODE_THRESHOLD,
     NODE_GROUP,
     PATH_GROUP,
@@ -31,12 +31,12 @@ import {
     NODE_STATE_COLLECTION,
     GRID_LINE_CLASS_NAME,
     API_LOAD_ERROR_TEXT,
-    LOG,
-    LOCAL_IO,
+    // LOG,
+    // LOCAL_IO,
     SELECTED_NODE_CLASS_NAME,
     SELECTED_LINE_CLASS_NAME,
     LABEL_GROUP,
-    API_ITEMS_ENDPOINT,
+    // API_ITEMS_ENDPOINT,
     API_ERROR_ENDPOINT,
     API_LOAD_TIMEOUT_TEXT,
     API_LOG_ENDPOINT,
@@ -98,7 +98,7 @@ export function presentAssignment(index) {
     // compose the state update based on the assignment data
     state.set(parseAssignment(assignments, index, state.get()));
 
-    ui.taskText.textContent = assignments[index].item.text;
+    ui.taskText.innerHTML = assignments[index].item.text;
 
     if (CHANGE_BROWSER_HISTORY) {
         // there are some document-scoped variables in use
@@ -120,13 +120,13 @@ export function presentAssignment(index) {
 
 function getAssignment() {
     function handleError() {
-        ui.taskText.textContent = API_LOAD_ERROR_TEXT;
+        ui.taskText.innerHTML = API_LOAD_ERROR_TEXT;
         loadingIndicator.remove();
         logErrorToRemote(requestUrl);
     }
 
     function handleTimeout() {
-        ui.taskText.textContent = API_LOAD_TIMEOUT_TEXT;
+        ui.taskText.innerHTML = API_LOAD_TIMEOUT_TEXT;
         request.open('GET', requestUrl);
         request.send();
         logErrorToRemote(requestUrl);
@@ -171,7 +171,6 @@ function getAssignment() {
 
 // working with the geometry interactions
 
-// todo: className strings and state object identifiers should use constants; then move away as pure, agnostic functions
 export function composeNewStateForNode(point, classes, stateSnapshot, label = {}) {
     const nearestNode = getNearestNode(point, stateSnapshot.nodes);
     if (typeof nearestNode.distance === 'undefined') return;
@@ -179,7 +178,7 @@ export function composeNewStateForNode(point, classes, stateSnapshot, label = {}
     // node is considered duplicate
     if (nearestNode.distance < DUPLICATE_NODE_THRESHOLD) {
         return Object.assign({}, stateSnapshot, {
-            nodes: updateElemForState(stateSnapshot.nodes, nearestNode.node.id, classes, label)
+            nodes: updateElemForState(stateSnapshot.nodes, nearestNode.node.id, classes, state.length + 1, label)
         })
     }
     // node doesn't exist yet
@@ -188,17 +187,11 @@ export function composeNewStateForNode(point, classes, stateSnapshot, label = {}
         : new Set([NODE_CLASS_NAME].concat(classes.add));
     return Object.assign({}, stateSnapshot, {
         nodes: stateSnapshot.nodes.concat(
-            composeStateObject(
-                createStateId(NODE_STATE_COLLECTION, stateSnapshot),
-                newNodeClasses,
-                {p1: point},
-                label
-            )
+            composeStateObject(createStateId(NODE_STATE_COLLECTION, stateSnapshot), newNodeClasses, {p1: point}, state.length + 1, label)
         )
     })
 }
 
-// todo: className strings and state object identifiers should use constants; then move away as pure, agnostic functions
 export function composeNewStateForLine(p1, p2, classes, stateSnapshot, label = {}) {
     const workingState = [];
 
@@ -206,14 +199,9 @@ export function composeNewStateForLine(p1, p2, classes, stateSnapshot, label = {
 
     const foundLines = findLine(p1, p2, stateSnapshot.paths);
     const newPathsStateObject = foundLines.length !== 0
-        ? updateElemForState(stateSnapshot.paths, foundLines[0].id, classes, label)
+        ? updateElemForState(stateSnapshot.paths, foundLines[0].id, classes, state.length + 1, label)
         : stateSnapshot.paths.concat(
-            composeStateObject(
-                createStateId(PATH_STATE_COLLECTION, stateSnapshot),
-                new Set(classes.add),
-                {p1: p1, p2: p2},
-                label
-            )
+            composeStateObject(createStateId(PATH_STATE_COLLECTION, stateSnapshot), new Set(classes.add), {p1: p1, p2: p2}, state.length + 1, label)
         );
     workingState.push(
         Object.assign({}, stateSnapshot, {
@@ -228,11 +216,10 @@ export function composeNewStateForLine(p1, p2, classes, stateSnapshot, label = {
         workingState.push(
             Object.assign({}, workingState[workingState.length - 1], {
                 paths: workingState[workingState.length - 1].paths.concat(
-                    composeStateObject(
-                        createStateId(PATH_STATE_COLLECTION, workingState[workingState.length - 1]),
-                        new Set([AXIS_LINE_CLASS_NAME]),
-                        {p1: axisLine.p1, p2: axisLine.p2}
-                    )
+                    composeStateObject(createStateId(PATH_STATE_COLLECTION, workingState[workingState.length - 1]), new Set([AXIS_LINE_CLASS_NAME]), {
+                        p1: axisLine.p1,
+                        p2: axisLine.p2
+                    }, state.length + 1)
                 )
             })
         );
@@ -244,6 +231,7 @@ export function composeNewStateForLine(p1, p2, classes, stateSnapshot, label = {
                     workingState[workingState.length - 1][PATH_STATE_COLLECTION],
                     existingAxisLine[0].id,
                     {add: [AXIS_LINE_CLASS_NAME]},
+                    state.length + 1,
                     label
                 )
             })
@@ -272,11 +260,16 @@ export function handleNewPath(p1, p2) {
 
     enableButton(ui.undoButton, [undo]);
 
-    workingState.push(composeNewStateForNode(p1, {add: [USER_NODE_CLASS_NAME]}, workingState[workingState.length - 1]));
-
     if (!p1.equals(p2)) {
+        workingState.push(composeNewStateForNode(p1, {add: [USER_NODE_CLASS_NAME]}, workingState[workingState.length - 1]));
         workingState.push(composeNewStateForNode(p2, {add: [USER_NODE_CLASS_NAME]}, workingState[workingState.length - 1]));
         workingState.push(composeNewStateForLine(p1, p2, {add: [USER_LINE_CLASS_NAME]}, workingState[workingState.length - 1]));
+    }
+    else {
+        const classes = currentState.config.uiOnlySelect
+            ? {add: [USER_NODE_CLASS_NAME, SELECTED_NODE_CLASS_NAME]}
+            : {add: [USER_NODE_CLASS_NAME]};
+        workingState.push(composeNewStateForNode(p1, classes, workingState[workingState.length - 1]));
     }
 
     const validSolution = checkSolution(workingState[workingState.length - 1]);
