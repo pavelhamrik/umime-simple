@@ -10,7 +10,7 @@ import {
     enableButton,
     disableButton, updateElemForState,
 } from './functions';
-import { parseAssignment, checkSolution, highlightSolution } from './assignment';
+import {parseAssignment, checkSolution, highlightSolution, parseKatex} from './assignment';
 import { render } from './render';
 import { intersectLineLine } from './intersections';
 import { bootstrap } from './bootstrap';
@@ -98,7 +98,7 @@ export function presentAssignment(index) {
     // compose the state update based on the assignment data
     state.set(parseAssignment(assignments, index, state.get()));
 
-    ui.taskText.innerHTML = assignments[index].item.text;
+    ui.taskText.innerHTML = parseKatex(assignments[index].item.text);
 
     if (CHANGE_BROWSER_HISTORY) {
         // there are some document-scoped variables in use

@@ -289,3 +289,16 @@ export function getConfigValue(key, stateSnapshot) {
     if (typeof stateSnapshot.config === 'undefined') return false;
     return typeof stateSnapshot.config[key] !== 'undefined' ? stateSnapshot.config[key] : false;
 }
+
+
+export function parseKatex(string) {
+    return string.replace(
+        /\\begin{katex}(.*)\\end{katex}/g,
+        (match, p1) => {
+            if (typeof window.katex !== 'undefined') {
+                return window.katex.renderToString(p1, {throwOnError: false});
+            }
+            return '';
+        }
+    );
+}
