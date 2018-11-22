@@ -91,8 +91,8 @@ export const FRONTEND_URL = 'https://www.umimematiku.cz/';
 
 // export const API_ITEMS_ENDPOINT = 'mrizkovanaLoadItems.php';
 // export const API_ITEMS_ENDPOINT = 'api/v2/bundle-assignments/';
-export const API_LOG_ENDPOINT = 'logItemDone.php';
-export const API_ERROR_ENDPOINT = 'errorProxy.php';
+// export const API_LOG_ENDPOINT = 'logItemDone.php';
+// export const API_ERROR_ENDPOINT = 'errorProxy.php';
 
 export const TIMEOUT = 20000;
 

@@ -99,6 +99,8 @@ const WEBPACK_CONFIG_PROD = {
             CHANGE_BROWSER_HISTORY: JSON.stringify(true),
             API_URL: JSON.stringify('https://www.umimematiku.cz/ajax/'),
             API_ITEMS_ENDPOINT: JSON.stringify('mrizkovanaLoadItems.php'),
+            API_LOG_ENDPOINT: JSON.stringify('logItemDone.php'),
+            API_ERROR_ENDPOINT: JSON.stringify('errorProxy.php'),
         })
     ],
 };

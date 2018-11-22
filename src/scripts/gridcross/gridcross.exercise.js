@@ -37,9 +37,9 @@ import {
     SELECTED_LINE_CLASS_NAME,
     LABEL_GROUP,
     // API_ITEMS_ENDPOINT,
-    API_ERROR_ENDPOINT,
+    // API_ERROR_ENDPOINT,
+    // API_LOG_ENDPOINT,
     API_LOAD_TIMEOUT_TEXT,
-    API_LOG_ENDPOINT,
     TASK_NODE_CLASS_NAME,
     TASK_LINE_CLASS_NAME,
     FRONTEND_URL,
@@ -371,6 +371,8 @@ export function handleAssignment(assignment) {
 
 
 function logSolutionToRemote(itemId, geometryCount, moves, responseTime) {
+    if (typeof API_LOG_ENDPOINT === 'undefined') return;
+
     function handleTimeout() {
         request.open('GET', url);
         request.send();
@@ -391,6 +393,8 @@ function logSolutionToRemote(itemId, geometryCount, moves, responseTime) {
 
 
 function logErrorToRemote(error) {
+    if (typeof API_ERROR_ENDPOINT === 'undefined') return;
+
     const errorLogUrl = `${API_URL}${API_ERROR_ENDPOINT}?user=${user}&description=${encodeURIComponent(error)}`;
     const errorRequest = new XMLHttpRequest();
     errorRequest.open('GET', errorLogUrl);
