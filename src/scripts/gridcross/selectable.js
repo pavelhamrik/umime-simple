@@ -40,9 +40,24 @@ import {
 
 
 export function attachTouchSurfaceSelectable(surface, stateSnapshot) {
-    function handleTouchSurfaceSelect() {
-        if (LOG) console.time('handleTouchSurfaceSelect');
+    function handleTouchSelect(event) {
+        event.stopPropagation();
+        event.preventDefault();
 
+        if (event.touches.length !== 1) return;
+
+        console.log(event.touches[0]);
+
+        const surfaceBoundingBox = event.target.getBoundingClientRect();
+        const origin = new Point(
+            event.touches[0].clientX - surfaceBoundingBox.left,
+            event.touches[0].clientY - surfaceBoundingBox.top
+        );
+
+        handleSelect(origin);
+    }
+
+    function handleClickSelect(event) {
         event.stopPropagation();
         event.preventDefault();
 
@@ -51,6 +66,12 @@ export function attachTouchSurfaceSelectable(surface, stateSnapshot) {
             event.x - surfaceBoundingBox.left,
             event.y - surfaceBoundingBox.top
         );
+
+        handleSelect(origin);
+    }
+
+    function handleSelect(origin) {
+        if (LOG) console.time('handleTouchSurfaceSelect');
 
         const nodes = stateSnapshot[NODE_STATE_COLLECTION].filter(node => node.classes.has(TASK_NODE_CLASS_NAME));
         const lines = stateSnapshot[PATH_STATE_COLLECTION].filter(node => node.classes.has(TASK_LINE_CLASS_NAME));
@@ -72,6 +93,6 @@ export function attachTouchSurfaceSelectable(surface, stateSnapshot) {
         if (LOG) console.timeEnd('handleTouchSurfaceSelect');
     }
 
-    surface.on('touchstart', handleTouchSurfaceSelect);
-    surface.on('click', handleTouchSurfaceSelect);
+    surface.on('touchstart', handleTouchSelect);
+    surface.on('click', handleClickSelect);
 }
