@@ -67,10 +67,10 @@ const WEBPACK_CONFIG_STG = {
     },
     plugins: [
         new webpack.DefinePlugin({
-            LOG: JSON.stringify(false),
+            LOG: JSON.stringify(true),
             LOCAL_IO: JSON.stringify(false),
             CHANGE_BROWSER_HISTORY: JSON.stringify(false),
-            API_URL: JSON.stringify('https://phapi.herokuapp.com//'),
+            API_URL: JSON.stringify('https://phapi.herokuapp.com/'),
             API_ITEMS_ENDPOINT: JSON.stringify('api/v2/bundle-assignments/'),
         })
     ],
