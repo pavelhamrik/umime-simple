@@ -11,9 +11,6 @@ const yargs = require('yargs');
 const gulpif = require('gulp-if');
 const del = require('del');
 
-
-const PROD = !!(yargs.argv.prod);
-
 const DIST = './docs';
 const PORT = '8008';
 const PATHS = {
@@ -41,6 +38,42 @@ const PATHS = {
 
 const WEBPACK_CONFIG_DEV = {
     mode: 'development',
+    plugins: [
+        new webpack.DefinePlugin({
+            LOG: JSON.stringify(true),
+            LOCAL_IO: JSON.stringify(false),
+            CHANGE_BROWSER_HISTORY: JSON.stringify(false),
+            API_URL: JSON.stringify('http://localhost:3443/'),
+            API_ITEMS_ENDPOINT: JSON.stringify('api/v2/bundle-assignments/'),
+        })
+    ],
+};
+
+const WEBPACK_CONFIG_STG = {
+    mode: 'production',
+    module: {
+        rules: [
+            {
+                test: /\.m?js$/,
+                exclude: /(node_modules)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env'],
+                    }
+                }
+            }
+        ],
+    },
+    plugins: [
+        new webpack.DefinePlugin({
+            LOG: JSON.stringify(false),
+            LOCAL_IO: JSON.stringify(false),
+            CHANGE_BROWSER_HISTORY: JSON.stringify(false),
+            API_URL: JSON.stringify('https://phapi.herokuapp.com//'),
+            API_ITEMS_ENDPOINT: JSON.stringify('api/v2/bundle-assignments/'),
+        })
+    ],
 };
 
 const WEBPACK_CONFIG_PROD = {
@@ -49,7 +82,7 @@ const WEBPACK_CONFIG_PROD = {
         rules: [
             {
                 test: /\.m?js$/,
-                // exclude: /(node_modules|bower_components)/,
+                exclude: /(node_modules)/,
                 use: {
                     loader: 'babel-loader',
                     options: {
@@ -57,21 +90,31 @@ const WEBPACK_CONFIG_PROD = {
                     }
                 }
             }
-        ]
-    }
+        ],
+    },
+    plugins: [
+        new webpack.DefinePlugin({
+            LOG: JSON.stringify(false),
+            LOCAL_IO: JSON.stringify(false),
+            CHANGE_BROWSER_HISTORY: JSON.stringify(true),
+            API_URL: JSON.stringify('https://www.umimematiku.cz/ajax/'),
+            API_ITEMS_ENDPOINT: JSON.stringify('mrizkovanaLoadItems.php'),
+        })
+    ],
 };
 
+const WEBPACK_CONFIG = !!(yargs.argv.prod)
+    ? WEBPACK_CONFIG_PROD
+    : !!(yargs.argv.stg)
+        ? WEBPACK_CONFIG_STG
+        : WEBPACK_CONFIG_DEV;
 
 gulp.task('scripts', function () {
     return gulp.src(PATHS.scripts.src)
         .pipe(plumber())
         .pipe(named())
         .pipe(sourcemaps.init())
-        .pipe(gulpif(
-            PROD,
-            webpackStream(WEBPACK_CONFIG_PROD, webpack, function(err) {if (err) console.log(err)}),
-            webpackStream(WEBPACK_CONFIG_DEV, webpack, function(err) {if (err) console.log(err)})
-        ))
+        .pipe(webpackStream(WEBPACK_CONFIG, webpack, function(err) {if (err) console.log(err)}))
         .pipe(sourcemaps.write())
         .pipe(gulp.dest(PATHS.scripts.dist))
         .pipe(browserSync.stream());
