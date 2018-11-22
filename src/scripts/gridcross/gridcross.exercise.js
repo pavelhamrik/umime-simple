@@ -8,7 +8,7 @@ import {
     findLine,
     isEmptyObject,
     enableButton,
-    disableButton, updateElemClassesForState,
+    disableButton, updateElemForState,
 } from './functions';
 import { parseAssignment, checkSolution, highlightSolution } from './assignment';
 import { render } from './render';
@@ -179,7 +179,7 @@ export function composeNewStateForNode(point, classes, stateSnapshot, label = {}
     // node is considered duplicate
     if (nearestNode.distance < DUPLICATE_NODE_THRESHOLD) {
         return Object.assign({}, stateSnapshot, {
-            nodes: updateElemClassesForState(stateSnapshot.nodes, nearestNode.node.id, classes)
+            nodes: updateElemForState(stateSnapshot.nodes, nearestNode.node.id, classes, label)
         })
     }
     // node doesn't exist yet
@@ -206,7 +206,7 @@ export function composeNewStateForLine(p1, p2, classes, stateSnapshot, label = {
 
     const foundLines = findLine(p1, p2, stateSnapshot.paths);
     const newPathsStateObject = foundLines.length !== 0
-        ? updateElemClassesForState(stateSnapshot.paths, foundLines[0].id, classes)
+        ? updateElemForState(stateSnapshot.paths, foundLines[0].id, classes, label)
         : stateSnapshot.paths.concat(
             composeStateObject(
                 createStateId(PATH_STATE_COLLECTION, stateSnapshot),
@@ -240,8 +240,12 @@ export function composeNewStateForLine(p1, p2, classes, stateSnapshot, label = {
     else {
         workingState.push(
             Object.assign({}, workingState[workingState.length - 1], {
-                paths: updateElemClassesForState(workingState[workingState.length - 1][PATH_STATE_COLLECTION],
-                    existingAxisLine[0].id, {add: [AXIS_LINE_CLASS_NAME]})
+                paths: updateElemForState(
+                    workingState[workingState.length - 1][PATH_STATE_COLLECTION],
+                    existingAxisLine[0].id,
+                    {add: [AXIS_LINE_CLASS_NAME]},
+                    label
+                )
             })
         );
     }
@@ -268,7 +272,7 @@ export function handleNewPath(p1, p2) {
 
     enableButton(ui.undoButton, [undo]);
 
-    workingState.push(composeNewStateForNode(p1, {add: [USER_NODE_CLASS_NAME]}, workingState[workingState.length - 1], NODE_STATE_COLLECTION));
+    workingState.push(composeNewStateForNode(p1, {add: [USER_NODE_CLASS_NAME]}, workingState[workingState.length - 1]));
 
     if (!p1.equals(p2)) {
         workingState.push(composeNewStateForNode(p2, {add: [USER_NODE_CLASS_NAME]}, workingState[workingState.length - 1]));

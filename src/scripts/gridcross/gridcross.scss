@@ -1,12 +1,14 @@
 @import '../../styles/custom-settings';
 
+$asset-url: 'https://www.umimeto.org/asset/system/um/img/mrizkovana/';
+
 @font-face {
     font-family: 'umime-to-gridcross';
-    src: url('assets/umime-to.eot?cgqr3h');
-    src: url('assets/umime-to.eot?cgqr3h#iefix') format('embedded-opentype'),
-    url('assets/umime-to.ttf?cgqr3h') format('truetype'),
-    url('assets/umime-to.woff?cgqr3h') format('woff'),
-    url('assets/umime-to.svg?cgqr3h#umime-to') format('svg');
+    src: url($asset-url + 'umime-to.eot?cgqr3h');
+    src: url($asset-url + 'umime-to.eot?cgqr3h#iefix') format('embedded-opentype'),
+    url($asset-url + 'umime-to.ttf?cgqr3h') format('truetype'),
+    url($asset-url + 'umime-to.woff?cgqr3h') format('woff'),
+    url($asset-url + 'umime-to.svg?cgqr3h#umime-to') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -33,7 +35,7 @@
     }
 
     #canvas-wrapper {
-        background: url('assets/gridcross-background.jpg') blanchedalmond 55% 50%;
+        background: url($asset-url + 'gridcross-background.jpg') blanchedalmond 55% 50%;
         background-size: cover;
         border-radius: $global-radius;
         box-shadow: $custom-soft-shadow, 0 2px 7px 0 rgba(0,0,0,.08);
@@ -92,6 +94,7 @@
             &.usernode,
             &.selectednode {
                 stroke: $black;
+                stroke-width: 3;
                 fill: $white;
             }
 

@@ -113,3 +113,4 @@ Ask for a demo, docs TBD thereafter.
 - [x] `fixed, nov 15` allow tolerance for small numerical errors when checking a solution
 - [x] `fixed, nov 15` some intersections threw 'Point.equals' is not a function error 
 - [x] `fixed, nov 19` gridlines coinciding with axislines are not updated with the axisline class  
+- [x] `fixed, nov 22` existing geometry is ignoring labels from the assignment  

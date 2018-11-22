@@ -149,7 +149,7 @@ export function generateGridNodes(classes) {
 }
 
 
-export function updateElemClassesForState(container, elemId, classes) {
+export function updateElemForState(container, elemId, classes, label) {
     const { add = [], remove = [], toggle = [] } = classes;
     return container.map(elem => {
         if (elem.id === elemId) {
@@ -157,7 +157,9 @@ export function updateElemClassesForState(container, elemId, classes) {
             add.map(className => updatedClasses.add(className));
             remove.map(className => updatedClasses.delete(className));
             toggle.map(className => elem.classes.has(className) ? updatedClasses.delete(className) : updatedClasses.add(className));
-            return Object.assign({}, elem, {classes: updatedClasses});
+            return !isEmptyObject(label)
+                ? Object.assign({}, elem, {classes: updatedClasses, label: label})
+                : Object.assign({}, elem, {classes: updatedClasses});
         }
         return elem;
     });

@@ -1,8 +1,8 @@
 import { determineResolution } from './functions';
 
 export const LOG = true;
-export const LOCAL_IO = false;
-export const CHANGE_BROWSER_HISTORY = true;
+export const LOCAL_IO = true;
+export const CHANGE_BROWSER_HISTORY = false;
 
 export const GRID_WIDTH = 6;
 export const GRID_HEIGHT = 6;
