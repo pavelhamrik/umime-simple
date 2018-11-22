@@ -92,8 +92,9 @@ Ask for a demo, docs TBD thereafter.
 - [x] `done, nov 21` repeat the XHR on timeout
 - [x] `done, nov 21` implement stats, logging and sending a response back to the backend
 - [x] `done, nov 21` deploy to [umimematiku.cz](https://www.umimematiku.cz)
-- [ ] send better stats for selection-style assignments
-- [ ] consider transpiling into a 'safer' JS version (babel)
+- [x] `won't do` ~~send better stats for selection-style assignments~~
+- [x] `done, nov 22` transpile into a 'safer' JS version on build (babel)
+- [x] `done, nov 22` determine resolution on load to better fit the screen
 
 ### Next up
 

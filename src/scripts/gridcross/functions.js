@@ -9,8 +9,6 @@ import {
     RIGHT_EDGE,
     BOTTOM_EDGE,
     LEFT_EDGE,
-    LINE,
-    NODE,
     SNAP_THRESHOLD,
     DUPLICATE_LINE_THRESHOLD,
 } from './constants';
@@ -151,16 +149,6 @@ export function generateGridNodes(classes) {
 }
 
 
-// export function addElemClassInObject(container, elemId, className) {
-//     return container.map(elem => {
-//         if (elem.id === elemId) {
-//             const classes = new Set(elem.classes).add(className);
-//             return Object.assign({}, elem, {classes: classes});
-//         }
-//         return elem;
-//     });
-// }
-
 export function updateElemClassesForState(container, elemId, classes) {
     const { add = [], remove = [], toggle = [] } = classes;
     return container.map(elem => {
@@ -232,4 +220,12 @@ export function disableButton(button, handlers = []) {
 export function noPointerEvents(elem) {
     // elem.style.pointerEvents = 'none';
     elem.addClass('no-pointer-events');
+}
+
+
+export function determineResolution(gridWidth, gridHeight, canvasPadding) {
+    const viewSize = Math.min(window.innerWidth, window.innerHeight * 0.65) - 3 * canvasPadding;
+    const gridSize = Math.max(gridWidth, gridHeight);
+    const resolution = Math.floor(viewSize / gridSize / 5) * 5;
+    return Math.min(resolution, 100);
 }

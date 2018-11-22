@@ -1,12 +1,15 @@
+import { determineResolution } from './functions';
+
 export const LOG = true;
 export const LOCAL_IO = false;
+export const CHANGE_BROWSER_HISTORY = true;
 
 export const GRID_WIDTH = 6;
 export const GRID_HEIGHT = 6;
 
-export const RESOLUTION = 50;
-
 export const CANVAS_PADDING = 20;
+
+export const RESOLUTION = determineResolution(GRID_WIDTH, GRID_HEIGHT, CANVAS_PADDING);
 
 export const LABEL_OFFSET = 12;
 export const LABEL_OFFSET_VERTICAL_CORRECTION = 2;
@@ -88,5 +91,7 @@ export const API_ITEMS_ENDPOINT = 'mrizkovanaLoadItems.php';
 // export const API_ITEMS_ENDPOINT = 'api/v2/bundle-assignments/';
 export const API_LOG_ENDPOINT = 'logItemDone.php';
 export const API_ERROR_ENDPOINT = 'errorProxy.php';
+
+export const TIMEOUT = 20000;
 
 

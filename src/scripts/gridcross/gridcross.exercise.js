@@ -44,7 +44,7 @@ import {
     TASK_LINE_CLASS_NAME,
     FRONTEND_URL,
     EXERCISE_NAME,
-    APP_NAME,
+    APP_NAME, TIMEOUT, CHANGE_BROWSER_HISTORY,
 } from './constants';
 import { createLocalInput } from './util';
 
@@ -100,13 +100,15 @@ export function presentAssignment(index) {
 
     ui.taskText.textContent = assignments[index].item.text;
 
-    // there are some document-scoped variables in use
-    const historyStateObj = {html: `${FRONTEND_URL}${url}/${assignments[index].id}`};
-    const historyTitle = `${EXERCISE_NAME}: ${assignments[index].name} – ${APP_NAME}`;
-    const historyUrl = `/${url}/${assignments[index].id}`;
-    if (index === 0) window.history.replaceState(historyStateObj, historyTitle, historyUrl);
-    else window.history.pushState(historyStateObj, historyTitle, historyUrl);
-    document.title = historyTitle;
+    if (CHANGE_BROWSER_HISTORY) {
+        // there are some document-scoped variables in use
+        const historyStateObj = {html: `${FRONTEND_URL}${url}/${assignments[index].id}`};
+        const historyTitle = `${EXERCISE_NAME}: ${assignments[index].name} – ${APP_NAME}`;
+        const historyUrl = `/${url}/${assignments[index].id}`;
+        if (index === 0) window.history.replaceState(historyStateObj, historyTitle, historyUrl);
+        else window.history.pushState(historyStateObj, historyTitle, historyUrl);
+        document.title = historyTitle;
+    }
 
     disableButton(ui.nextButton, [nextAssignment]);
     disableButton(ui.undoButton, [undo]);
@@ -157,7 +159,7 @@ function getAssignment() {
     const request = new XMLHttpRequest();
     request.open('GET', requestUrl);
     request.responseType = 'json';
-    request.timeout = 5000;
+    request.timeout = TIMEOUT;
     request.onerror = handleError;
     request.ontimeout = handleTimeout;
     request.onabort = handleError;
@@ -381,7 +383,7 @@ function logSolutionToRemote(itemId, geometryCount, moves, responseTime) {
     const url = `${API_URL}${API_LOG_ENDPOINT}?ps=${ps}&user=${user}&item=${itemId}&answer=${geometryCount}&correct=1&moves=${moves}&responseTime=${responseTime}&cookieHash=${cookieHash}&deviceType=${deviceType}`;
     const request = new XMLHttpRequest();
     request.open('GET', url);
-    request.timeout = 5000;
+    request.timeout = TIMEOUT;
     request.onerror = () => {logErrorToRemote(url)};
     request.ontimeout = handleTimeout;
     request.onabort = () => {logErrorToRemote(url)};
