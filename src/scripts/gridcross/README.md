@@ -95,6 +95,9 @@ Ask for a demo, docs TBD thereafter.
 - [x] `won't do` ~~send better stats for selection-style assignments~~
 - [x] `done, nov 22` transpile into a 'safer' JS version on build (babel)
 - [x] `done, nov 22` determine resolution on load to better fit the screen
+- [x] `done, nov 22` emphasize reaction to selection and finding a correct solution
+- [x] `done, nov 22` allow HTML in assignment's text
+- [x] `done, nov 22` KaTeX support
 
 ### Next up
 
