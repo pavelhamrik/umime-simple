@@ -25,7 +25,7 @@ export default class StateProvider {
     }
 
     wipe() {
-        this.operationsCount += 1;
+        this.operationsCount = 0;
         this.state = [this.initialState];
     }
 

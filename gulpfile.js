@@ -8,7 +8,7 @@ const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
 const named = require('vinyl-named');
 const yargs = require('yargs');
-const gulpif = require('gulp-if');
+// const gulpif = require('gulp-if');
 const del = require('del');
 
 const DIST = './docs';
@@ -45,6 +45,8 @@ const WEBPACK_CONFIG_DEV = {
             CHANGE_BROWSER_HISTORY: JSON.stringify(false),
             API_URL: JSON.stringify('http://localhost:3443/'),
             API_ITEMS_ENDPOINT: JSON.stringify('api/v2/bundle-assignments/'),
+            API_LOG_ENDPOINT: JSON.stringify('api/v2/log/'),
+            API_ERROR_ENDPOINT: JSON.stringify('api/v2/log/'),
         })
     ],
 };
@@ -72,6 +74,8 @@ const WEBPACK_CONFIG_STG = {
             CHANGE_BROWSER_HISTORY: JSON.stringify(false),
             API_URL: JSON.stringify('https://phapi.herokuapp.com/'),
             API_ITEMS_ENDPOINT: JSON.stringify('api/v2/bundle-assignments/'),
+            API_LOG_ENDPOINT: JSON.stringify('api/v2/log/'),
+            API_ERROR_ENDPOINT: JSON.stringify('api/v2/log/'),
         })
     ],
 };
