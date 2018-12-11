@@ -309,7 +309,7 @@ export function handleSelectedElem(p1, p2) {
 
 
 function handleValidSolution(solution) {
-    console.log('%cvalid solution:', 'color: wheat', solution);
+    if (LOG) console.log('%cvalid solution:', 'color: wheat', solution);
 
     const stateSnapshot = state.get();
 

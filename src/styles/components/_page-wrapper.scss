@@ -1,13 +1,13 @@
-@import 'util/util';
-@import '../custom-settings';
+@import '../settings';
+@import '../utils/breakpoints';
 
 .page-wrapper {
-    background: $custom-background-color url('../img/footer-pencils.png') no-repeat bottom -2rem center;
+    background: $faint-gray url('../img/footer-pencils.png') no-repeat bottom -2rem center;
     background-size: (690px * 0.45) (270px * 0.45);
-    padding: 1rem 0 7rem;
+    padding: 0rem $horizontal-padding 7rem;
 
-    @include breakpoint(medium up) {
-        padding: 2rem 0 7rem;
+    @include breakpoint(medium) {
+        padding: 1rem $horizontal-padding 7rem;
     }
 
     &.page-wrapper-exercise {
@@ -15,8 +15,8 @@
         position: relative;
         padding: 0.5rem 0 3rem;
 
-        @include breakpoint(medium up) {
-            padding: 2.5rem 0 4rem;
+        @include breakpoint(medium) {
+            padding: 2rem 0 4rem;
         }
     }
 

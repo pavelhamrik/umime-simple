@@ -15,185 +15,181 @@
     </head>
     <body>
 
-    <div class="top-bar-container" id="responsive-menu">
+    <div class="header">
     
-        <div class="top-bar-row top-bar-row-meta">
-            <div class="grid-container">
-                <div class="grid-x grid-margin-x">
-                    <div class="medium-12 cell">
-                        <div class="top-bar">
-    
-                            <ul class="dropdown vertical medium-horizontal menu" id="top-bar-identity-menu" data-responsive-menu="accordion medium-dropdown" data-hover-delay="750">
-                                <li class="show-for-small-only" id="top-bar-responsive-menu-toggler" data-toggler="is-active">
-                                    <button type="button" data-toggle="top-bar-personal-menu top-bar-content-menu top-bar-responsive-menu-toggler"></button>
-                                </li>
-                                <li class="has-submenu app-switch">
-                                    <a href="index.html" class="identity identity-czech">Umíme <strong class="color-czech">česky</strong></a>
-                                    <ul class="submenu menu vertical" data-submenu>
-                                        <li><a href="#0" class="identity identity-english">Umíme <strong class="color-english">anglicky</strong></a></li>
-                                        <li><a href="#0" class="identity identity-math">Umíme <strong class="color-math">matiku</strong></a></li>
-                                        <li><a href="#0" class="identity identity-facts">Umíme <strong class="color-facts">fakta</strong></a></li>
-                                        <li><a href="#0" class="identity identity-programming">Umíme <strong class="color-programming">programovat</strong></a></li>
-                                        <li><a href="#0" class="identity identity-german">Umíme <strong class="color-german">německy</strong></a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-    
-                            <div id="top-bar-personal-menu" data-toggler=".responsive-menu">
-                                <ul class="dropdown vertical medium-horizontal menu" data-responsive-menu="accordion medium-dropdown" data-multi-open="false">
-                                    <li>
-                                        <div class="search">
-                                            <input type="search" placeholder="Hledat">
-                                            <button class="button-clear icon-cross-small"></button>
-                                        </div>
-                                    </li>
-                                    <li class="has-submenu primary-container">
-                                        <a href="#0" class="primary">Učitel</a>
-                                        <ul class="submenu menu vertical" data-submenu>
-                                            <li><a href="#0">Domácí úkoly</a></li>
-                                            <li><a href="#0">…</a></li>
-                                            <li><a href="#0">…</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="has-submenu">
-                                        <a href="#0" class="stacked-labels">
-                                            <span class="dongle"><img src="https://www.umimeto.org/img/lion.png" class="user-picture"></span>
-                                            <span class="stack">
-                                                <strong class="user-name">Koblizek</strong>
-                                                <span class="subtitle">Můj profil</span>
-                                            </span>
-                                        </a>
-                                        <ul class="submenu menu vertical" data-submenu>
-                                            <li><a href="#0">Můj profil</a></li>
-                                            <li class="divider"></li>
-                                            <li><a href="#0">…</a></li>
-                                            <li><a href="#0">…</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-    
-                        </div>
+        <div class="header-row header-row-primary">
+            <ul id="header-personal-menu" class="menu menu-small-stacked menu-medium-flexed">
+                <li id="app-switch" class="dropdown">
+                    <a href="index.html" class="button button-plain identity identity-czech dropdown-button">
+                        <span class="identity-label">Umíme <strong class="color-czech">česky</strong></span>
+                    </a>
+                    <ul class="dropdown-menu" data-submenu>
+                        <li>
+                            <a href="#" class="identity identity-english">
+                                <span class="identity-label">Umíme <strong class="color-english">anglicky</strong></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="identity identity-math">
+                                <span class="identity-label">Umíme <strong class="color-math">matiku</strong></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="identity identity-facts">
+                                <span class="identity-label">Umíme <strong class="color-facts">fakta</strong></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="identity identity-programming">
+                                <span class="identity-label">Umíme <strong class="color-programming">programovat</strong></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="identity identity-german">
+                                <span class="identity-label">Umíme <strong class="color-german">německy</strong></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="flex-item-grow-2">
+                    <div class="search">
+                        <input type="search" placeholder="Hledat">
+                        <button class="button-clear icon-cross-small"></button>
                     </div>
-                </div>
-            </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-button button primary">Učitel</a>
+                    <ul class="dropdown-menu" data-submenu>
+                        <li><a href="#">Domácí úkoly</a></li>
+                        <li><a href="#">…</a></li>
+                        <li><a href="#">…</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="button button-plain dropdown-button stacked-labels">
+                        <span class="dongle"><img src="https://www.umimeto.org/img/lion.png" class="user-picture"></span>
+                        <span class="stack">
+                            <strong class="user-name">Koblizek</strong>
+                            <span class="subtitle">Můj profil</span>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li><a href="#">Můj profil</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">…</a></li>
+                        <li><a href="#">…</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     
-        <div class="top-bar-row top-bar-row-menu" id="top-bar-content-menu" data-toggler=".responsive-menu">
-            <div class="grid-container">
-                <div class="grid-x grid-margin-x">
-                    <div class="medium-12 cell">
-                        <div class="top-bar">
-                            <div class="top-bar-left">
-    
-                                <ul class="dropdown vertical medium-horizontal menu" data-responsive-menu="accordion medium-dropdown" data-multi-open="false">
-                                    <li><a href="#0">Přehled</a></li>
-                                    <li class="has-submenu">
-                                        <a href="#0">Procvičování</a>
-                                        <ul class="submenu menu vertical" data-submenu>
-                                            <li><a href="doplnovacka.html">Doplňovačka</a></li>
-                                            <li><a href="#0">Diktáty</a></li>
-                                            <li><a href="#0">Rozřazovačka</a></li>
-                                            <li><a href="#0">Čárky</a></li>
-                                            <li><a href="#0">Rozbory</a></li>
-                                            <li><a href="#0">Mluvené diktáty</a></li>
-                                            <li><a href="#0">Korektor</a></li>
-                                            <li><a href="#0">Otázky</a></li>
-                                            <li><a href="#0">Pexeso</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="has-submenu current">
-                                        <a href="#0">Netradiční</a>
-                                        <ul class="submenu menu vertical" data-submenu>
-                                            <li><a href="#0">Vtipy</a></li>
-                                            <li><a href="#0">Roboti</a></li>
-                                            <li><a href="#0">Střílečka</a></li>
-                                            <li><a href="#0" class="current">Tetris</a></li>
-                                            <li><a href="#0">Příšerky</a></li>
-                                            <li class="divider"></li>
-                                            <li class="title">Více hráčů</li>
-                                            <li><a href="#0">Závody</a></li>
-                                            <li><a href="#0">Týmovka</a></li>
-                                            <li><a href="#0">Územíčka</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="has-submenu">
-                                        <a href="#0">Témata</a>
-                                        <ul class="submenu menu vertical" data-submenu>
-                                            <li><a href="#0">Přehled všech témat</a></li>
-                                            <li><a href="#0">Psaní i/y</a></li>
-                                            <li><a href="#0">Podobně znějící</a></li>
-                                            <li><a href="#0">Skloňování a časování</a></li>
-                                            <li><a href="#0">Velká písmena</a></li>
-                                            <li><a href="#0">Interpunkce</a></li>
-                                            <li><a href="#0">Čárky</a></li>
-                                            <li><a href="#0">Rozbory vět, stavba slov</a></li>
-                                            <li><a href="#0">Tvarosloví</a></li>
-                                            <li><a href="#0">Slova a jejich význam</a></li>
-                                            <li><a href="#0">Tematická zadání</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="has-submenu">
-                                        <a href="#0">Podle třídy</a>
-                                        <ul class="submenu menu vertical" data-submenu>
-                                            <li><a href="#0">2. třída</a></li>
-                                            <li><a href="#0">3. třída</a></li>
-                                            <li><a href="#0">4. třída</a></li>
-                                            <li><a href="#0">5. třída</a></li>
-                                            <li class="divider"></li>
-                                            <li><a href="#0">6. třída</a></li>
-                                            <li><a href="#0">7. třída</a></li>
-                                            <li><a href="#0">8. třída</a></li>
-                                            <li><a href="#0">9. třída</a></li>
-                                            <li class="divider"></li>
-                                            <li><a href="#0">Střední škola</a></li>
-                                        </ul>
-                                    </li>
-    
-                                    <li><a href="#0">Učím se</a></li>
-                                </ul>
-    
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="header-row">
+            <ul id="header-content-menu" class="menu menu-small-stacked menu-medium-flexed">
+                <li>
+                    <a href="#" class="button button-plain">Přehled</a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="button button-plain dropdown-button">Procvičování</a>
+                    <ul class="dropdown-menu" data-submenu>
+                        <li><a href="doplnovacka.html">Doplňovačka</a></li>
+                        <li><a href="#">Diktáty</a></li>
+                        <li><a href="#">Rozřazovačka</a></li>
+                        <li><a href="#">Čárky</a></li>
+                        <li><a href="#">Rozbory</a></li>
+                        <li><a href="#">Mluvené diktáty</a></li>
+                        <li><a href="#">Korektor</a></li>
+                        <li><a href="#">Otázky</a></li>
+                        <li><a href="#">Pexeso</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="button button-plain dropdown-button">Netradiční</a>
+                    <ul class="dropdown-menu" data-submenu>
+                        <li><a href="#">Vtipy</a></li>
+                        <li><a href="#">Roboti</a></li>
+                        <li><a href="#">Střílečka</a></li>
+                        <li><a href="#" class="current">Tetris</a></li>
+                        <li><a href="#">Příšerky</a></li>
+                        <li class="divider"></li>
+                        <li class="title">Více hráčů</li>
+                        <li><a href="#">Závody</a></li>
+                        <li><a href="#">Týmovka</a></li>
+                        <li><a href="#">Územíčka</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="button button-plain dropdown-button">Témata</a>
+                    <ul class="dropdown-menu" data-submenu>
+                        <li><a href="#">Přehled všech témat</a></li>
+                        <li><a href="#">Psaní i/y</a></li>
+                        <li><a href="#">Podobně znějící</a></li>
+                        <li><a href="#">Skloňování a časování</a></li>
+                        <li><a href="#">Velká písmena</a></li>
+                        <li><a href="#">Interpunkce</a></li>
+                        <li><a href="#">Čárky</a></li>
+                        <li><a href="#">Rozbory vět, stavba slov</a></li>
+                        <li><a href="#">Tvarosloví</a></li>
+                        <li><a href="#">Slova a jejich význam</a></li>
+                        <li><a href="#">Tematická zadání</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="button button-plain dropdown-button">Podle třídy</a>
+                    <ul class="dropdown-menu" data-submenu>
+                        <li><a href="#">2. třída</a></li>
+                        <li><a href="#">3. třída</a></li>
+                        <li><a href="#">4. třída</a></li>
+                        <li><a href="#">5. třída</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">6. třída</a></li>
+                        <li><a href="#">7. třída</a></li>
+                        <li><a href="#">8. třída</a></li>
+                        <li><a href="#">9. třída</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Střední škola</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="button button-plain">Učím se</a>
+                </li>
+            </ul>
         </div>
-    
     </div>
     <div class="page-wrapper">
-        <div class="grid-container">
-            <div class="grid-x grid-margin-x">
+        <div class="grid">
+            <div class="grid-content">
     
-                <div class="large-12 cell">
+                <div class="grid-item-large-12">
                     <h1 id="top">Umíme to Style Components</h1>
                 </div>
     
-                <div class="medium-12 cell">
+                <div class="grid-item-small-12">
                     <div class="content-box">
                         <div class="content-box-header">
                             <h2 id="typography">Typography</h2>
                         </div>
                         <div class="content-box-section">
-                            <div class="grid-x grid-margin-x">
-                                <div class="medium-6 cell">
-                                    <div class="callout">
-                                        <h1>Heading 1</h1>
-                                        <h2>Heading 2</h2>
-                                        <h3>Heading 3</h3>
-                                        <h4>Heading 4</h4>
-                                        <h5>Heading 5</h5>
-                                        <h6>Heading 6</h6>
+                            <div class="grid">
+                                <div class="grid-content">
+                                    <div class="grid-item-medium-6">
+                                        <div class="callout">
+                                            <h1>Heading 1</h1>
+                                            <h2>Heading 2</h2>
+                                            <h3>Heading 3</h3>
+                                            <h4>Heading 4</h4>
+                                            <h5>Heading 5</h5>
+                                            <h6>Heading 6</h6>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="medium-6 cell">
-                                    <div class="callout">
-                                        <h1 class="subheader">Subheader 1</h1>
-                                        <h2 class="subheader">Subheader 2</h2>
-                                        <h3 class="subheader">Subheader 3</h3>
-                                        <h4 class="subheader">Subheader 4</h4>
-                                        <h5 class="subheader">Subheader 5</h5>
-                                        <h6 class="subheader">Subheader 6</h6>
+                                    <div class="grid-item-medium-6">
+                                        <div class="callout">
+                                            <h1 class="subheader">Subheader 1</h1>
+                                            <h2 class="subheader">Subheader 2</h2>
+                                            <h3 class="subheader">Subheader 3</h3>
+                                            <h4 class="subheader">Subheader 4</h4>
+                                            <h5 class="subheader">Subheader 5</h5>
+                                            <h6 class="subheader">Subheader 6</h6>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -212,41 +208,43 @@
                             </p>
     
                             <h2>Lists</h2>
-                            <div class="grid-x grid-margin-x">
-                                <div class="medium-6 cell">
-                                    <ul>
-                                        <li>Žáci při učení obvykle volí jednu z nejméně vhodných strategií pro osvojení
-                                            učiva - opakované čtení textu.
-                                        </li>
-                                        <li>Testování a procvičování látky vidí pouze jako kontrolu, že si látku správně
-                                            zapamatovali.
-                                        </li>
-                                        <li>Tato metoda „nasávací houby“ je nejméně účinná a již po pár týdnech si studenti
-                                            pamatují pouze malý zlomek učiva (např. v případě cizích slovíček je to jen 1
-                                            %).
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="medium-6 cell">
-                                    <ol>
-                                        <li>Žáci při učení obvykle volí jednu z nejméně vhodných strategií pro osvojení
-                                            učiva - opakované čtení textu.
-                                        </li>
-                                        <li>Testování a procvičování látky vidí pouze jako kontrolu, že si látku správně
-                                            zapamatovali.
-                                        </li>
-                                        <li>Tato metoda „nasávací houby“ je nejméně účinná a již po pár týdnech si studenti
-                                            pamatují pouze malý zlomek učiva (např. v případě cizích slovíček je to jen 1
-                                            %).
-                                        </li>
-                                    </ol>
+                            <div class="grid">
+                                <div class="grid-content">
+                                    <div class="grid-item-medium-6">
+                                        <ul>
+                                            <li>Žáci při učení obvykle volí jednu z nejméně vhodných strategií pro osvojení
+                                                učiva - opakované čtení textu.
+                                            </li>
+                                            <li>Testování a procvičování látky vidí pouze jako kontrolu, že si látku správně
+                                                zapamatovali.
+                                            </li>
+                                            <li>Tato metoda „nasávací houby“ je nejméně účinná a již po pár týdnech si studenti
+                                                pamatují pouze malý zlomek učiva (např. v případě cizích slovíček je to jen 1
+                                                %).
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="grid-item-medium-6">
+                                        <ol>
+                                            <li>Žáci při učení obvykle volí jednu z nejméně vhodných strategií pro osvojení
+                                                učiva - opakované čtení textu.
+                                            </li>
+                                            <li>Testování a procvičování látky vidí pouze jako kontrolu, že si látku správně
+                                                zapamatovali.
+                                            </li>
+                                            <li>Tato metoda „nasávací houby“ je nejméně účinná a již po pár týdnech si studenti
+                                                pamatují pouze malý zlomek učiva (např. v případě cizích slovíček je to jen 1
+                                                %).
+                                            </li>
+                                        </ol>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
     
-                <div class="medium-12 cell">
+                <div class="grid-item-small-12">
                     <div class="content-box">
                         <div class="content-box-header">
                             <h2 id="buttons">Buttons</h2>
@@ -342,49 +340,19 @@
                                 <a href="#" class="small warning suppressed button" disabled>Warning Button</a>
                                 <a href="#" class="small alert suppressed button" disabled>Alert Button</a>
                             </p>
-    
-                            <h3>Tiny Buttons</h3>
-                            <p>
-                                <a href="#" class="tiny primary button">Primary Button</a>
-                                <a href="#" class="tiny secondary button">Secondary Button</a>
-                                <a href="#" class="tiny success button">Success Button</a>
-                                <a href="#" class="tiny warning button">Warning Button</a>
-                                <a href="#" class="tiny alert button">Alert Button</a>
-                            </p>
-                            <p>
-                                <a href="#" class="tiny primary button" disabled>Primary Button</a>
-                                <a href="#" class="tiny secondary button" disabled>Secondary Button</a>
-                                <a href="#" class="tiny success button" disabled>Success Button</a>
-                                <a href="#" class="tiny warning button" disabled>Warning Button</a>
-                                <a href="#" class="tiny alert button" disabled>Alert Button</a>
-                            </p>
-                            <p>
-                                <a href="#" class="tiny primary suppressed button">Primary Button</a>
-                                <a href="#" class="tiny secondary suppressed button">Secondary Button</a>
-                                <a href="#" class="tiny success suppressed button">Success Button</a>
-                                <a href="#" class="tiny warning suppressed button">Warning Button</a>
-                                <a href="#" class="tiny alert suppressed button">Alert Button</a>
-                            </p>
-                            <p>
-                                <a href="#" class="tiny primary suppressed button" disabled>Primary Button</a>
-                                <a href="#" class="tiny secondary suppressed button" disabled>Secondary Button</a>
-                                <a href="#" class="tiny success suppressed button" disabled>Success Button</a>
-                                <a href="#" class="tiny warning suppressed button" disabled>Warning Button</a>
-                                <a href="#" class="tiny alert suppressed button" disabled>Alert Button</a>
-                            </p>
                         </div>
                     </div>
                 </div>
     
-                <div class="medium-12 cell">
+                <div class="grid-item-small-12">
                     <div class="content-box">
                         <div class="content-box-header">
                             <h2 id="grid">Grid</h2>
                         </div>
                         <div class="content-box-section">
-                            <div class="grid-container">
-                                <div class="grid-x grid-margin-x">
-                                    <div class="large-12 cell">
+                            <div class="grid">
+                                <div class="grid-content">
+                                    <div class="grid-item-small-12">
                                         <div class="callout">
                                             <p><strong>This is a twelve column section in a grid-x with
                                                 grid-margin-x.</strong> Each of these includes a div.callout element so you
@@ -392,84 +360,84 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="grid-x grid-margin-x">
-                                    <div class="large-6 medium-6 cell">
+                                <div class="grid-content">
+                                    <div class="grid-item-small-6">
                                         <div class="callout">
                                             <p>1/2 cell</p>
                                         </div>
                                     </div>
-                                    <div class="large-6 medium-6 cell">
+                                    <div class="grid-item-small-6">
                                         <div class="callout">
                                             <p>1/2 cell</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="grid-x grid-margin-x">
-                                    <div class="large-4 medium-4 small-4 cell">
+                                <div class="grid-content">
+                                    <div class="grid-item-small-4">
                                         <div class="callout">
                                             <p>1/3 cell</p>
                                         </div>
                                     </div>
-                                    <div class="large-4 medium-4 small-4 cell">
+                                    <div class="grid-item-small-4">
                                         <div class="callout">
                                             <p>1/3 cell</p>
                                         </div>
                                     </div>
-                                    <div class="large-4 medium-4 small-4 cell">
+                                    <div class="grid-item-small-4">
                                         <div class="callout">
                                             <p>1/3 cell</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="grid-x grid-margin-x">
-                                    <div class="large-3 medium-3 small-3 cell">
+                                <div class="grid-content">
+                                    <div class="grid-item-small-3">
                                         <div class="callout">
                                             <p>1/4 cell</p>
                                         </div>
                                     </div>
-                                    <div class="large-3 medium-3 small-3 cell">
+                                    <div class="grid-item-small-3">
                                         <div class="callout">
                                             <p>1/4 cell</p>
                                         </div>
                                     </div>
-                                    <div class="large-3 medium-3 small-3 cell">
+                                    <div class="grid-item-small-3">
                                         <div class="callout">
                                             <p>1/4 cell</p>
                                         </div>
                                     </div>
-                                    <div class="large-3 medium-3 small-3 cell">
+                                    <div class="grid-item-small-3">
                                         <div class="callout">
                                             <p>1/4 cell</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="grid-x grid-margin-x">
-                                    <div class="large-2 medium-2 small-2 cell">
+                                <div class="grid-content">
+                                    <div class="grid-item-small-2">
                                         <div class="callout">
                                             <p>1/6 cell</p>
                                         </div>
                                     </div>
-                                    <div class="large-2 medium-2 small-2 cell">
+                                    <div class="grid-item-small-2">
                                         <div class="callout">
                                             <p>1/6 cell</p>
                                         </div>
                                     </div>
-                                    <div class="large-2 medium-2 small-2 cell">
+                                    <div class="grid-item-small-2">
                                         <div class="callout">
                                             <p>1/6 cell</p>
                                         </div>
                                     </div>
-                                    <div class="large-2 medium-2 small-2 cell">
+                                    <div class="grid-item-small-2">
                                         <div class="callout">
                                             <p>1/6 cell</p>
                                         </div>
                                     </div>
-                                    <div class="large-2 medium-2 small-2 cell">
+                                    <div class="grid-item-small-2">
                                         <div class="callout">
                                             <p>1/6 cell</p>
                                         </div>
                                     </div>
-                                    <div class="large-2 medium-2 small-2 cell">
+                                    <div class="grid-item-small-2">
                                         <div class="callout">
                                             <p>1/6 cell</p>
                                         </div>
@@ -480,7 +448,7 @@
                     </div>
                 </div>
     
-                <div class="medium-12 cell">
+                <div class="grid-item-small-12">
                     <div class="content-box">
                         <div class="content-box-header">
                             <h2 class="tables">Tables</h2>
@@ -522,7 +490,7 @@
                     </div>
                 </div>
     
-                <div class="medium-12 cell">
+                <div class="grid-item-small-12">
                     <div class="content-box">
                         <div class="content-box-header">
                             <h2 class="forms">Forms</h2>
@@ -530,28 +498,28 @@
                         </div>
                         <div class="content-box-section">
                             <form>
-                                <div class="grid-x grid-margin-x">
-                                    <div class="large-12 cell">
+                                <div class="grid-content">
+                                    <div class="grid-item-large-12">
                                         <label>Input Label</label>
                                         <input type="text" placeholder="large-12.cell"/>
                                     </div>
                                 </div>
-                                <div class="grid-x grid-margin-x">
-                                    <div class="large-4 medium-4 cell">
+                                <div class="grid-content">
+                                    <div class="grid-item-large-4 grid-item-medium-4">
                                         <label>Input Label</label>
-                                        <input type="text" placeholder="large-4.cell"/>
+                                        <input type="text" placeholder="grid-item-large-4.cell"/>
                                     </div>
-                                    <div class="large-4 medium-4 cell">
+                                    <div class="grid-item-large-4 grid-item-medium-4">
                                         <label>Input Label</label>
-                                        <input type="text" placeholder="large-4.cell"/>
+                                        <input type="text" placeholder="grid-item-large-4.cell"/>
                                     </div>
-                                    <div class="large-4 medium-4 cell">
+                                    <div class="grid-item-large-4 grid-item-medium-4">
                                         <label>Input Label</label>
-                                        <input type="text" placeholder="large-4.cell"/>
+                                        <input type="text" placeholder="grid-item-large-4.cell"/>
                                     </div>
                                 </div>
-                                <div class="grid-x grid-margin-x">
-                                    <div class="large-12 cell">
+                                <div class="grid-content">
+                                    <div class="grid-item-large-12">
                                         <label>Select Box</label>
                                         <select>
                                             <option value="husker">Husker</option>
@@ -561,22 +529,22 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="grid-x grid-margin-x">
-                                    <div class="large-6 medium-6 cell">
+                                <div class="grid-content">
+                                    <div class="grid-item-medium-6">
                                         <label>Choose Your Favorite</label>
                                         <input type="radio" name="pokemon" value="Red" id="pokemonRed"><label
                                             for="pokemonRed">Radio 1</label>
                                         <input type="radio" name="pokemon" value="Blue" id="pokemonBlue"><label
                                             for="pokemonBlue">Radio 2</label>
                                     </div>
-                                    <div class="large-6 medium-6 cell">
+                                    <div class="grid-item-medium-6">
                                         <label>Check these out</label>
                                         <input id="checkbox1" type="checkbox"><label for="checkbox1">Checkbox 1</label>
                                         <input id="checkbox2" type="checkbox"><label for="checkbox2">Checkbox 2</label>
                                     </div>
                                 </div>
-                                <div class="grid-x grid-margin-x">
-                                    <div class="large-12 cell">
+                                <div class="grid-content">
+                                    <div class="grid-item-large-12">
                                         <label>Textarea Label</label>
                                         <textarea placeholder="small-12.cell" rows="3"></textarea>
                                     </div>
@@ -586,7 +554,7 @@
                     </div>
                 </div>
     
-                <div class="medium-12 cell">
+                <div class="grid-item-small-12">
                     <div class="content-box">
                         <div class="content-box-header">
                             <h2 id="additional">Additional Formatting</h2>
@@ -604,42 +572,42 @@
     
 
     <footer>
-        <div class="grid-container">
-            <div class="grid-x grid-margin-x">
-                <div class="medium-4 cell">
+        <div class="grid">
+            <div class="grid-content">
+                <div class="grid-item-medium-4">
                     <h2>Pro učitele a školy</h2>
-                    <ul class="no-bullet">
-                        <li><a href="#0">Ucitelský mód</a></li>
-                        <li><a href="#0">7 kroků pro rychlý start učitele</a></li>
-                        <li><a href="#0">Jak propojit systémy s výukou?</a></li>
-                        <li><a href="#0">Ceník licencí pro školy</a></li>
-                        <li><a href="#0">Časté dotazy</a></li>
+                    <ul class="list-plain">
+                        <li><a href="#">Ucitelský mód</a></li>
+                        <li><a href="#">7 kroků pro rychlý start učitele</a></li>
+                        <li><a href="#">Jak propojit systémy s výukou?</a></li>
+                        <li><a href="#">Ceník licencí pro školy</a></li>
+                        <li><a href="#">Časté dotazy</a></li>
                     </ul>
                 </div>
-                <div class="medium-4 cell">
+                <div class="grid-item-medium-4">
                     <h2>Pro rodiny a jednotlivce</h2>
-                    <ul class="no-bullet">
-                        <li><a href="#0">Rodinná licence</a></li>
-                        <li><a href="#0">Domácí procvičování</a></li>
-                        <li><a href="#0">Ceník licencí pro rodiny</a></li>
-                        <li><a href="#0">Časté dotazy</a></li>
+                    <ul class="list-plain">
+                        <li><a href="#">Rodinná licence</a></li>
+                        <li><a href="#">Domácí procvičování</a></li>
+                        <li><a href="#">Ceník licencí pro rodiny</a></li>
+                        <li><a href="#">Časté dotazy</a></li>
                     </ul>
                 </div>
-                <div class="medium-4 cell">
+                <div class="grid-item-medium-4">
                     <h2>O projektu</h2>
-                    <ul class="no-bullet">
-                        <li><a href="#0">O systémech Umíme</a></li>
-                        <li><a href="#0">Autoři projektu</a></li>
-                        <li><a href="#0">Youtube kanál </a></li>
+                    <ul class="list-plain">
+                        <li><a href="#">O systémech Umíme</a></li>
+                        <li><a href="#">Autoři projektu</a></li>
+                        <li><a href="#">Youtube kanál </a></li>
                     </ul>
                 </div>
             </div>
-            <div class="grid-x grid-margin-x">
-                <div class="medium-8 cell">
+            <div class="grid-content">
+                <div class="grid-item-medium-8">
                     <p>Umíme česky je systém, který umožňuje důkladné procvičení učiva. Má široké pokrytí a řadu cvičení. Systém Vám ulehčí zadávání domácích úkolů, Vaše studenty bude procvičování bavit a více se toho naučí.</p>
-                    <p><a href="#0">Více o učitelském módu</a></p>
+                    <p><a href="#">Více o učitelském módu</a></p>
                 </div>
-                <div class="medium-4 cell">
+                <div class="grid-item-medium-4">
                     <img src="assets/img/footer-teacher.png" class="dongle" alt="Illustration of a teacher">
                 </div>
             </div>

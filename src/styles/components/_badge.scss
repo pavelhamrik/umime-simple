@@ -1,8 +1,7 @@
-@import 'util/util';
-@import '../custom-settings';
+@import '../settings';
 
 .badge {
-    border-radius: $custom-ultimate-radius;
+    border-radius: $ultimate-border-radius;
     font-size: $small-font-size;
     padding: 0.25rem 0.75rem;
 

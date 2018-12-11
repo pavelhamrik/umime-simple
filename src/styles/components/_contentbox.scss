@@ -1,70 +1,72 @@
-@import 'util/util';
-@import '../custom-settings';
+@import '../settings';
+@import '../utils/breakpoints';
 
 .content-box {
     background: $white;
-    border-radius: $global-radius;
-    box-shadow: $custom-soft-shadow;
-    margin: 0 0 $custom-box-margin;
+    border-radius: $border-radius;
+    box-shadow: $soft-shadow;
+    margin: $vertical-margin auto;
 
     .content-box-header {
-        @include flex;
-        @include flex-align(justify, middle);
-        padding: $custom-vertical-padding $custom-small-horizontal-padding;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: $vertical-padding $small-horizontal-padding;
 
-        @include breakpoint(medium up) {
-            padding: $custom-vertical-padding $custom-horizontal-padding;
+        @include breakpoint(medium) {
+            padding: $vertical-padding $horizontal-padding;
         }
 
         h1,
         h2,
         h3 {
+            margin-top: 0;
             margin-bottom: 0;
             line-height: 1.5rem;
         }
 
         h1 {
-            font-size: $custom-content-box-h1-size;
+            font-size: $content-box-h1-size;
         }
 
         h2 {
-            font-size: $custom-content-box-h2-size;
+            font-size: $content-box-h2-size;
         }
 
         h3 {
-            font-size: $custom-content-box-h3-size;
+            font-size: $content-box-h3-size;
         }
     }
 
     .content-box-section {
-        padding: $custom-vertical-padding * 1.5 $custom-small-horizontal-padding $custom-vertical-padding;
+        padding: $vertical-padding / 2 $small-horizontal-padding $vertical-padding;
 
-        @include breakpoint(medium up) {
-            padding-left: $custom-horizontal-padding;
-            padding-right: $custom-horizontal-padding;
+        @include breakpoint(medium) {
+            padding-left: $horizontal-padding;
+            padding-right: $horizontal-padding;
         }
 
-        >.grid-container {
+        & > .grid {
             padding: 0;
         }
 
         &.tight {
-            padding-top: $custom-vertical-padding;
+            padding-top: $vertical-padding;
         }
     }
 
     &.content-box-padded .content-box-section {
-        padding-top: $custom-vertical-padding * 2;
-        padding-bottom: $custom-vertical-padding * 2;
+        padding-top: $vertical-padding * 2;
+        padding-bottom: $vertical-padding * 2;
 
-        @include breakpoint(medium up) {
-            padding-top: $custom-vertical-padding * 3;
-            padding-bottom: $custom-vertical-padding * 3;
+        @include breakpoint(medium) {
+            padding-top: $vertical-padding * 3;
+            padding-bottom: $vertical-padding * 3;
         }
 
         @include breakpoint(large up) {
-            padding-top: $custom-vertical-padding * 4;
-            padding-bottom: $custom-vertical-padding * 4;
+            padding-top: $vertical-padding * 4;
+            padding-bottom: $vertical-padding * 4;
         }
     }
 

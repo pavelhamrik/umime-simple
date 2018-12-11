@@ -1,0 +1,75 @@
+@import '../settings';
+@import '../utils/breakpoints';
+
+.header {
+    background: $white;
+    box-shadow: $soft-shadow;
+    position: relative;
+    z-index: map-get($layers, raised);
+
+    &:before {
+        font-family: $icon-font;
+        content: '\e90a';
+        display: block;
+        font-size: $large-font-size;
+        padding: calc(#{$button-vertical-padding + 0.5rem}) $horizontal-padding;
+        text-align: center;
+    }
+
+    .header-row {
+        display: none;
+        padding: 0.25rem $horizontal-padding;
+    }
+
+    &:hover {
+        .header-row {
+            display: block;
+        }
+
+        //&:before {
+        //    display: none;
+        //}
+    }
+
+    @include breakpoint(medium) {
+        &:before {
+            display: none;
+        }
+
+        .header-row {
+            display: block;
+        }
+    }
+
+    .header-row-primary {
+        padding: 0 $horizontal-padding;
+        border-bottom: 0.0625rem solid $border-gray;
+
+        .menu > * {
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        @include breakpoint(medium) {
+            .menu > *:not(:last-child) {
+                margin-right: 1rem;
+            }
+        }
+    }
+
+    .menu {
+        align-items: center;
+        flex-grow: 1;
+        margin: 0 auto;
+        max-width: $grid-max-width;
+    }
+
+    #header-content-menu {
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+    .identity {
+        font-size: 1.375rem;
+    }
+}

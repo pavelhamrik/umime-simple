@@ -1,10 +1,82 @@
-@import 'util/util';
-@import 'custom-settings';
+@import 'settings';
+@import './utils/breakpoints';
+
+body {
+    font-family: $font-family;
+    font-size: $font-size;
+    line-height: $line-height;
+    color: $black;
+}
+
+@each $label, $sizes in $headings {
+    @include breakpoint($label) {
+        @each $heading, $params in $sizes {
+            #{$heading} {
+                font-size: map-get($params, font-size);
+                margin-top: $vertical-margin * 1.5;
+                margin-bottom: $vertical-margin;
+
+                &.uncontained {
+                    padding: 0 $horizontal-padding;
+                }
+            }
+        }
+    }
+}
+
+.subheader {
+    color: $medium-gray;
+}
 
 a {
-    transition: $custom-hover-transition;
+    color: map-get($colors, primary);
+    transition: $hover-transition;
+
+    &:hover,
+    &:focus {
+        color: scale-color(map-get($colors, primary), $lightness: $darken);
+    }
 }
 
 p.suppressed {
+    margin: $vertical-margin 0;
     color: $medium-gray;
+}
+
+
+ul, ol {
+    margin-top: $vertical-margin;
+    margin-bottom: $vertical-margin;
+
+    &.list-plain {
+        list-style: none;
+        padding-left: 0;
+    }
+}
+
+ol {
+    list-style: none;
+    counter-reset: li;
+
+    li {
+        counter-increment: li;
+    }
+
+    li:before {
+        content: counter(li);
+        color: $medium-gray;
+        display: inline-block;
+        width: 1em;
+        margin-left: -2em;
+        margin-right: 1em;
+        text-align: right;
+    }
+}
+
+.callout {
+    background-color: $faint-gray;
+    border-radius: $border-radius;
+    margin-top: $vertical-margin;
+    margin-bottom: $vertical-margin;
+    padding: 0.0625rem $horizontal-padding;
 }

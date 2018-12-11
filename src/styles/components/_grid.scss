@@ -1,0 +1,92 @@
+@import '../settings';
+@import '../utils/breakpoints';
+
+$grid-template-columns: '';
+@for $col from 1 through $grid-columns {
+    $grid-template-columns: $grid-template-columns + ' 1fr';
+}
+$grid-template-columns: unquote($grid-template-columns);
+
+.grid {
+    margin: 0 auto;
+    max-width: $grid-max-width;
+    width: 100%;
+    overflow-x: hidden;
+
+    .grid-content {
+        display: grid;
+        grid-template-columns: $grid-template-columns;
+        justify-content: space-around;
+
+        margin-left: -($grid-gap / 2);
+        margin-right: -($grid-gap / 2);
+    }
+
+    $alignments: (normal, stretch, center, start, end);
+    @each $alignment in $alignments {
+        &.grid-align-#{$alignment} .grid-content {
+            align-items: $alignment;
+        }
+    }
+
+    .grid-item, [class*=grid-item-] {
+        grid-column: span $grid-columns;
+        padding-left: $grid-gap / 2;
+        padding-right: $grid-gap / 2;
+    }
+
+    // grid gap handling
+
+    $grid-gap-iterator: 1;
+    @each $screen, $size in $breakpoints {
+        $responsive-gap: $grid-gap * $grid-gap-iterator / 2;
+        $grid-gap-iterator: $grid-gap-iterator + 0.25;
+        @include breakpoint(#{$screen}) {
+            .grid-item {
+                padding-left: $responsive-gap;
+                padding-right: $responsive-gap;
+            }
+
+            &.grid-compensated-gap .grid-content {
+                margin-left: -$responsive-gap;
+                margin-right: -$responsive-gap;
+            }
+        }
+    }
+
+    // column span
+
+    @each $screen, $size in $breakpoints {
+        @include breakpoint(#{$screen}) {
+            @for $col from 1 through $grid-columns {
+                $colfactor: $grid-columns / $col;
+                @if $colfactor == round($colfactor) {
+                    &.#{$screen}-#{$col}-cols .grid-item {
+                        grid-column-start: auto;
+                        grid-column-end: span #{$colfactor};
+                    }
+                }
+            }
+        }
+    }
+
+    // item-based styles
+
+    @each $screen, $size in $breakpoints {
+        @include breakpoint($screen) {
+            @for $col from 1 through $grid-columns {
+                & > .grid-content > .grid-item-#{$screen}-#{$col} {
+                    grid-column-start: auto;
+                    grid-column-end: span #{$col};
+                    padding-left: $grid-gap / 2;
+                    padding-right: $grid-gap / 2;
+                }
+
+                & > .grid-content > .grid-item-#{$screen}-offset-#{$col} {
+                    grid-column-start: #{$col + 1} !important;
+                }
+            }
+        }
+    }
+}
+

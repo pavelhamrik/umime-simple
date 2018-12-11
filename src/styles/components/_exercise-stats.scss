@@ -1,9 +1,9 @@
-@import 'util/util';
-@import '../custom-settings';
+@import '../settings';
 
 .exercise-stats {
-    @include flex;
-    @include flex-align(justify, middle);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin: 1.5rem 0;
 
     .progress {
@@ -12,8 +12,9 @@
 
         .labels {
             padding: 0 0.25rem 0.25rem;
-            @include flex;
-            @include flex-align(justify, middle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             position: absolute;
             top: -1.625rem;
             right: 0;
@@ -37,7 +38,7 @@
     .progress + .shield {
         margin-left: 0.5rem;
 
-        @include breakpoint(medium up) {
+        @include breakpoint(medium) {
             margin-left: 1rem;
         }
     }
@@ -46,8 +47,8 @@
         width: 3rem;
         height: 3rem;
         background-color: $white;
-        box-shadow: $custom-soft-shadow;
-        border-radius: $custom-ultimate-radius;
+        box-shadow: $soft-shadow;
+        border-radius: $ultimate-border-radius;
         background-origin: content-box;
         padding: 0.25rem;
     }

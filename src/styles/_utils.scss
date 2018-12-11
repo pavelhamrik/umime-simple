@@ -1,8 +1,0 @@
-@import 'util/util';
-@import 'custom-settings';
-
-.grid-vertically-spaced {
-    .cell {
-        margin-bottom: $custom-vertical-padding;
-    }
-}

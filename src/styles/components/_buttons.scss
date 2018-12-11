@@ -1,16 +1,46 @@
-@import 'util/util';
-@import '../custom-settings';
+@import '../settings';
+@import '../utils/breakpoints';
 
 .button {
+    padding: $button-padding;
     box-shadow: $button-box-shadow;
     border: transparent;
+    text-decoration: none;
+    border-radius: $button-border-radius;
+    border: none;
+    display: inline-block;
+    white-space: nowrap;
+    transition: $button-transition;
+
+    @each $designation, $color in $colors {
+        &.#{$designation},
+        &.#{$designation}[disabled]:hover {
+            color: $white;
+            background-color: $color;
+        }
+
+        &.#{$designation}:hover {
+            background-color: scale-color($color, $lightness: $darken);
+        }
+    }
 
     &.primary {
-        font-weight: $global-weight-bold;
+        font-weight: $font-weight-bold;
+    }
+
+    &.button-plain {
+        box-shadow: none;
+        color: $black;
+
+        &:hover,
+        &:focus {
+            background-color: $light-gray;
+        }
     }
 
     &[disabled] {
         box-shadow: none;
+        opacity: 0.5;
     }
 
     &.suppressed {
@@ -18,7 +48,7 @@
         box-shadow: $button-suppressed-box-shadow;
         color: $black;
 
-        @each $designation, $color in $foundation-palette {
+        @each $designation, $color in $colors {
             &.#{$designation},
             &.#{$designation}[disabled]:hover {
                 color: $color;
@@ -41,34 +71,34 @@
     }
 
     &.exercise {
-        color: map-get($foundation-palette, secondary);
-        font-size: map-get(map-get(map-get($header-styles, small), 'h1'), 'font-size')+px;
+        color: map-get($colors, secondary);
+        font-size: map-get(map-get(map-get($headings, small), h1), 'font-size');
 
         //background: linear-gradient(to bottom, rgba($white, 1) 10%, rgba($white, 0) 90%) 50% 0%,
-        //            linear-gradient(to right, adjust-color(map-get($foundation-palette, alert), $hue: -10), map-get($foundation-palette, alert), adjust-color(map-get($foundation-palette, alert), $hue: 10)) left center;
+        //            linear-gradient(to right, adjust-color(map-get($colors, alert), $hue: -10), map-get($colors, alert), adjust-color(map-get($colors, alert), $hue: 10)) left center;
 
         background: $white;
-        box-shadow: $custom-soft-shadow;
+        box-shadow: $soft-shadow;
         width: 100%;
         margin-bottom: 1.5rem;
         outline: none;
         -webkit-tap-highlight-color: transparent; // we have custom highlights
-        transition: all $custom-lightning-speed ease-out;
+        transition: all $lightning-speed ease-out;
 
-        @include breakpoint(medium up) {
-            font-size: map-get(map-get(map-get($header-styles, medium), 'h1'), 'font-size')+px;
+        @include breakpoint(medium) {
+            font-size: map-get(map-get(map-get($headings, medium), h1), 'font-size');
         }
 
         &:hover {
-            box-shadow: $custom-floating-shadow;
+            box-shadow: $floating-shadow;
 
-            @include breakpoint(medium up) {
+            @include breakpoint(medium) {
                 transform: scale(1.025, 1.075);
             }
         }
 
         &:active {
-            background-color: $custom-active-color;
+            background-color: $active-color;
         }
 
         &.correct,
@@ -76,20 +106,20 @@
             color: $white;
             position: relative;
 
-            @include breakpoint(medium up) {
+            @include breakpoint(medium) {
                 transform: scale(1.025, 1.075);
             }
         }
 
         &.correct {
             animation: 0.65s 1 aura-success;
-            background-color: map-get($foundation-palette, success);
+            background-color: map-get($colors, success);
 
         }
 
         &.incorrect {
-            background: map-get($foundation-palette, alert);
-            //background: linear-gradient(to right, adjust-color(map-get($foundation-palette, alert), $hue: -10), map-get($foundation-palette, alert), adjust-color(map-get($foundation-palette, alert), $hue: 10));
+            background: map-get($colors, alert);
+            //background: linear-gradient(to right, adjust-color(map-get($colors, alert), $hue: -10), map-get($colors, alert), adjust-color(map-get($colors, alert), $hue: 10));
             animation: 0.65s 1 shake cubic-bezier(0.36,0.07,0.19,0.97) both;
         }
     }

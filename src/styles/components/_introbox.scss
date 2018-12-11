@@ -1,25 +1,26 @@
-@import 'util/util';
-@import '../custom-settings';
+@import '../settings';
+@import '../utils/breakpoints';
 
 .intro-box {
-    padding: 0 $custom-small-horizontal-padding $custom-vertical-padding * 2;
+    padding: 0 $small-horizontal-padding $vertical-padding * 2;
     text-align: center;
 
-    @include breakpoint(medium up) {
-        padding: 0 $custom-horizontal-padding $custom-vertical-padding * 2;
+    @include breakpoint(medium) {
+        padding: 0 $horizontal-padding $vertical-padding * 2;
         text-align: left;
-        @include flex;
-        @include flex-align(left, top);
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
     }
 
-    @include breakpoint(large up) {
+    @include breakpoint(large) {
         max-width: 80%;
     }
 
     h1 {
         font-size: 2rem;
 
-        @include breakpoint(medium up) {
+        @include breakpoint(medium) {
             font-size: 4rem;
             margin-bottom: 0;
         }
@@ -29,7 +30,7 @@
         width: 6rem;
         margin: 0 auto 0.75rem;
 
-        @include breakpoint(medium up) {
+        @include breakpoint(medium) {
             width: 14rem;
             margin: 0.75rem 1.75rem 0 0;
         }
@@ -37,7 +38,7 @@
 
     &.intro-box-simple-headline {
         .dongle {
-            @include breakpoint(medium up) {
+            @include breakpoint(medium) {
                 width: 5.5rem;
                 margin-top: 0;
             }

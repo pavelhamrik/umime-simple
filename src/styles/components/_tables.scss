@@ -1,5 +1,4 @@
-@import 'util/util';
-@import '../custom-settings';
+@import '../settings';
 
 table {
     &.edgetoedge {
@@ -9,7 +8,7 @@ table {
         }
 
         thead {
-            border-bottom-width: rem-calc(1px);
+            border-bottom-width: 0.0625rem;
         }
 
         tbody th {
@@ -17,7 +16,7 @@ table {
         }
 
         tbody:only-child {
-            border-top-width: rem-calc(1px);
+            border-top-width: 0.0625rem;
         }
 
         th:last-child,
