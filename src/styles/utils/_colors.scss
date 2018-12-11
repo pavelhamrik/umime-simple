@@ -1,0 +1,7 @@
+@import '../settings';
+
+@each $app, $color in $apps {
+    .color-#{$app} {
+        color: $color !important;
+    }
+}

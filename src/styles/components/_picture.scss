@@ -1,0 +1,11 @@
+@import '../settings';
+@import '../utils/breakpoints';
+
+.picture {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.picture-faded {
+    filter: saturate(0.5);
+}

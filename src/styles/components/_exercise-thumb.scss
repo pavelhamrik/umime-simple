@@ -1,11 +1,11 @@
-@import 'util/util';
-@import '../custom-settings';
+@import '../settings';
 
 .exercise-thumb {
     background: $light-gray;
-    border-radius: $global-radius;
-    @include flex;
-    @include flex-align(left, middle);
+    border-radius: $border-radius;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 0.5rem;
     height: 100%;
 
@@ -14,13 +14,13 @@
         background-color: $button-suppressed-background-hover;
 
         .dongle {
-            box-shadow: $custom-soft-shadow;
+            box-shadow: $soft-shadow;
         }
     }
 
     .dongle {
         width: 3.5rem;
-        margin-right: $custom-small-horizontal-padding;
+        margin-right: $small-horizontal-padding;
         flex-shrink: 0;
     }
 
@@ -29,7 +29,7 @@
         overflow: hidden;
 
         .title {
-            font-weight: $global-weight-bold;
+            font-weight: $font-weight-bold;
             line-height: 1.375rem;
             display: -webkit-box;
             -webkit-line-clamp: 2;

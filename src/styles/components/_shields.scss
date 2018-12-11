@@ -1,5 +1,4 @@
-@import 'util/util';
-@import '../custom-settings';
+@import '../settings';
 
 .shield {
     background: url('../img/shield-lvl-dot.png') center no-repeat;
@@ -8,7 +7,7 @@
     width: 2rem;
 }
 
-@each $shield in $custom-shields {
+@each $shield in $shields {
     .shield-#{$shield} {
         background-image: url('../img/shield-#{$shield}.png');
     }

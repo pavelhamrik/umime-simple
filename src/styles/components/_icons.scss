@@ -1,12 +1,11 @@
-@import 'util/util';
-@import '../custom-settings';
+@import '../settings';
 
-@each $icon in $custom-content-icons {
+@each $icon in $content-icons {
     .icon-#{$icon} {
         background: $white url('../img/icon-#{$icon}.png') center no-repeat;
         background-size: contain;
         border-radius: 20%;
-        box-shadow: $custom-soft-shadow;
+        box-shadow: $soft-shadow;
         min-width: 3rem;
 
         &:before {
@@ -15,13 +14,4 @@
             padding-top: 100%;
         }
     }
-
-    // todo: make it work
-    //.icon-small {
-    //    width: 3rem;
-    //}
-    //
-    //.icon-medium {
-    //    width: 4rem;
-    //}
 }

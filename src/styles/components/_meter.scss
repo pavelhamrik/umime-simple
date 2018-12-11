@@ -1,11 +1,10 @@
-@import 'util/util';
-@import '../custom-settings';
+@import '../settings';
 
 .meter {
     height: 0.875rem;
-    border-radius: $global-radius;
+    border-radius: $border-radius;
     background: $white;
-    box-shadow: $custom-soft-shadow;
+    box-shadow: $soft-shadow;
     position: relative;
 
     &.meter-inverse {
@@ -17,7 +16,7 @@
     &:after {
         content: '';
         display: block;
-        width: rem-calc(1px);
+        width: 0.0625rem;
         background: rgba($black, 0.25);
         position: absolute;
         left: 50%;
@@ -31,29 +30,30 @@
         background: none;
         border-style: solid;
         border-color: rgba($black, 0.25);
-        border-width: 0 rem-calc(1px);
+        border-width: 0 0.0625rem;
     }
 
     .ceiling,
     .current {
         height: 100%;
         position: absolute;
-        transition: width $custom-slow-speed $custom-swing-easing;
+        transition: width $slow-speed $swing-easing;
     }
 
     .ceiling:after,
     .current:after {
         content: '';
-        border-radius: $custom-ultimate-radius;
+        border-radius: $ultimate-border-radius;
         background: opacify($light-gray, 0.06);
         height: 100%;
         width: 100%;
         position: absolute;
-        animation: meter-grow $custom-sluggish-speed ease-in-out;
+        left: 0;
+        animation: meter-grow $sluggish-speed ease-in-out;
     }
 
     .current:after {
-        $meter-current: map-get($foundation-palette, warning);
+        $meter-current: map-get($colors, warning);
         background: linear-gradient(to right,
                     scale-color($meter-current, $lightness: 25%) 5%,
                     scale-color($meter-current, $lightness: 0) 95%);

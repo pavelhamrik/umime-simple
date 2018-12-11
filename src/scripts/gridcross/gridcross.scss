@@ -1,4 +1,5 @@
-@import '../../styles/custom-settings';
+@import '../../styles/settings';
+@import '../../styles/utils/breakpoints';
 
 $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
 
@@ -14,15 +15,15 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
 }
 
 #gridcross {
-    $transition: fill $custom-lightning-speed $custom-default-easing,
-    stroke $custom-lightning-speed $custom-default-easing;
+    $transition: fill $lightning-speed $default-easing,
+    stroke $lightning-speed $default-easing;
     $flash-time: 0.35s;
     $solved-flash-time: 0.55s;
     $flash-easing: cubic-bezier(0,0,0,0.7);
 
     margin: 0 auto;
     padding: 1rem 0;
-    font-size: $global-font-size;
+    font-size: $font-size;
     line-height: 1.5;
 
     -webkit-user-select: none;
@@ -33,7 +34,7 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
 
     .task-copy {
         text-align: center;
-        margin: 0 auto $custom-vertical-padding * 2;
+        margin: 0 auto $vertical-padding * 2;
         max-width: 320px;
         min-height: 3rem;
     }
@@ -41,8 +42,8 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
     #canvas-wrapper {
         background: url($asset-url + 'gridcross-background.jpg') blanchedalmond 55% 50%;
         background-size: cover;
-        border-radius: $global-radius;
-        box-shadow: $custom-soft-shadow, 0 2px 7px 0 rgba(0,0,0,.08);
+        border-radius: $border-radius;
+        box-shadow: $soft-shadow, 0 2px 7px 0 rgba(0,0,0,.08);
         box-sizing: content-box;
         margin: 0 auto;
         width: fit-content;
@@ -67,7 +68,7 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
             pointer-events: none;
 
             &.taskline {
-                stroke: map-get($custom-apps, 'english');
+                stroke: map-get($apps, 'english');
                 stroke-width: 3;
                 pointer-events: auto;
             }
@@ -79,7 +80,7 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
             }
 
             &.solvedline {
-                animation: $custom-fast-speed $custom-fadein-easing solved-path forwards;
+                animation: $fast-speed $fadein-easing solved-path forwards;
             }
 
             &.flashline {
@@ -97,7 +98,7 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
             transition: $transition;
 
             &.tasknode {
-                stroke: map-get($custom-apps, 'english');
+                stroke: map-get($apps, 'english');
                 fill: $white;
                 stroke-width: 2;
             }
@@ -115,7 +116,7 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
             &.usernode.solvednode,
             &.tasknode.solvednode,
             &.selectednode.solvednode {
-                animation: $custom-fast-speed $custom-fadein-easing solved-node forwards;
+                animation: $fast-speed $fadein-easing solved-node forwards;
             }
 
             &.flashnode {
@@ -135,38 +136,38 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
             transition: $transition;
 
             &.snapped {
-                stroke: map-get($foundation-palette, secondary);
+                stroke: map-get($colors, secondary);
             }
         }
 
         line.indicator {
-            stroke-width: 3px;
+            stroke-width: 3;
             stroke: $black;
             transition: $transition;
 
             &.crosshair {
-                stroke-width: 0;
+                stroke-width: 1;
                 stroke: rgba($black, 0.5);
 
                 &.snapped {
-                    stroke: rgba(map-get($foundation-palette, secondary), 0.75);
+                    stroke: rgba(map-get($colors, secondary), 0.75);
                 }
 
-                @include breakpoint(medium down) {
-                    stroke-width: 1;
+                @include breakpoint(large) {
+                    stroke-width: 0;
                 }
             }
 
             &.snapped {
-                stroke: map-get($foundation-palette, secondary);
+                stroke: map-get($colors, secondary);
             }
         }
 
         .label {
             pointer-events: none;
-            font-size: $global-font-size;
-            font-weight: $global-weight-bold;
-            fill: map-get($custom-apps, 'english');
+            font-size: $font-size;
+            font-weight: $font-weight-bold;
+            fill: map-get($apps, 'english');
         }
 
         .no-pointer-events {
@@ -175,7 +176,7 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
     }
 
     .button-wrapper {
-        margin: $custom-vertical-padding * 2 auto 0;
+        margin: $vertical-padding * 2 auto 0;
         text-align: center;
     }
 
@@ -189,12 +190,12 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
         margin: 0 0.75rem;
         background-color: $button-suppressed-background;
         border: none;
-        border-radius: $button-radius;
+        border-radius: $button-border-radius;
         padding: $button-padding;
         transition: $button-transition;
         outline: none;
         min-height: 2.75rem;
-        font-size: $global-font-size;
+        font-size: $font-size;
         text-transform: none;
         -webkit-appearance: button;
 
@@ -210,18 +211,18 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
 
         &.next-button:not(:disabled) {
             opacity: 1;
-            background-color: map-get($foundation-palette, primary);
+            background-color: map-get($colors, primary);
             color: $white;
 
             &:hover,
             &:active {
-                background-color: scale-color(map-get($foundation-palette, primary), $lightness: -15%);
+                background-color: scale-color(map-get($colors, primary), $lightness: -15%);
             }
         }
     }
 
     .loading-indicator {
-        border-radius: $global-radius;
+        border-radius: $border-radius;
         position: absolute;
         top: 0;
         right: 0;
@@ -233,17 +234,17 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
 
         &:after {
             content: '';
-            background-color: map-get($foundation-palette, primary);
+            background-color: map-get($colors, primary);
             display: block;
             width: 3rem;
             height: 3rem;
-            border-radius: $global-radius / 2;
+            border-radius: $border-radius / 2;
             animation: sk-rotateplane 1.2s infinite ease-in-out;
         }
     }
 
     #local-io {
-        margin: $custom-vertical-padding * 3 auto 0;
+        margin: $vertical-padding * 3 auto 0;
         width: 340px;
         position: relative;
 
@@ -260,7 +261,7 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
 
         #local-io-apply-button {
             background: $light-gray;
-            border-radius: $custom-ultimate-radius;
+            border-radius: $ultimate-border-radius;
             padding: 0.375rem;
             width: 1.75rem;
             height: 1.75rem;
@@ -278,40 +279,40 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
 
     @keyframes flash-selected-line {
         0% {
-            stroke: rgba(map-get($foundation-palette, secondary), 0.5);
+            stroke: rgba(map-get($colors, secondary), 0.5);
         }
         100% {
-            stroke: rgba(map-get($foundation-palette, secondary), 0);
+            stroke: rgba(map-get($colors, secondary), 0);
             stroke-width: 16;
         }
     }
 
     @keyframes flash-solved-line {
         0% {
-            stroke: rgba(map-get($foundation-palette, primary), 0.5);
+            stroke: rgba(map-get($colors, primary), 0.5);
         }
         100% {
-            stroke: rgba(map-get($foundation-palette, primary), 0);
+            stroke: rgba(map-get($colors, primary), 0);
             stroke-width: 16;
         }
     }
 
     @keyframes flash-selected-node {
         0% {
-            stroke: rgba(map-get($foundation-palette, secondary), 0.5);
+            stroke: rgba(map-get($colors, secondary), 0.5);
         }
         100% {
-            stroke: rgba(map-get($foundation-palette, secondary), 0);
+            stroke: rgba(map-get($colors, secondary), 0);
             stroke-width: 24;
         }
     }
 
     @keyframes flash-solved-node {
         0% {
-            stroke: rgba(map-get($foundation-palette, primary), 0.5);
+            stroke: rgba(map-get($colors, primary), 0.5);
         }
         100% {
-            stroke: rgba(map-get($foundation-palette, primary), 0);
+            stroke: rgba(map-get($colors, primary), 0);
             stroke-width: 24;
         }
     }
@@ -321,7 +322,7 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
             stroke: $black;
         }
         100% {
-            stroke: map-get($foundation-palette, primary);
+            stroke: map-get($colors, primary);
             stroke-width: 4;
         }
     }
@@ -331,9 +332,9 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
             stroke: $black;
         }
         100% {
-            stroke: map-get($foundation-palette, primary);
+            stroke: map-get($colors, primary);
             stroke-width: 2;
-            //fill: scale-color(map-get($foundation-palette, primary), $lightness: 80%);
+            //fill: scale-color(map-get($colors, primary), $lightness: 80%);
         }
     }
 

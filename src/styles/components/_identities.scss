@@ -1,0 +1,39 @@
+@import '../settings';
+@import '../utils/breakpoints';
+
+@each $app, $color in $apps {
+    body .identity-#{$app} {
+        background: url('../img/avatar-small-#{$app}.png') 0.375rem center no-repeat;
+        background-size: contain;
+        padding-left: 2.75rem;
+    }
+}
+
+.identity-label {
+    display: inline-block;
+    margin-left: 0.5rem;
+    white-space: nowrap;
+
+    @include breakpoint(medium) {
+        & {
+            display: none;
+        }
+    }
+
+    @include breakpoint(large) {
+        & {
+            display: inline-block;
+            margin-left: 0.5rem;
+        }
+    }
+}
+
+.dropdown-menu .identity-label {
+    display: inline-block;
+    margin-left: 0.5rem;
+}
+
+.user-picture {
+    width: 2rem;
+    height: 2rem;
+}

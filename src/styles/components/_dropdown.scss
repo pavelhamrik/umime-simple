@@ -1,0 +1,72 @@
+@import '../settings';
+@import '../utils/breakpoints';
+
+.dropdown {
+    list-style: none;
+    position: relative;
+
+    .dropdown-button:after {
+        content: '\e900';
+        font-family: $icon-font;
+        font-size: $small-font-size;
+        margin-left: 0.5rem;
+    }
+
+    .title {
+        color: $medium-gray;
+        font-size: $small-font-size;
+        padding: $button-padding;
+    }
+
+    .divider {
+        height: 0.0625rem;
+        background-color: $border-gray;
+        margin: $vertical-padding / 2 0;
+    }
+
+    &:hover,
+    &:focus {
+        .dropdown-button {
+            background-color: $light-gray;
+        }
+
+        .dropdown-menu {
+            display: block;
+        }
+    }
+}
+
+.dropdown-menu {
+    list-style: none;
+    background-color: $white;
+    box-shadow: $floating-shadow;
+    border-radius: $button-border-radius;
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: auto;
+    min-width: 240px;
+    padding: $vertical-padding / 2 0;
+    z-index: map-get($layers, tooltip);
+    margin: 0;
+
+    a {
+        color: $black;
+        display: block;
+        border-radius: 0;
+        padding: $button-padding;
+        text-decoration: none;
+        transition: $button-transition;
+
+        &:hover,
+        &:focus {
+            background-color: $light-gray;
+        }
+    }
+}
+
+.dropdown-menu-right {
+    left: auto;
+    right: 0;
+}

@@ -1,31 +1,31 @@
-@import 'util/util';
-@import '../custom-settings';
+@import '../settings';
+@import '../utils/breakpoints';
 
 .exercise-question {
     text-align: center;
-    font-weight: $global-weight-normal;
-    margin: 0 0 $custom-vertical-padding * 3;
+    font-weight: $font-weight-normal;
+    margin: 0 0 $vertical-padding * 3;
 }
 
 .exercise-blank {
-    color: map-get($foundation-palette, secondary);
+    color: map-get($colors, secondary);
 }
 
 .exercise-correct {
-    color: map-get($foundation-palette, success);
+    color: map-get($colors, success);
 }
 
 .exercise-incorrect {
-    color: map-get($foundation-palette, alert);
+    color: map-get($colors, alert);
 }
 
 .exercise-grid {
-    @include flex;
-    @include flex-direction(column);
-    @include flex-align(justify, null);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     min-height: calc(100vh - 7rem);
 
-    @include breakpoint(medium up) {
+    @include breakpoint(medium) {
         min-height: calc(100vh - 13.5rem);
     }
 }
@@ -33,13 +33,13 @@
 .page-wrapper-final .exercise-grid {
     min-height: calc(100vh - 11rem);
 
-    @include breakpoint(medium up) {
+    @include breakpoint(medium) {
         min-height: calc(100vh - 16rem);
     }
 }
 
 .exercise-main {
-    @include breakpoint(medium up) {
+    @include breakpoint(medium) {
         margin-bottom: 4rem;
     }
 }
@@ -63,7 +63,7 @@
         box-sizing: border-box;
         overflow-y: auto;
         text-align: left;
-        transition: $custom-size-transition;
+        transition: $size-transition;
         font-size: $small-font-size;
 
         & > * {

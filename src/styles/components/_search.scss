@@ -1,0 +1,53 @@
+@import '../settings';
+@import '../utils/breakpoints';
+
+.search {
+    position: relative;
+
+    @include breakpoint(medium) {
+        max-width: 380px;
+    }
+
+    input {
+        box-shadow: none;
+        padding: 0.5rem 2.75rem;
+        background: $light-gray;
+        border: none;
+        border-radius: $button-border-radius;
+        margin-right: 0;
+        max-width: none;
+        transition: $hover-transition;
+        width: 100%;
+
+        &:focus {
+            background: opacify($light-gray, 0.09);
+            outline: none;
+        }
+    }
+
+    &:before {
+        content: '\e905';
+        color: $medium-gray;
+        font-family: $icon-font;
+        position: absolute;
+        top: calc(50% - #{($font-size / 2) + $button-vertical-padding / 2});
+        left: 1rem;
+        display: block;
+    }
+
+    .button-clear {
+        position: absolute;
+        border: none;
+        background: transparent;
+        top: 0;
+        right: 0;
+        padding: $vertical-padding;
+        color: $medium-gray;
+
+        &:hover,
+        &:focus {
+            color: $black;
+            outline: none;
+        }
+    }
+}
