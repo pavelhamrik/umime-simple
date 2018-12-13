@@ -1,12 +1,18 @@
 @import '../settings';
 
-.badge {
+.badge,
+[class^="badge-"],
+[class*=" badge-"] {
+    background: $light-gray;
     border-radius: $ultimate-border-radius;
+    color: $black;
     font-size: $small-font-size;
     padding: 0.25rem 0.75rem;
+}
 
-    &:not(.primary, .secondary, .success, .warning, .alert) {
-        background: $light-gray;
-        color: $black;
+@each $name, $code in $colors {
+    .badge-#{$name} {
+        background-color: $code;
+        color: $white;
     }
 }

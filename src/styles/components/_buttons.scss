@@ -2,33 +2,42 @@
 @import '../utils/breakpoints';
 
 .button {
-    padding: $button-padding;
+    background-color: map-get($colors, primary);
     box-shadow: $button-box-shadow;
     border: transparent;
-    text-decoration: none;
     border-radius: $button-border-radius;
     border: none;
-    display: inline-block;
-    white-space: nowrap;
+    color: $white;
+    display: inline-flex;
+    padding: $button-padding;
+    text-decoration: none;
     transition: $button-transition;
+    white-space: nowrap;
+
+    &:hover,
+    &:focus {
+        background-color: scale-color(map-get($colors, primary), $lightness: $darken);
+        color: $white;
+        box-shadow: $floating-shadow;
+    }
 
     @each $designation, $color in $colors {
-        &.#{$designation},
-        &.#{$designation}[disabled]:hover {
-            color: $white;
+        &.button-#{$designation},
+        &.button-#{$designation}[disabled]:hover {
             background-color: $color;
         }
 
-        &.#{$designation}:hover {
+        &.button-#{$designation}:hover {
             background-color: scale-color($color, $lightness: $darken);
         }
     }
 
-    &.primary {
+    &.button-primary {
         font-weight: $font-weight-bold;
     }
 
     &.button-plain {
+        background-color: transparent;
         box-shadow: none;
         color: $black;
 
@@ -38,15 +47,17 @@
         }
     }
 
-    &[disabled] {
+    &[disabled],
+    &.button-disabled {
         box-shadow: none;
-        opacity: 0.5;
+        opacity: 0.65;
+        cursor: not-allowed;
     }
 
-    &.suppressed {
+    &.button-suppressed {
         background: $button-suppressed-background;
         box-shadow: $button-suppressed-box-shadow;
-        color: $black;
+        color: map-get($colors, primary);
 
         @each $designation, $color in $colors {
             &.#{$designation},
@@ -60,14 +71,22 @@
         }
 
         &:hover {
-            background: scale-color($button-suppressed-background, $lightness: -7%)
+            background: scale-color($button-suppressed-background, $lightness: -7%);
+            color: scale-color(map-get($colors, primary), $lightness: $darken);
         }
 
         &[disabled],
-        &[disabled]:hover {
-            background: opacify($button-suppressed-background, 0.11);
+        &[disabled]:hover,
+        &.button-disabled,
+        &.button-disabled:hover {
+            //background: opacify($button-suppressed-background, 0.11);
             box-shadow: none;
+            color: $black;
         }
+    }
+
+    &.button-emphasized {
+        font-weight: $font-weight-bold;
     }
 
     &.exercise {
@@ -80,7 +99,7 @@
         background: $white;
         box-shadow: $soft-shadow;
         width: 100%;
-        margin-bottom: 1.5rem;
+        //margin-bottom: 1.5rem;
         outline: none;
         -webkit-tap-highlight-color: transparent; // we have custom highlights
         transition: all $lightning-speed ease-out;
@@ -123,8 +142,20 @@
             animation: 0.65s 1 shake cubic-bezier(0.36,0.07,0.19,0.97) both;
         }
     }
+
+    .material-icons {
+        font-size: $large-font-size;
+        //line-height: 0.75;
+    }
 }
 
-table .button:last-child {
-    margin-bottom: 0;
+@each $size, $attrs in $buttons {
+    .button-#{$size} {
+        font-size: map-get($attrs, font-size);
+        padding: map-get($attrs, padding);
+    }
 }
+
+//table .button:last-child {
+//    margin-bottom: 0;
+//}

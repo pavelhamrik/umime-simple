@@ -3,9 +3,14 @@
 
 footer {
     background: $white;
-    padding: $vertical-padding * 4 $horizontal-padding * 2;
+    padding: $vertical-padding * 4 $horizontal-padding;
     box-shadow: 0 -3px 3px 0 rgba(0,0,0,.007),
                 0 -8px 8px 0 rgba(0,0,0,.008);
+
+    @include breakpoint(medium) {
+        padding-left: $horizontal-padding * 2;
+        padding-right: $horizontal-padding * 2;
+    }
 
     p {
         color: $dark-gray;
@@ -35,20 +40,5 @@ footer {
 
         padding-bottom: $vertical-padding;
         margin-bottom: $vertical-padding * 2;
-
-        //&:after {
-        //
-        //    content: '';
-        //    position: absolute;
-        //    bottom: 0;
-        //    left: $custom-small-horizontal-padding + rem-calc(map-get($grid-margin-gutters, small)) * 0.5;
-        //    right: $custom-small-horizontal-padding + rem-calc(map-get($grid-margin-gutters, small)) * 0.5;
-        //
-        //    @include breakpoint(medium up) {
-        //        left: $custom-horizontal-padding + rem-calc(map-get($grid-margin-gutters, medium)) * 0.5;
-        //        right: $custom-horizontal-padding + rem-calc(map-get($grid-margin-gutters, medium)) * 0.5;
-        //    }
-        //}
     }
-
 }

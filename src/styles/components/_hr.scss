@@ -2,4 +2,10 @@
 
 hr {
     border-color: $border-gray;
+    border-width: 1px 0 0;
+    margin: $vertical-margin 0;
+
+    &.spacious {
+        margin: $vertical-margin * 2 0;
+    }
 }

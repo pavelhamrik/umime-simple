@@ -1,0 +1,28 @@
+@import '../settings';
+//@import '../utils/breakpoints';
+
+$directions: (top, bottom);
+@each $direction in $directions {
+    @for $step from 0 through 2 {
+        .margin-#{$direction}-#{$step} {
+            margin-#{$direction}: $vertical-margin * $step;
+        }
+
+        .padding-#{$direction}-#{$step} {
+            padding-#{$direction}: $vertical-padding * $step;
+        }
+    }
+}
+
+$directions: (right, left);
+@each $direction in $directions {
+    @for $step from 0 through 2 {
+        .margin-#{$direction}-#{$step} {
+            margin-#{$direction}: $horizontal-margin * $step;
+        }
+
+        .padding-#{$direction}-#{$step} {
+            padding-#{$direction}: $horizontal-padding * $step;
+        }
+    }
+}

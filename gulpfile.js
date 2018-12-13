@@ -19,7 +19,7 @@ const PATHS = {
         dist: './docs/assets/'
     },
     scripts: {
-        src: ['./src/**/*.exercise.js'],
+        src: ['./src/**/*.exercise.js', './src/**/*.app.js'],
         watch: ['./src/**/*.js'],
         dist: './docs/assets/scripts/',
     },

@@ -1,0 +1,10 @@
+@import '../settings';
+@import '../utils/breakpoints';
+
+@mixin font-size($elem) {
+    @each $screen, $elements in $headings {
+        @include breakpoint($screen) {
+            font-size: map-get(map-get($elements, $elem), font-size);
+        }
+    }
+}

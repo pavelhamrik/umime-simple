@@ -15,25 +15,29 @@
     </head>
     <body>
 
-    <div class="header">
-    
+    <header>
         <div class="header-row header-row-primary">
             <ul id="header-personal-menu" class="menu menu-small-stacked menu-medium-flexed">
                 <li id="app-switch" class="dropdown">
-                    <a href="index.html" class="button button-plain identity identity-czech dropdown-button">
-                        <span class="identity-label">Umíme <strong class="color-czech">česky</strong></span>
+                    <a href="index.html" class="button button-plain identity identity-math dropdown-button">
+                        <span class="identity-label">Umíme <strong class="color-math">matiku</strong></span>
                     </a>
                     <ul class="dropdown-menu" data-submenu>
+                        <li>
+                            <a href="#" class="identity identity-czech">
+                                <span class="identity-label">Umíme <strong class="color-czech">česky</strong></span>
+                            </a>
+                        </li>
                         <li>
                             <a href="#" class="identity identity-english">
                                 <span class="identity-label">Umíme <strong class="color-english">anglicky</strong></span>
                             </a>
                         </li>
-                        <li>
-                            <a href="#" class="identity identity-math">
-                                <span class="identity-label">Umíme <strong class="color-math">matiku</strong></span>
-                            </a>
-                        </li>
+                        <!--<li>-->
+                            <!--<a href="#" class="identity identity-math">-->
+                                <!--<span class="identity-label">Umíme <strong class="color-math">matiku</strong></span>-->
+                            <!--</a>-->
+                        <!--</li>-->
                         <li>
                             <a href="#" class="identity identity-facts">
                                 <span class="identity-label">Umíme <strong class="color-facts">fakta</strong></span>
@@ -60,8 +64,9 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-button button primary">Učitel</a>
                     <ul class="dropdown-menu" data-submenu>
+                        <li><a href="#">Moje třídy</a></li>
                         <li><a href="#">Domácí úkoly</a></li>
-                        <li><a href="#">…</a></li>
+                        <li class="divider"></li>
                         <li><a href="#">…</a></li>
                     </ul>
                 </li>
@@ -76,8 +81,16 @@
                     <ul class="dropdown-menu dropdown-menu-right">
                         <li><a href="#">Můj profil</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">…</a></li>
-                        <li><a href="#">…</a></li>
+                        <li><a href="#">Můj účet</a></li>
+                        <li><a href="#">Moje licence</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Odhlásit se</a></li>
+                        <li class="divider"></li>
+                        <li class="title">Zkratky</li>
+                        <li><a href="components.html">Komponenty</a></li>
+                        <li><a href="doplnovacka.html">Doplňovačka</a></li>
+                        <li><a href="mrizkovana.html">Mřížkovaná</a></li>
+                        <li><a href="denni-limit.html">Denní limit</a></li>
                     </ul>
                 </li>
             </ul>
@@ -154,7 +167,7 @@
                 </li>
             </ul>
         </div>
-    </div>
+    </header>
     <div class="page-wrapper">
         <div class="grid">
             <div class="grid-content">
@@ -177,8 +190,6 @@
                                             <h2>Heading 2</h2>
                                             <h3>Heading 3</h3>
                                             <h4>Heading 4</h4>
-                                            <h5>Heading 5</h5>
-                                            <h6>Heading 6</h6>
                                         </div>
                                     </div>
                                     <div class="grid-item-medium-6">
@@ -187,8 +198,6 @@
                                             <h2 class="subheader">Subheader 2</h2>
                                             <h3 class="subheader">Subheader 3</h3>
                                             <h4 class="subheader">Subheader 4</h4>
-                                            <h5 class="subheader">Subheader 5</h5>
-                                            <h6 class="subheader">Subheader 6</h6>
                                         </div>
                                     </div>
                                 </div>
@@ -197,7 +206,6 @@
                             <h2>Paragraphs</h2>
                             <p class="lead">Lead paragraph. Žáci při učení obvykle volí jednu z nejméně vhodných strategií
                                 pro osvojení učiva - opakované čtení textu.</p>
-                            <p></p>
                             <p>Testování a procvičování látky vidí pouze jako kontrolu, že si látku správně zapamatovali.
                                 Tato metoda „nasávací houby“ je nejméně účinná a již po pár týdnech si studenti pamatují
                                 pouze malý zlomek učiva (např. v případě cizích slovíček je to jen 1 %).</p>
@@ -253,92 +261,80 @@
                         <div class="content-box-section">
                             <h3>Large Buttons</h3>
                             <p>
-                                <a href="#" class="large primary button">Primary Button</a>
-                                <a href="#" class="large secondary button">Secondary Button</a>
-                                <a href="#" class="large success button">Success Button</a>
-                                <a href="#" class="large warning button">Warning Button</a>
-                                <a href="#" class="large alert button">Alert Button</a>
+                                <a href="#" class="large button-primary button">Primary Button</a>
+                                <a href="#" class="large button-success button">Success Button</a>
+                                <a href="#" class="large button-warning button">Warning Button</a>
+                                <a href="#" class="large button-alert button">Alert Button</a>
                             </p>
                             <p>
-                                <a href="#" class="large primary button" disabled>Primary Button</a>
-                                <a href="#" class="large secondary button" disabled>Secondary Button</a>
-                                <a href="#" class="large success button" disabled>Success Button</a>
-                                <a href="#" class="large warning button" disabled>Warning Button</a>
-                                <a href="#" class="large alert button" disabled>Alert Button</a>
+                                <a href="#" class="large button-primary button" disabled>Primary Button</a>
+                                <a href="#" class="large button-success button" disabled>Success Button</a>
+                                <a href="#" class="large button-warning button" disabled>Warning Button</a>
+                                <a href="#" class="large button-alert button" disabled>Alert Button</a>
                             </p>
                             <p>
-                                <a href="#" class="large primary suppressed button">Primary Button</a>
-                                <a href="#" class="large secondary suppressed button">Secondary Button</a>
-                                <a href="#" class="large success suppressed button">Success Button</a>
-                                <a href="#" class="large warning suppressed button">Warning Button</a>
-                                <a href="#" class="large alert suppressed button">Alert Button</a>
+                                <a href="#" class="large button-primary button-suppressed button">Primary Button</a>
+                                <a href="#" class="large button-success button-suppressed button">Success Button</a>
+                                <a href="#" class="large button-warning button-suppressed button">Warning Button</a>
+                                <a href="#" class="large button-alert button-suppressed button">Alert Button</a>
                             </p>
                             <p>
-                                <a href="#" class="large primary suppressed button" disabled>Primary Button</a>
-                                <a href="#" class="large secondary suppressed button" disabled>Secondary Button</a>
-                                <a href="#" class="large success suppressed button" disabled>Success Button</a>
-                                <a href="#" class="large warning suppressed button" disabled>Warning Button</a>
-                                <a href="#" class="large alert suppressed button" disabled>Alert Button</a>
+                                <a href="#" class="large button-primary button-suppressed button" disabled>Primary Button</a>
+                                <a href="#" class="large button-success button-suppressed button" disabled>Success Button</a>
+                                <a href="#" class="large button-warning button-suppressed button" disabled>Warning Button</a>
+                                <a href="#" class="large button-alert button-suppressed button" disabled>Alert Button</a>
                             </p>
     
                             <h3>Medium Buttons</h3>
                             <p>
-                                <a href="#" class="medium primary button">Primary Button</a>
-                                <a href="#" class="medium secondary button">Secondary Button</a>
-                                <a href="#" class="medium success button">Success Button</a>
-                                <a href="#" class="medium warning button">Warning Button</a>
-                                <a href="#" class="medium alert button">Alert Button</a>
+                                <a href="#" class="medium button-primary button">Primary Button</a>
+                                <a href="#" class="medium button-success button">Success Button</a>
+                                <a href="#" class="medium button-warning button">Warning Button</a>
+                                <a href="#" class="medium button-alert button">Alert Button</a>
                             </p>
                             <p>
-                                <a href="#" class="medium primary button" disabled>Primary Button</a>
-                                <a href="#" class="medium secondary button" disabled>Secondary Button</a>
-                                <a href="#" class="medium success button" disabled>Success Button</a>
-                                <a href="#" class="medium warning button" disabled>Warning Button</a>
-                                <a href="#" class="medium alert button" disabled>Alert Button</a>
+                                <a href="#" class="medium button-primary button" disabled>Primary Button</a>
+                                <a href="#" class="medium button-success button" disabled>Success Button</a>
+                                <a href="#" class="medium button-warning button" disabled>Warning Button</a>
+                                <a href="#" class="medium button-alert button" disabled>Alert Button</a>
                             </p>
                             <p>
-                                <a href="#" class="medium primary suppressed button">Primary Button</a>
-                                <a href="#" class="medium secondary suppressed button">Secondary Button</a>
-                                <a href="#" class="medium success suppressed button">Success Button</a>
-                                <a href="#" class="medium warning suppressed button">Warning Button</a>
-                                <a href="#" class="medium alert suppressed button">Alert Button</a>
+                                <a href="#" class="medium button-primary button-suppressed button">Primary Button</a>
+                                <a href="#" class="medium button-success button-suppressed button">Success Button</a>
+                                <a href="#" class="medium button-warning button-suppressed button">Warning Button</a>
+                                <a href="#" class="medium button-alert button-suppressed button">Alert Button</a>
                             </p>
                             <p>
-                                <a href="#" class="medium primary suppressed button" disabled>Primary Button</a>
-                                <a href="#" class="medium secondary suppressed button" disabled>Secondary Button</a>
-                                <a href="#" class="medium success suppressed button" disabled>Success Button</a>
-                                <a href="#" class="medium warning suppressed button" disabled>Warning Button</a>
-                                <a href="#" class="medium alert suppressed button" disabled>Alert Button</a>
+                                <a href="#" class="medium button-primary button-suppressed button" disabled>Primary Button</a>
+                                <a href="#" class="medium button-success button-suppressed button" disabled>Success Button</a>
+                                <a href="#" class="medium button-warning button-suppressed button" disabled>Warning Button</a>
+                                <a href="#" class="medium button-alert button-suppressed button" disabled>Alert Button</a>
                             </p>
     
                             <h3>Small Buttons</h3>
                             <p>
-                                <a href="#" class="small primary button">Primary Button</a>
-                                <a href="#" class="small secondary button">Secondary Button</a>
-                                <a href="#" class="small success button">Success Button</a>
-                                <a href="#" class="small warning button">Warning Button</a>
-                                <a href="#" class="small alert button">Alert Button</a>
+                                <a href="#" class="small button-primary button">Primary Button</a>
+                                <a href="#" class="small button-success button">Success Button</a>
+                                <a href="#" class="small button-warning button">Warning Button</a>
+                                <a href="#" class="small button-alert button">Alert Button</a>
                             </p>
                             <p>
-                                <a href="#" class="small primary button" disabled>Primary Button</a>
-                                <a href="#" class="small secondary button" disabled>Secondary Button</a>
-                                <a href="#" class="small success button" disabled>Success Button</a>
-                                <a href="#" class="small warning button" disabled>Warning Button</a>
-                                <a href="#" class="small alert button" disabled>Alert Button</a>
+                                <a href="#" class="small button-primary button" disabled>Primary Button</a>
+                                <a href="#" class="small button-success button" disabled>Success Button</a>
+                                <a href="#" class="small button-warning button" disabled>Warning Button</a>
+                                <a href="#" class="small button-alert button" disabled>Alert Button</a>
                             </p>
                             <p>
-                                <a href="#" class="small primary suppressed button">Primary Button</a>
-                                <a href="#" class="small secondary suppressed button">Secondary Button</a>
-                                <a href="#" class="small success suppressed button">Success Button</a>
-                                <a href="#" class="small warning suppressed button">Warning Button</a>
-                                <a href="#" class="small alert suppressed button">Alert Button</a>
+                                <a href="#" class="small button-primary button-suppressed button">Primary Button</a>
+                                <a href="#" class="small button-success button-suppressed button">Success Button</a>
+                                <a href="#" class="small button-warning button-suppressed button">Warning Button</a>
+                                <a href="#" class="small button-alert button-suppressed button">Alert Button</a>
                             </p>
                             <p>
-                                <a href="#" class="small primary suppressed button" disabled>Primary Button</a>
-                                <a href="#" class="small secondary suppressed button" disabled>Secondary Button</a>
-                                <a href="#" class="small success suppressed button" disabled>Success Button</a>
-                                <a href="#" class="small warning suppressed button" disabled>Warning Button</a>
-                                <a href="#" class="small alert suppressed button" disabled>Alert Button</a>
+                                <a href="#" class="small button-primary button-suppressed button" disabled>Primary Button</a>
+                                <a href="#" class="small button-success button-suppressed button" disabled>Success Button</a>
+                                <a href="#" class="small button-warning button-suppressed button" disabled>Warning Button</a>
+                                <a href="#" class="small button-alert button-suppressed button" disabled>Alert Button</a>
                             </p>
                         </div>
                     </div>
@@ -473,7 +469,7 @@
                                     <td>Filler</td>
                                     <td>Mar 3</td>
                                     <td>12 / 17</td>
-                                    <td><a href="#" class="small success suppressed button">More</a></td>
+                                    <td><a href="#" class="small button-success button-suppressed button">More</a></td>
                                 </tr>
                                 <tr>
                                     <td>
@@ -482,7 +478,7 @@
                                     <td>Filler</td>
                                     <td>Aug 7</td>
                                     <td>15 / 17</td>
-                                    <td><a href="#" class="small success suppressed button">More</a></td>
+                                    <td><a href="#" class="small button-success button-suppressed button">More</a></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -613,5 +609,7 @@
             </div>
         </div>
     </footer>
+    <script src="/assets/scripts/umime.app.js" type="text/javascript"></script>
+
     </body>
 </html>

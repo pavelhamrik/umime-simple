@@ -4,7 +4,7 @@
 .page-wrapper {
     background: $faint-gray url('../img/footer-pencils.png') no-repeat bottom -2rem center;
     background-size: (690px * 0.45) (270px * 0.45);
-    padding: 0rem $horizontal-padding 7rem;
+    padding: 0.0625rem $horizontal-padding / 2 7rem;
 
     @include breakpoint(medium) {
         padding: 1rem $horizontal-padding 7rem;
@@ -22,5 +22,10 @@
 
     &.page-wrapper-final {
         position: relative;
+    }
+
+    &.page-wrapper-no-image {
+        background-image: none;
+        padding-bottom: 3rem;
     }
 }

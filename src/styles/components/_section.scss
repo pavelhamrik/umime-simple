@@ -1,0 +1,17 @@
+@import '../settings';
+@import '../utils/breakpoints';
+
+section {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+
+    @include breakpoint(medium) {
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    @include breakpoint(large) {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+}

@@ -1,11 +1,11 @@
 @import '../settings';
 @import '../utils/breakpoints';
 
-.header {
+header {
     background: $white;
     box-shadow: $soft-shadow;
     position: relative;
-    z-index: map-get($layers, raised);
+    z-index: map-get($layers, headers);
 
     &:before {
         font-family: $icon-font;
@@ -18,17 +18,17 @@
 
     .header-row {
         display: none;
-        padding: 0.25rem $horizontal-padding;
+        padding: 0.25rem $horizontal-padding / 2;
+
+        @include breakpoint(medium) {
+            padding: 0.25rem $horizontal-padding;
+        }
     }
 
     &:hover {
         .header-row {
             display: block;
         }
-
-        //&:before {
-        //    display: none;
-        //}
     }
 
     @include breakpoint(medium) {
@@ -42,7 +42,8 @@
     }
 
     .header-row-primary {
-        padding: 0 $horizontal-padding;
+        padding-top: 0;
+        padding-bottom: 0;
         border-bottom: 0.0625rem solid $border-gray;
 
         .menu > * {
@@ -71,5 +72,6 @@
 
     .identity {
         font-size: 1.375rem;
+        line-height: $font-size * $line-height;
     }
 }

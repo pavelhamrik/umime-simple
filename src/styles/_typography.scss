@@ -13,12 +13,9 @@ body {
         @each $heading, $params in $sizes {
             #{$heading} {
                 font-size: map-get($params, font-size);
+                font-weight: $font-weight-bold;
                 margin-top: $vertical-margin * 1.5;
                 margin-bottom: $vertical-margin;
-
-                &.uncontained {
-                    padding: 0 $horizontal-padding;
-                }
             }
         }
     }
@@ -38,11 +35,33 @@ a {
     }
 }
 
+small,
+.small {
+    font-size: $small-font-size;
+}
+
+p {
+    margin-top: $vertical-margin;
+    margin-bottom: $vertical-margin;
+}
+
 p.suppressed {
     margin: $vertical-margin 0;
     color: $medium-gray;
 }
 
+p.subheader {
+    color: $dark-gray;
+    margin-top: -($vertical-margin / 2);
+}
+
+.lead {
+    font-size: $large-font-size;
+}
+
+.uncontained {
+    padding: 0 $horizontal-padding;
+}
 
 ul, ol {
     margin-top: $vertical-margin;
@@ -79,4 +98,9 @@ ol {
     margin-top: $vertical-margin;
     margin-bottom: $vertical-margin;
     padding: 0.0625rem $horizontal-padding;
+}
+
+.space-emphasis {
+    margin-top: $vertical-margin;
+    margin-bottom: $vertical-margin;
 }

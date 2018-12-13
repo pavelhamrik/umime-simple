@@ -1,0 +1,23 @@
+@import '../settings';
+//@import '../utils/breakpoints';
+//@import '../utils/animations';
+@import '../utils/font-sizes';
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+
+    .stat {
+        text-align: center;
+    }
+
+    .label {
+        color: $medium-gray;
+        font-size: $small-font-size;
+    }
+
+    .value {
+        color: map-get($colors, primary);
+        @include font-size(h1);
+    }
+}

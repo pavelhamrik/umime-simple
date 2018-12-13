@@ -21,7 +21,7 @@
         position: absolute;
         left: 50%;
         height: 100%;
-        z-index: 1;
+        z-index: map-get($layers, raised);
     }
 
     &:after {
@@ -53,10 +53,17 @@
     }
 
     .current:after {
-        $meter-current: map-get($colors, warning);
         background: linear-gradient(to right,
-                    scale-color($meter-current, $lightness: 25%) 5%,
-                    scale-color($meter-current, $lightness: 0) 95%);
+                    scale-color(map-get($colors, primary), $lightness: 25%) 5%,
+                    scale-color(map-get($colors, primary), $lightness: 0) 95%);
+    }
+}
+
+@each $name, $color in $colors {
+    .meter-#{$name} .current:after {
+        background: linear-gradient(to right,
+            scale-color($color, $lightness: 25%) 5%,
+            scale-color($color, $lightness: 0) 95%);
     }
 }
 

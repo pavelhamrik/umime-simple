@@ -22,6 +22,7 @@ $displays: (none, block, inline, inline-block, flex);
         @include breakpoint(#{$screen}) {
             &.#{$screen}-align-#{$alignment} {
                 text-align: $alignment;
+                justify-content: $alignment;
             }
         }
     }

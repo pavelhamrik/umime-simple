@@ -15,25 +15,29 @@
     </head>
     <body>
 
-    <div class="header">
-    
+    <header>
         <div class="header-row header-row-primary">
             <ul id="header-personal-menu" class="menu menu-small-stacked menu-medium-flexed">
                 <li id="app-switch" class="dropdown">
-                    <a href="index.html" class="button button-plain identity identity-czech dropdown-button">
-                        <span class="identity-label">Umíme <strong class="color-czech">česky</strong></span>
+                    <a href="index.html" class="button button-plain identity identity-math dropdown-button">
+                        <span class="identity-label">Umíme <strong class="color-math">matiku</strong></span>
                     </a>
                     <ul class="dropdown-menu" data-submenu>
+                        <li>
+                            <a href="#" class="identity identity-czech">
+                                <span class="identity-label">Umíme <strong class="color-czech">česky</strong></span>
+                            </a>
+                        </li>
                         <li>
                             <a href="#" class="identity identity-english">
                                 <span class="identity-label">Umíme <strong class="color-english">anglicky</strong></span>
                             </a>
                         </li>
-                        <li>
-                            <a href="#" class="identity identity-math">
-                                <span class="identity-label">Umíme <strong class="color-math">matiku</strong></span>
-                            </a>
-                        </li>
+                        <!--<li>-->
+                            <!--<a href="#" class="identity identity-math">-->
+                                <!--<span class="identity-label">Umíme <strong class="color-math">matiku</strong></span>-->
+                            <!--</a>-->
+                        <!--</li>-->
                         <li>
                             <a href="#" class="identity identity-facts">
                                 <span class="identity-label">Umíme <strong class="color-facts">fakta</strong></span>
@@ -60,8 +64,9 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-button button primary">Učitel</a>
                     <ul class="dropdown-menu" data-submenu>
+                        <li><a href="#">Moje třídy</a></li>
                         <li><a href="#">Domácí úkoly</a></li>
-                        <li><a href="#">…</a></li>
+                        <li class="divider"></li>
                         <li><a href="#">…</a></li>
                     </ul>
                 </li>
@@ -76,8 +81,16 @@
                     <ul class="dropdown-menu dropdown-menu-right">
                         <li><a href="#">Můj profil</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">…</a></li>
-                        <li><a href="#">…</a></li>
+                        <li><a href="#">Můj účet</a></li>
+                        <li><a href="#">Moje licence</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Odhlásit se</a></li>
+                        <li class="divider"></li>
+                        <li class="title">Zkratky</li>
+                        <li><a href="components.html">Komponenty</a></li>
+                        <li><a href="doplnovacka.html">Doplňovačka</a></li>
+                        <li><a href="mrizkovana.html">Mřížkovaná</a></li>
+                        <li><a href="denni-limit.html">Denní limit</a></li>
                     </ul>
                 </li>
             </ul>
@@ -154,7 +167,7 @@
                 </li>
             </ul>
         </div>
-    </div>
+    </header>
     <div class="page-wrapper page-wrapper-final">
         <div class="grid exercise-grid">
     
@@ -269,5 +282,7 @@
             </div>
         </div>
     </footer>
+    <script src="/assets/scripts/umime.app.js" type="text/javascript"></script>
+
     </body>
 </html>

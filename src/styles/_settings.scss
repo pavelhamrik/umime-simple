@@ -4,7 +4,7 @@ $vertical-padding: 0.75rem;
 $horizontal-padding: 1.25rem;
 $small-horizontal-padding: 0.75rem;
 
-$vertical-margin: 1rem;
+$vertical-margin: 0.875rem;
 $horizontal-margin: 1.5rem;
 
 $box-margin: $vertical-margin $horizontal-margin;
@@ -15,7 +15,7 @@ $box-margin: $vertical-margin $horizontal-margin;
 $black: #323F4D;
 $white: #fff;
 
-$faint-gray: #F7F8F8;
+$faint-gray: #F8F9F9;
 $light-gray: rgba($black, 0.08);
 $medium-gray: rgba($black, 0.45);
 $dark-gray: rgba($black, 0.65);
@@ -23,8 +23,17 @@ $dark-gray: rgba($black, 0.65);
 $border-gray: rgba($black, 0.1);
 $border-medium-gray: rgba($black, 0.18);
 
+$apps: (
+    czech: #31BD60,
+    english: #9B59B6,
+    math: #2EB8E6,
+    facts: #E65D50,
+    programming: #078AB6,
+    german: #F0AE35,
+);
+
 $colors: (
-    primary: #31BD60,
+    primary: map-get($apps, math),
     secondary: #0BB9F3,
     success: #00CA65,
     warning: #FFAE21,
@@ -32,15 +41,6 @@ $colors: (
 );
 
 $darken: -20%;
-
-$apps: (
-    'czech':        #31BD60,
-    'english':      #9B59B6,
-    'math':         #0BB9F3,
-    'facts':        #E65D50,
-    'programming':  #078AB6,
-    'german':       #F0AE35
-);
 
 $active-color: rgba(map-get($colors, secondary), 0.25);
 
@@ -58,7 +58,7 @@ $breakpoints: (
 
 $grid-columns: 12;
 $grid-gap: 1.5rem;
-$grid-max-width: 1400px;
+$grid-max-width: 1200px;
 
 // dimensions
 
@@ -76,14 +76,14 @@ $font-weight-bold: 700;
 
 $headings: (
     small: (
-        h1: (font-size: 2rem),
-        h2: (font-size: 1.5rem),
+        h1: (font-size: 1.75rem),
+        h2: (font-size: 1.375rem),
         h3: (font-size: 1.25rem),
         h4: (font-size: 1.125rem),
     ),
     medium: (
-        h1: (font-size: 2rem),
-        h2: (font-size: 1.5rem),
+        h1: (font-size: 1.75rem),
+        h2: (font-size: 1.375rem),
         h3: (font-size: 1.25rem),
         h4: (font-size: 1.125rem),
     ),
@@ -108,28 +108,6 @@ $floating-shadow-far: 0 5px 20px 0 rgba(0,0,0,.04);
 $floating-shadow: $floating-shadow-close,
 $floating-shadow-far;
 
-// buttons
-
-$button-vertical-padding: 0.5rem;
-$button-horizontal-padding: 1rem;
-$button-padding: $button-vertical-padding $button-horizontal-padding;
-$large-button-padding: 0.875rem 1.25rem;
-$button-border-radius: 0.375rem;
-
-//$button-box-shadow: inset 0 -0.0625rem 0 rgba(0,0,0,0.12);
-$button-box-shadow: $soft-shadow;
-//$button-suppressed-box-shadow: inset 0 -0.0625rem 0 rgba(0,0,0,0.04);
-$button-suppressed-box-shadow: none;
-$button-suppressed-background: rgba($black, 0.08);
-$button-suppressed-background-hover: rgba($black, 0.2);
-
-$button-transition: background-color 0.15s ease-out, color 0.15s ease-out;
-
-// labels
-
-$label-font-size: $small-font-size;
-$label-padding: 0.33333rem 0.5rem;
-
 // animations
 
 $default-easing: ease-out;
@@ -146,9 +124,44 @@ $sluggish-speed: 2s;
 $hover-transition: background-color $lightning-speed $default-easing, color $lightning-speed $default-easing;
 $size-transition: width $medium-speed $default-easing, height $medium-speed $default-easing;
 
+// buttons
+
+$button-vertical-padding: 0.5rem;
+$button-horizontal-padding: 1rem;
+$button-padding: $button-vertical-padding $button-horizontal-padding;
+$small-button-padding: $button-vertical-padding * 0.875 $button-horizontal-padding * 0.875;
+$large-button-padding: $button-vertical-padding * 1.125 $button-horizontal-padding * 1.25;
+
+$buttons: (
+    small: (font-size: $small-font-size, padding: $small-button-padding),
+    medium: (font-size: $font-size, padding: $button-padding),
+    large: (font-size: $font-size, padding: $large-button-padding),
+);
+
+$button-border-radius: 0.375rem;
+
+//$button-box-shadow: inset 0 -0.0625rem 0 rgba(0,0,0,0.12);
+$button-box-shadow: $soft-shadow;
+//$button-suppressed-box-shadow: inset 0 -0.0625rem 0 rgba(0,0,0,0.04);
+$button-suppressed-box-shadow: none;
+
+$button-suppressed-background: rgba($black, 0.08);
+$button-suppressed-background-hover: rgba($black, 0.2);
+
+$button-transition: background-color $lightning-speed $default-easing, color $lightning-speed $default-easing;
+
+// labels
+
+$label-font-size: $small-font-size;
+$label-padding: 0.25rem 0.5rem;
+
+// person-mention
+
+$person-mention-padding: 0.25rem;
+
 // line heights
 
-$line-height: 1.5rem;
+$line-height: 1.5;
 $small-line-height: 1.25rem;
 
 // icons
@@ -166,10 +179,12 @@ $layers: (
     back: -1,
     base: 0,
     raised: 1,
-    sticky: 2,
-    fixed: 4,
-    tooltip: 8,
-    modal: 10,
+    headers: 2,
+    dropdown: 4,
+    sticky: 6,
+    fixed: 8,
+    tooltip: 10,
+    modal: 12,
 );
 
 // alignments

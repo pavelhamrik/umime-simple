@@ -1,0 +1,40 @@
+@import '../settings';
+@import '../utils/breakpoints';
+@import '../utils/animations';
+
+.tabs {
+    margin-top: $vertical-margin;
+    margin-bottom: $vertical-margin;
+
+    .tabs-bookmarks {
+        display: flex;
+        box-shadow: inset 0 -0.0625rem 0 $border-gray;
+    }
+
+    .tab-bookmark {
+        padding: $button-padding;
+        box-shadow: inset 0 -3px 0 transparent;
+        cursor: pointer;
+        transition: $button-transition;
+        color: $black;
+
+        &:hover {
+            color: map-get($colors, primary);
+        }
+    }
+
+    .tab-bookmark-active {
+        //font-weight: $font-weight-bold;
+        box-shadow: inset 0 -3px 0 map-get($colors, primary);
+        transition: box-shadow $lightning-speed $default-easing;
+    }
+
+    .tab {
+        display: none;
+        animation: key-fade-in $fast-speed $fadein-easing forwards;
+    }
+
+    .tab-active {
+        display: block;
+    }
+}

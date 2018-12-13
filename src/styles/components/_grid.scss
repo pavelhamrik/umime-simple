@@ -8,7 +8,8 @@ $grid-template-columns: '';
 $grid-template-columns: unquote($grid-template-columns);
 
 .grid {
-    margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
     max-width: $grid-max-width;
     width: 100%;
     overflow-x: hidden;
@@ -29,7 +30,9 @@ $grid-template-columns: unquote($grid-template-columns);
         }
     }
 
-    .grid-item, [class*=grid-item-] {
+    .grid-item,
+    [class*=grid-item-],
+    [class^=grid-item-] {
         grid-column: span $grid-columns;
         padding-left: $grid-gap / 2;
         padding-right: $grid-gap / 2;
@@ -74,7 +77,7 @@ $grid-template-columns: unquote($grid-template-columns);
 
     @each $screen, $size in $breakpoints {
         @include breakpoint($screen) {
-            @for $col from 1 through $grid-columns {
+            @for $col from 0 through $grid-columns {
                 & > .grid-content > .grid-item-#{$screen}-#{$col} {
                     grid-column-start: auto;
                     grid-column-end: span #{$col};
@@ -85,6 +88,10 @@ $grid-template-columns: unquote($grid-template-columns);
                 & > .grid-content > .grid-item-#{$screen}-offset-#{$col} {
                     grid-column-start: #{$col + 1} !important;
                 }
+            }
+
+            & > .grid-content > .grid-item-#{$screen}-offset-auto {
+                grid-column-start: auto !important;
             }
         }
     }
