@@ -138,14 +138,12 @@
 
         &.incorrect {
             background: map-get($colors, alert);
-            //background: linear-gradient(to right, adjust-color(map-get($colors, alert), $hue: -10), map-get($colors, alert), adjust-color(map-get($colors, alert), $hue: 10));
             animation: 0.65s 1 shake cubic-bezier(0.36,0.07,0.19,0.97) both;
         }
     }
 
     .material-icons {
         font-size: $large-font-size;
-        //line-height: 0.75;
     }
 }
 

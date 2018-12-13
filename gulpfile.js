@@ -8,7 +8,7 @@ const webpack = require('webpack');
 const webpackStream = require('webpack-stream');
 const named = require('vinyl-named');
 const yargs = require('yargs');
-// const gulpif = require('gulp-if');
+const gulpif = require('gulp-if');
 const del = require('del');
 
 const DIST = './docs';
@@ -109,9 +109,15 @@ const WEBPACK_CONFIG_PROD = {
     ],
 };
 
-const WEBPACK_CONFIG = !!(yargs.argv.prod)
-    ? WEBPACK_CONFIG_PROD
+const ENV = !!(yargs.argv.prod)
+    ? 'PROD'
     : !!(yargs.argv.stg)
+        ? 'STG'
+        : 'DEV';
+
+const WEBPACK_CONFIG = ENV === 'PROD'
+    ? WEBPACK_CONFIG_PROD
+    : ENV === 'STG'
         ? WEBPACK_CONFIG_STG
         : WEBPACK_CONFIG_DEV;
 
@@ -128,11 +134,12 @@ gulp.task('scripts', function () {
 
 gulp.task('styles', function () {
     return gulp.src(PATHS.styles.src)
-        .pipe(sourcemaps.init())
+        .pipe(gulpif(ENV === 'DEV', sourcemaps.init()))
         .pipe(sass({
-            includePaths: PATHS.sass
+            includePaths: PATHS.sass,
+            outputStyle: 'compressed',
         }).on('error', sass.logError))
-        .pipe(sourcemaps.write())
+        .pipe(gulpif(ENV === 'DEV', sourcemaps.write()))
         .pipe(gulp.dest(PATHS.styles.dist))
         .pipe(browserSync.stream());
 });
