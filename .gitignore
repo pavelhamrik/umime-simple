@@ -5,7 +5,7 @@
 .DS_Store
 
 # we won't be commiting the dist files for now
-.docs
+#.docs
 
 # Logs
 logs
