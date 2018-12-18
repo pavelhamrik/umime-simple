@@ -98,6 +98,9 @@ Ask for a demo, docs TBD thereafter.
 - [x] `done, nov 22` emphasize reaction to selection and finding a correct solution
 - [x] `done, nov 22` allow HTML in assignment's text
 - [x] `done, nov 22` KaTeX support
+- [ ] limit user geometry count, config from the assignment, consider interaction with nodes/lines and connecting/separating lines
+- [ ] connecting & separating lines
+- [ ] log an assignment's opening (all values `0`) 
 
 ### Next up
 
