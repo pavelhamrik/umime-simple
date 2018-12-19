@@ -15,18 +15,17 @@
         padding: $button-padding;
         box-shadow: inset 0 -3px 0 transparent;
         cursor: pointer;
-        transition: $button-transition;
+        transition: $button-transition, box-shadow $lightning-speed $default-easing;
         color: $black;
 
         &:hover {
-            color: map-get($colors, primary);
+            color: scale-color(map-get($colors, primary), $lightness: $darken);
+            //box-shadow: inset 0 -3px 0 rgba(map-get($colors, primary), 0.25);
         }
     }
 
     .tab-bookmark-active {
-        //font-weight: $font-weight-bold;
         box-shadow: inset 0 -3px 0 map-get($colors, primary);
-        transition: box-shadow $lightning-speed $default-easing;
     }
 
     .tab {

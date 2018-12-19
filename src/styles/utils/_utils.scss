@@ -3,7 +3,7 @@
 
 $directions: (top, bottom);
 @each $direction in $directions {
-    @for $step from 0 through 2 {
+    @for $step from -1 through 2 {
         .margin-#{$direction}-#{$step} {
             margin-#{$direction}: $vertical-margin * $step;
         }
@@ -16,7 +16,7 @@ $directions: (top, bottom);
 
 $directions: (right, left);
 @each $direction in $directions {
-    @for $step from 0 through 2 {
+    @for $step from -1 through 2 {
         .margin-#{$direction}-#{$step} {
             margin-#{$direction}: $horizontal-margin * $step;
         }

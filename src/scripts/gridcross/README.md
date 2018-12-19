@@ -98,9 +98,9 @@ Ask for a demo, docs TBD thereafter.
 - [x] `done, nov 22` emphasize reaction to selection and finding a correct solution
 - [x] `done, nov 22` allow HTML in assignment's text
 - [x] `done, nov 22` KaTeX support
-- [ ] limit user geometry count, config from the assignment, consider interaction with nodes/lines and connecting/separating lines
-- [ ] connecting & separating lines
 - [ ] log an assignment's opening (all values `0`) 
+- [ ] limit user geometry count, signalize failure and enforce undo
+- [ ] connecting & separating lines
 
 ### Next up
 
@@ -120,4 +120,5 @@ Ask for a demo, docs TBD thereafter.
 - [x] `fixed, nov 15` some intersections threw 'Point.equals' is not a function error 
 - [x] `fixed, nov 19` gridlines coinciding with axislines are not updated with the axisline class  
 - [x] `fixed, nov 22` existing geometry is ignoring labels from the assignment  
-- [x] `fixed, nov 22` selection-style exercises are not working on touch devices  
+- [x] `fixed, nov 22` selection-style exercises are not working on touch devices
+- [ ] window url is not updating when changing exercise

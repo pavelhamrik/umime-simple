@@ -1,5 +1,6 @@
 @import 'settings';
 @import './utils/breakpoints';
+@import './utils/font-sizes';
 
 body {
     font-family: $font-family;
@@ -25,13 +26,24 @@ body {
     color: $medium-gray;
 }
 
-a {
+a:not(.button) {
     color: map-get($colors, primary);
     transition: $hover-transition;
 
     &:hover,
     &:focus {
         color: scale-color(map-get($colors, primary), $lightness: $darken);
+    }
+
+    @each $name, $code in $colors {
+    &.#{$name} {
+        color:$code;
+
+        &:hover,
+        &:focus {
+            color: scale-color($code, $lightness: $darken);
+        }
+    }
     }
 }
 
@@ -59,36 +71,53 @@ p.subheader {
     font-size: $large-font-size;
 }
 
+.shout {
+    @include font-size(h2);
+}
+
 .uncontained {
     padding: 0 $horizontal-padding;
 }
 
 ul, ol {
+    list-style: none;
     margin-top: $vertical-margin;
     margin-bottom: $vertical-margin;
 
+    & > li:before {
+        content: '•';
+        color: $medium-gray;
+        display: inline-block;
+        font-weight: $font-weight-bold;
+        margin-left: -2em;
+        margin-right: 1em;
+        text-align: right;
+        width: 1em;
+    }
+
     &.list-plain {
-        list-style: none;
         padding-left: 0;
+
+        & > li:before {
+            display: none;
+        }
+    }
+
+    ul, ol {
+        margin-top: 0;
     }
 }
 
 ol {
-    list-style: none;
     counter-reset: li;
 
-    li {
+    & > li {
         counter-increment: li;
     }
 
-    li:before {
+    & > li:before {
         content: counter(li);
-        color: $medium-gray;
-        display: inline-block;
-        width: 1em;
-        margin-left: -2em;
-        margin-right: 1em;
-        text-align: right;
+        font-weight: $font-weight-normal;
     }
 }
 
