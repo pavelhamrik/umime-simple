@@ -7,22 +7,12 @@ simplified boilerplate for the front ends of the [Umime to](https://www.umimeto.
 - `gulp`: task automation
 - `gulp-sass`: scss compiling
 - `gulp-sourcemaps`: sourcemaps for css
-- `foundation-sites`: the actual styling; only using a small subset, such as grids
 - `browser-sync`: live reload
-- `panini`: html templating; dev only
+- `panini`: html templating
+- `webpack`: js compiling
+- `babel`: js transpiling
 
 ## todos
 
-- `gulp-minify`: minify the css when building for production
 - [x] copying of assets such as images and fonts
-
-## consider
-
-- [ ] some `js` and `html` stage depending on legacy code integration
-- [ ] `gulp-imagemin`: image optimization
-- [ ] image optimization, generating multiple sizes
-
-## frontend
-
-- [x] the `doplnovacka` exercise
-- [x] a `final board` for an exercise
+- [x] some `js` and `html` stage depending on legacy code integration

@@ -70,7 +70,7 @@ const assignments = [];
 
 // init
 
-window.onload = () => {
+function init() {
     const uiBootstrap = bootstrap();
     ui.canvas = uiBootstrap.canvas;
     ui.canvasWrapper = uiBootstrap.canvasWrapper;
@@ -87,7 +87,8 @@ window.onload = () => {
     if (LOCAL_IO) createLocalInput();
 
     getAssignment();
-};
+}
+window.addEventListener('load', init);
 
 if (LOG) console.timeEnd('init');
 

@@ -2,28 +2,9 @@
 //@import './utils/breakpoints';
 
 .daily-limit {
+    h1 {}
 
-    //.splash {
-    //    position: relative;
-    //
-    //    .front {
-    //        position: relative;
-    //        //z-index: 1;
-    //    }
-    //
-    //    .back {
-    //        position: relative;
-    //        z-index: 1;
-    //    }
-    //}
-
-    h1 {
-        //margin-top: $vertical-margin * 2;
-    }
-
-    h2 {
-        //margin-bottom: 0;
-    }
+    h2 {}
 
     h3 {
         margin-top: $vertical-margin;
@@ -46,7 +27,6 @@
 
     .picture-with-meter {
         margin-bottom: -1rem;
-        //transform: rotate(-5deg);
     }
 
     .picture-small {
@@ -72,14 +52,4 @@
         margin-top: $vertical-margin * 1.5;
         margin-bottom: -0.5rem;
     }
-
-    //.material-icons.large {
-    //    font-size: 3rem;
-    //    color: scale-color(map-get($colors, primary), $saturation: -25%);
-    //    opacity: 0.5;
-    //
-    //    &.success {
-    //        color: scale-color(map-get($colors, success), $saturation: -25%);
-    //    }
-    //}
 }

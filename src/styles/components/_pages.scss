@@ -1,0 +1,50 @@
+@import '../settings';
+//@import '../utils/breakpoints';
+
+.pages-container {
+    position: relative;
+    padding-bottom: 1.25rem;
+}
+
+.pages {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow: hidden;
+
+    .page {
+        width: 100%;
+        flex-shrink: 0;
+    }
+}
+
+.page-bookmarks {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.page-bookmark {
+    padding: 0.25rem;
+    cursor: pointer;
+
+    &:after {
+        background-color: $light-gray;
+        border-radius: 50%;
+        content: '';
+        display: block;
+        height: 0.625rem;
+        transition: $button-transition;
+        width: 0.625rem;
+    }
+
+    &.page-bookmark-active:after {
+        background-color: map-get($colors, primary);
+    }
+
+    &:hover:after {
+        background-color: scale-color(map-get($colors, primary), $lightness: $darken);
+    }
+}

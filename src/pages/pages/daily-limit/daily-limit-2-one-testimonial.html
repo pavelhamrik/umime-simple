@@ -1,13 +1,122 @@
 <div class="page-wrapper daily-limit">
 
-    {{> daily-limit-head }}
+    <section class="grid">
+        <div class="grid-content">
+            <div class="grid-item-large-12 small-align-center splash">
+                <div class="back">
+                    <img class="picture picture-with-meter picture-faded" src="{{root}}assets/img/prisera_chapadla-01-bez_vousu.png"
+                         alt="Dneska jste tedy zamakali!"/>
+                </div>
+                <!--<h1 id="top" class="uncontained">Dneska jste se činili!</h1>-->
+                <div class="front">
+                    <div class="meter meter-warning">
+                        <div class="current" style="width: 100%;"></div>
+                    </div>
+                    <h1>Jde vám to od ruky!</h1>
+                    <p class="margin-top--1 lead">Využili jste všech 250 dnešních otázek zdarma</p>
+                    <p><a href="#co-dal" class="button button-large button-primary smooth-scroll">Koukněte co dál</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    {{> daily-limit-options }}
+    <section class="grid" id="co-dal">
+        <div class="grid-content">
+            <div class="grid-item-medium-8 grid-item-medium-offset-2 grid-item-large-4 grid-item-large-offset-0 space-emphasis">
+                <div class="content-box small-align-center flex flex-direction-column">
+                    <div class="content-box-section tight flex-item">
+                        <div class="">
+                            <img class="picture picture-license" src="{{root}}assets/img/divka_veru+kluk_it.png" alt="Procvičující rodina">
+                        </div>
+                        <h2>+150 otázek zdarma</h2>
+                        <p class="subheader">
+                            <span class="badge badge-primary">Zaregistrujte se</span>
+                        </p>
+                    </div>
+                    <div class="content-box-section tight flex-item-grow-1">
+                        <p><strong>250 otázek zdarma každý den</strong></p>
+                        <p>Statistiky vašeho zlepšování</p>
+                        <p>Připomeneme, že můžete zase na to</p>
+                        <p>Jsme rádi, že s námi procvičujete 🥰</p>
+                        <!--<p><a href="#">Zjistit více</a></p>-->
+                    </div>
+                    <div class="content-box-section tight flex-item">
+                        <!--<p class="lead">&nbsp;</p>-->
+                        <p>
+                            <a href="#" class="button button-disabled button-suppressed">
+                                <i class="material-icons">check</i> Jste registrovaní
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-item-medium-6 grid-item-large-4 space-emphasis">
+                <div class="content-box content-box-success small-align-center flex flex-direction-column">
+                    <div class="content-box-section tight flex-item">
+                        <div class="">
+                            <img class="picture picture-license" src="{{root}}assets/img/rodina@2x.png" alt="Procvičující rodina">
+                        </div>
+                        <h2>Neomezené procvičování</h2>
+                        <p class="subheader">
+                            <span class="badge badge-success">S rodinnou licencí</span>
+                        </p>
+                    </div>
+                    <div class="content-box-section tight flex-item-grow-1">
+                        <p>Procvičujte bez denního omezení</p>
+                        <p>Nástroje pro rodiče</p>
+                        <p>Podpořte vývoj nástrojů Umíme</p>
+                        <p><a href="#" class="success">Zjistit více</a></p>
+                    </div>
+                    <div class="content-box-section tight flex-item">
+                        <p class="lead">Už <strong>od 222 Kč</strong> za rok</p>
+                        <p><a href="#" class="button button-success button-emphasized">Pořídit licenci</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-item-medium-6 grid-item-large-4 space-emphasis">
+                <div class="content-box content-box-success small-align-center flex flex-direction-column">
+                    <div class="content-box-section tight flex-item">
+                        <div class="">
+                            <img class="picture picture-license" src="{{root}}assets/img/ucitelka_deti.png" alt="Procvičující rodina">
+                        </div>
+                        <h2>Procvičování pro školy</h2>
+                        <p class="subheader">
+                            <span class="badge badge-success">Se školní licencí</span>
+                        </p>
+                    </div>
+                    <div class="content-box-section tight flex-item-grow-1">
+                        <p>Procvičujte bez denního omezení</p>
+                        <p>Nástroje pro učitele</p>
+                        <p>Podpořte vývoj nástrojů Umíme</p>
+                        <p><a href="#" class="success">Zjistit více</a></p>
+                    </div>
+                    <div class="content-box-section tight flex-item">
+                        <p class="lead">Už <strong>od 990 Kč</strong> za školu a rok</p>
+                        <p><a href="#" class="button button-success button-emphasized">Pořídit licenci</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!--{{> daily-limit-arguments }}-->
-
-    <!--{{> daily-limit-repeated-cta }}-->
-
-    {{> daily-limit-testimonials-b }}
+    <section class="grid">
+        <div class="grid-content">
+            <div class="grid-item-large-8 grid-item-large-offset-2 space-emphasis">
+                <p class="shout">Děkuji za super web - už nemusím děti nahánět k procvičování češtiny, občas je
+                    musím spíš odhánět :)</p>
+                <p class="shout">Navíc mi to dost usnadňuje domácí vzdělávání syna. Děkuji.</p>
+                <p>
+                <span class="person-mention">
+                    <span class="dongle">
+                        <img src="{{root}}assets/img/avatar-hipsterka.png" alt="Marcela Chvátilová"/>
+                    </span>
+                    <span class="label">
+                        <strong>Marcela Chvátilová</strong>
+                    </span>
+                </span>
+                </p>
+            </div>
+        </div>
+    </section>
 
 </div>
