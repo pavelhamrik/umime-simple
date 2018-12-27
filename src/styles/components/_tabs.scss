@@ -9,14 +9,18 @@
     .tabs-bookmarks {
         display: flex;
         box-shadow: inset 0 -0.0625rem 0 $border-gray;
+        overflow-x: auto;
     }
 
     .tab-bookmark {
-        padding: $button-padding;
         box-shadow: inset 0 -3px 0 transparent;
-        cursor: pointer;
-        transition: $button-transition, box-shadow $lightning-speed $default-easing;
         color: $black;
+        cursor: pointer;
+        overflow: hidden;
+        padding: $button-padding;
+        text-overflow: ellipsis;
+        transition: $button-transition, box-shadow $lightning-speed $default-easing;
+        white-space: nowrap;
 
         &:hover {
             color: scale-color(map-get($colors, primary), $lightness: $darken);

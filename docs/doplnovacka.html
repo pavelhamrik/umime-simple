@@ -2,34 +2,37 @@
 <html class="no-js" lang="en">
     <head>
         <meta charset="utf-8"/>
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="white-translucent">
+        <!--<meta name="apple-mobile-web-app-capable" content="yes">-->
+        <!--<meta name="apple-mobile-web-app-status-bar-style" content="white-translucent">-->
 
         <title>Umíme to!</title>
+
+        <script src="assets/scripts/umime.app.js" type="text/javascript" defer></script>
+
         <link rel="stylesheet" href="assets/styles/app.css">
         <link rel="icon" href="assets/img/favicons/favicon-math@1x.png" type="image/png">
         <link rel="apple-touch-icon" href="assets/img/favicons/appicon-ios-czech.png">
     </head>
     <body>
 
-    <header>
+    <header class="dropdown">
+        <div class="dropdown-button"></div>
         <div class="header-row header-row-primary">
             <ul id="header-personal-menu" class="menu menu-small-stacked menu-medium-flexed">
-                <li id="app-switch" class="dropdown">
-                    <a href="index.html" class="button button-plain identity identity-math dropdown-button">
+                <li class="dropdown app-switch">
+                    <a href="/" class="button button-plain identity identity-math dropdown-button">
                         <span class="identity-label">Umíme <strong class="color-math">matiku</strong></span>
                     </a>
-                    <ul class="dropdown-menu" data-submenu>
+                    <ul class="dropdown-menu">
                         <li>
-                            <a href="#" class="identity identity-czech">
+                            <a href="/" class="identity identity-czech">
                                 <span class="identity-label">Umíme <strong class="color-czech">česky</strong></span>
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="identity identity-english">
+                            <a href="/" class="identity identity-english">
                                 <span class="identity-label">Umíme <strong class="color-english">anglicky</strong></span>
                             </a>
                         </li>
@@ -39,38 +42,38 @@
                             <!--</a>-->
                         <!--</li>-->
                         <li>
-                            <a href="#" class="identity identity-facts">
+                            <a href="/" class="identity identity-facts">
                                 <span class="identity-label">Umíme <strong class="color-facts">fakta</strong></span>
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="identity identity-programming">
+                            <a href="/" class="identity identity-programming">
                                 <span class="identity-label">Umíme <strong class="color-programming">programovat</strong></span>
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="identity identity-german">
+                            <a href="/" class="identity identity-german">
                                 <span class="identity-label">Umíme <strong class="color-german">německy</strong></span>
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="flex-item-grow-2">
+                <li class="flex-item-grow-2 header-touch-secondary">
                     <div class="search">
                         <input type="search" placeholder="Hledat">
                         <button class="button-clear icon-cross-small"></button>
                     </div>
                 </li>
-                <li class="dropdown">
+                <li class="dropdown header-touch-secondary">
                     <a href="#" class="dropdown-button button primary">Učitel</a>
-                    <ul class="dropdown-menu" data-submenu>
+                    <ul class="dropdown-menu">
                         <li><a href="#">Moje třídy</a></li>
                         <li><a href="#">Domácí úkoly</a></li>
                         <li class="divider"></li>
                         <li><a href="#">…</a></li>
                     </ul>
                 </li>
-                <li class="dropdown">
+                <li class="dropdown header-touch-secondary">
                     <a href="#" class="button button-plain dropdown-button stacked-labels">
                         <span class="dongle"><img src="https://www.umimeto.org/img/lion.png" class="user-picture"></span>
                         <span class="stack">
@@ -90,14 +93,14 @@
             </ul>
         </div>
     
-        <div class="header-row">
+        <div class="header-row header-row-secondary">
             <ul id="header-content-menu" class="menu menu-small-stacked menu-medium-flexed">
                 <li>
-                    <a href="#" class="button button-plain">Přehled</a>
+                    <a href="/" class="button button-plain">Přehled</a>
                 </li>
                 <li class="dropdown">
                     <a href="#" class="button button-plain dropdown-button">Procvičování</a>
-                    <ul class="dropdown-menu" data-submenu>
+                    <ul class="dropdown-menu">
                         <li><a href="doplnovacka.html">Doplňovačka</a></li>
                         <li><a href="#">Diktáty</a></li>
                         <li><a href="#">Rozřazovačka</a></li>
@@ -111,7 +114,7 @@
                 </li>
                 <li class="dropdown">
                     <a href="#" class="button button-plain dropdown-button">Netradiční</a>
-                    <ul class="dropdown-menu" data-submenu>
+                    <ul class="dropdown-menu">
                         <li><a href="#">Vtipy</a></li>
                         <li><a href="#">Roboti</a></li>
                         <li><a href="#">Střílečka</a></li>
@@ -126,7 +129,7 @@
                 </li>
                 <li class="dropdown">
                     <a href="#" class="button button-plain dropdown-button">Témata</a>
-                    <ul class="dropdown-menu" data-submenu>
+                    <ul class="dropdown-menu">
                         <li><a href="#">Přehled všech témat</a></li>
                         <li><a href="#">Psaní i/y</a></li>
                         <li><a href="#">Podobně znějící</a></li>
@@ -142,7 +145,7 @@
                 </li>
                 <li class="dropdown">
                     <a href="#" class="button button-plain dropdown-button">Podle třídy</a>
-                    <ul class="dropdown-menu" data-submenu>
+                    <ul class="dropdown-menu">
                         <li><a href="#">2. třída</a></li>
                         <li><a href="#">3. třída</a></li>
                         <li><a href="#">4. třída</a></li>
@@ -183,7 +186,7 @@
                                 data-responsive-menu="accordion medium-dropdown">
                                 <li class="has-submenu">
                                     <a href="#">Všechny třídy</a>
-                                    <ul class="submenu menu vertical" data-submenu>
+                                    <ul class="submenu menu vertical">
                                         <li><a href="#">2. třída</a></li>
                                         <li><a href="#">3. třída</a></li>
                                         <li><a href="#">4. třída</a></li>
@@ -408,7 +411,5 @@
             </div>
         </div>
     </footer>
-    <script src="assets/scripts/umime.app.js" type="text/javascript"></script>
-
     </body>
 </html>

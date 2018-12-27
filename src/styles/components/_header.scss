@@ -7,17 +7,37 @@ header {
     position: relative;
     z-index: map-get($layers, headers);
 
-    &:before {
-        font-family: $icon-font;
-        content: '\e90a';
-        display: block;
-        font-size: $large-font-size;
-        padding: calc(#{$button-vertical-padding + 0.5rem}) $horizontal-padding;
-        text-align: center;
+    &.dropdown > .dropdown-button {
+        background-color: transparent;
+        left: 0;
+        position: absolute;
+        top: 0;
+        z-index: 1;
+
+        @include breakpoint(medium) {
+            display: none;
+        }
+
+        &:after {
+            font-family: $icon-font;
+            content: '\e90a';
+            display: block;
+            font-size: $large-font-size;
+            padding: $button-vertical-padding * 0.75 $horizontal-padding;
+            margin: 0;
+        }
+    }
+
+    .header-row-secondary,
+    .header-touch-secondary {
+        display: none;
+
+        @include breakpoint(medium) {
+            display: block;
+        }
     }
 
     .header-row {
-        display: none;
         padding: 0.25rem $horizontal-padding / 2;
 
         @include breakpoint(medium) {
@@ -25,19 +45,14 @@ header {
         }
     }
 
-    &:hover {
-        .header-row {
+    &.dropdown-open {
+        .header-row-secondary,
+        .header-touch-secondary {
             display: block;
         }
-    }
 
-    @include breakpoint(medium) {
-        &:before {
-            display: none;
-        }
-
-        .header-row {
-            display: block;
+        & > .dropdown-button:after {
+            content: '\e904';
         }
     }
 
@@ -55,6 +70,14 @@ header {
             .menu > *:not(:last-child) {
                 margin-right: 1rem;
             }
+        }
+    }
+
+    .app-switch {
+        margin-left: 2.25rem;
+
+        @include breakpoint(medium) {
+            margin-left: 0;
         }
     }
 

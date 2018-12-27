@@ -23,25 +23,24 @@
         background-color: $border-gray;
         margin: $vertical-padding / 2 0;
     }
+}
 
-    &:hover,
-    &:focus {
-        z-index: map-get($layers, dropdown);
+.dropdown-open {
+    z-index: map-get($layers, dropdown);
 
-        .dropdown-button {
-            background-color: $light-gray;
-        }
+    & > .dropdown-button {
+        background-color: $light-gray;
+    }
 
-        .dropdown-button.primary {
-            background-color: scale-color(map-get($colors, primary), $lightness: $darken);
-        }
+    & > .dropdown-button.primary {
+        background-color: scale-color(map-get($colors, primary), $lightness: $darken);
+    }
 
-        .dropdown-menu {
-            //display: block;
-            height: auto;
-            opacity: 1;
-            top: 100%;
-        }
+    & > .dropdown-menu {
+        //display: block;
+        height: auto;
+        opacity: 1;
+        top: 100%;
     }
 }
 
