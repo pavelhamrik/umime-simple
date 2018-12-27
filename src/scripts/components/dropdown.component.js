@@ -30,13 +30,14 @@ function handleDropdownInteraction( event, container, options = {} ) {
 
     const { forceClose = false, forceOpen = false } = options;
 
-    if ( forceClose ) {
+    const open = container.classList.contains(DROPDOWN_OPEN_CLASS)
+
+    if ( open || forceClose ) {
         container.classList.remove( DROPDOWN_OPEN_CLASS );
         container.querySelectorAll(DROPDOWN_BUTTON_SELECTOR)
             .forEach(button => button.blur());
     }
-    else if ( forceOpen ) container.classList.add( DROPDOWN_OPEN_CLASS );
-    else container.classList.toggle( DROPDOWN_OPEN_CLASS );
+    else if ( !open || forceOpen ) container.classList.add( DROPDOWN_OPEN_CLASS );
 }
 
 export default dropdown;
