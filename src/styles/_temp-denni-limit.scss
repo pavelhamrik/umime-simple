@@ -48,6 +48,17 @@
         justify-content: center;
     }
 
+    .picture-container {
+        display: flex;
+        align-items: center;
+        min-height: 100%;
+
+        .picture {
+            min-width: 100%;
+            height: auto;
+        }
+    }
+
     .icon-container {
         margin-top: $vertical-margin * 1.5;
         margin-bottom: -0.5rem;

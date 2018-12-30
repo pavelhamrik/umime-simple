@@ -18,6 +18,7 @@
         max-width: none;
         transition: $hover-transition;
         width: 100%;
+        -webkit-appearance: none;
 
         &:focus {
             background: opacify($light-gray, 0.09);
