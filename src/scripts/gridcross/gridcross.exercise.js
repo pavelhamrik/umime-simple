@@ -277,7 +277,7 @@ export function handleNewPath(p1, p2) {
 
 
 export function handleSelectedElem(p1, p2) {
-    const stateSnapshot = state.get();
+    const stateSnapshot = Object.assign({}, state.get(), {});
 
     const updatedState = typeof p2 !== 'undefined'
         ? composeNewStateForLine(p1, p2, {toggle: [SELECTED_LINE_CLASS_NAME]}, stateSnapshot)
@@ -350,7 +350,7 @@ function isGeometryMaxed(stateSnaphot) {
 function handleValidSolution(solution) {
     if (LOG) console.log('%cvalid solution:', 'color: wheat', solution);
 
-    const stateSnapshot = state.get();
+    const stateSnapshot = Object.assign({}, state.get(), {});
 
     const nodesCount = countGeometry(stateSnapshot[NODE_STATE_COLLECTION], ACCEPTABLE_SOLUTION_NODE_CLASSES);
     const pathsCount = countGeometry(stateSnapshot[NODE_STATE_COLLECTION], ACCEPTABLE_SOLUTION_LINE_CLASSES);
@@ -392,7 +392,7 @@ export function handleAssignment(assignment) {
     const stateSnapshot = Object.assign({}, state.get(), {});
     state.wipe();
 
-    if (typeof assignment === 'undefined') {
+    if (typeof assignment === 'undefined' || isEmptyObject(assignment)) {
         if (assignments.length > stateSnapshot.index + 1) presentAssignment(stateSnapshot.index + 1);
         else {
             // document-scoped function and variable
@@ -400,13 +400,13 @@ export function handleAssignment(assignment) {
         }
     }
     else {
-        assignments.map(() => assignments.pop());
+        Array.from(assignments).forEach(() => assignments.pop());
         assignments.push({
             item: assignment,
             id: 0,
             explanation: '',
             name: assignment.text,
         });
-        presentAssignment(0)
+        presentAssignment(0);
     }
 }

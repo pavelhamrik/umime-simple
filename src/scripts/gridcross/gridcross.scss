@@ -261,6 +261,9 @@ $task-color: map-get($apps, 'english');
         position: relative;
 
         #local-io-input {
+            box-shadow: none;
+            border: 0.0625rem solid $border-gray;
+            border-radius: $button-border-radius;
             width: 340px;
             min-width: 340px;
             max-width: 340px;
@@ -268,13 +271,20 @@ $task-color: map-get($apps, 'english');
             height: 2.5rem;
             font-family: $font-family-monospace;
             font-size: $small-font-size;
-            box-shadow: none;
+            padding: $button-vertical-padding $button-horizontal-padding * 0.75;
+
+            &:focus {
+                border-color: rgba($task-color, 0.5);
+                box-shadow: 0 0 0 0.125rem rgba($task-color, 0.2);
+                outline: none;
+            }
         }
 
         #local-io-apply-button {
             background: $light-gray;
+            border: none;
             border-radius: $ultimate-border-radius;
-            padding: 0.375rem;
+            padding: 0.125rem 0.375rem;
             width: 1.75rem;
             height: 1.75rem;
             position: absolute;

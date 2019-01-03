@@ -78,6 +78,7 @@ function handleLocalInput() {
     if (isValidJSON(inputField.value)) {
         handleAssignment(JSON.parse(inputField.value));
     }
+    else console.log(`%cInvalid assignment input`, 'color: red');
 }
 
 
