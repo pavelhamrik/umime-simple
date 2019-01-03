@@ -295,7 +295,7 @@ function handleGeometryChange(stateSnapshot) {
     const validSolution = checkSolution(workingState[workingState.length - 1]);
     const geometryMaxed = isGeometryMaxed(workingState[workingState.length - 1]);
 
-    if (geometryMaxed.isMaxed && isEmptyObject(validSolution)) flashButton(ui.undoButton);
+    if (geometryMaxed.diff > 0 || (geometryMaxed.isMaxed && isEmptyObject(validSolution))) flashButton(ui.undoButton);
 
     if (geometryMaxed.diff > 0) return;
 
