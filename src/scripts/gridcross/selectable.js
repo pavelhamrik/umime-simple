@@ -46,8 +46,6 @@ export function attachTouchSurfaceSelectable(surface, stateSnapshot) {
 
         if (event.touches.length !== 1) return;
 
-        console.log(event.touches[0]);
-
         const surfaceBoundingBox = event.target.getBoundingClientRect();
         const origin = new Point(
             event.touches[0].clientX - surfaceBoundingBox.left,

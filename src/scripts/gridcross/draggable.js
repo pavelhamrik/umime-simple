@@ -3,7 +3,14 @@ import SVG from 'svg.js';
 import Point from "./Point";
 import { handleNewPath } from './gridcross.exercise';
 import { draggableSnap, getNearestNode } from './functions';
-import { BOTTOM_EDGE, CANVAS_PADDING, LINE, NODE_RADIUS, RIGHT_EDGE } from "./constants";
+import {
+    BOTTOM_EDGE,
+    CANVAS_PADDING_BOTTOM,
+    CANVAS_PADDING_RIGHT,
+    LINE,
+    NODE_RADIUS,
+    RIGHT_EDGE
+} from "./constants";
 
 const tool = {};
 
@@ -58,10 +65,10 @@ function handleDragStart(event, point, layer) {
     tool['geometry'] = {
         'shape': layer.line(point.x, point.y, point.x, point.y)
             .addClass('indicator'),
-        'vertical': layer.line(point.x, 0, point.x, BOTTOM_EDGE + CANVAS_PADDING)
+        'vertical': layer.line(point.x, 0, point.x, BOTTOM_EDGE + CANVAS_PADDING_BOTTOM)
             .addClass('indicator')
             .addClass('crosshair'),
-        'horizontal': layer.line(0, point.y, RIGHT_EDGE + CANVAS_PADDING, point.y)
+        'horizontal': layer.line(0, point.y, RIGHT_EDGE + CANVAS_PADDING_RIGHT, point.y)
             .addClass('indicator')
             .addClass('crosshair'),
         'p1': layer.circle(NODE_RADIUS * 2)

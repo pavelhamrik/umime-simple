@@ -1,6 +1,9 @@
 import {
     BACK_GROUP,
-    CANVAS_PADDING,
+    CANVAS_PADDING_BOTTOM,
+    CANVAS_PADDING_LEFT,
+    CANVAS_PADDING_RIGHT,
+    CANVAS_PADDING_TOP,
     FLASH_LINE_CLASS_NAME,
     FLASH_NODE_CLASS_NAME,
     GRID_HEIGHT,
@@ -132,8 +135,8 @@ export function render(state, groups, interactive = true) {
     });
 
     const touchSurface = groups[BACK_GROUP].rect(
-        GRID_WIDTH * RESOLUTION + CANVAS_PADDING * 2,
-        GRID_HEIGHT * RESOLUTION + CANVAS_PADDING * 2
+        GRID_WIDTH * RESOLUTION + CANVAS_PADDING_LEFT + CANVAS_PADDING_RIGHT,
+        GRID_HEIGHT * RESOLUTION + CANVAS_PADDING_TOP + CANVAS_PADDING_BOTTOM
     ).addClass('touchsurface');
     if (interactive) {
         uiOnlySelect

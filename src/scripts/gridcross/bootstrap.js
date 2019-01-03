@@ -2,12 +2,11 @@ import SVG from 'svg.js';
 import svgDraggableInit from "./svg.draggable";
 
 import {
-    CANVAS_PADDING,
     RIGHT_EDGE,
     BOTTOM_EDGE,
     BACK_BUTTON_LABEL,
     TASK_TEXT_DEFAULT,
-    NEXT_BUTTON_LABEL,
+    NEXT_BUTTON_LABEL, CANVAS_PADDING_RIGHT, CANVAS_PADDING_BOTTOM,
 } from './constants';
 
 svgDraggableInit(SVG);
@@ -24,7 +23,7 @@ export function bootstrap() {
     // attach the exercise root element
     const canvasWrapper = document.createElement('div');
     canvasWrapper.id = 'canvas-wrapper';
-    canvasWrapper.style.width = RIGHT_EDGE + CANVAS_PADDING;
+    canvasWrapper.style.width = RIGHT_EDGE + CANVAS_PADDING_RIGHT;
     root.appendChild(canvasWrapper);
 
     // create the svg canvas to draw on
@@ -54,7 +53,7 @@ export function bootstrap() {
     buttonWrapper.appendChild(nextButton);
 
     return {
-        canvas: SVG('canvas').size(RIGHT_EDGE + CANVAS_PADDING, BOTTOM_EDGE + CANVAS_PADDING),
+        canvas: SVG('canvas').size(RIGHT_EDGE + CANVAS_PADDING_RIGHT, BOTTOM_EDGE + CANVAS_PADDING_BOTTOM),
         undoButton: undoButton,
         nextButton: nextButton,
         root: root,
