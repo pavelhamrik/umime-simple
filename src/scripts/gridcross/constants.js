@@ -7,17 +7,21 @@ import { determineResolution } from './functions';
 export const GRID_WIDTH = 6;
 export const GRID_HEIGHT = 6;
 
-export const CANVAS_PADDING = 20;
+// export const CANVAS_PADDING = 10;
+export const CANVAS_PADDING_TOP = 20;
+export const CANVAS_PADDING_RIGHT = 20;
+export const CANVAS_PADDING_BOTTOM = 40;
+export const CANVAS_PADDING_LEFT = 20;
 
-export const RESOLUTION = determineResolution(GRID_WIDTH, GRID_HEIGHT, CANVAS_PADDING);
+export const RESOLUTION = determineResolution(GRID_WIDTH, GRID_HEIGHT, CANVAS_PADDING_LEFT + CANVAS_PADDING_RIGHT);
 
 export const LABEL_OFFSET = 12;
 export const LABEL_OFFSET_VERTICAL_CORRECTION = 2;
 
-export const TOP_EDGE = CANVAS_PADDING;
-export const RIGHT_EDGE = GRID_WIDTH * RESOLUTION + CANVAS_PADDING;
-export const BOTTOM_EDGE = GRID_HEIGHT * RESOLUTION + CANVAS_PADDING;
-export const LEFT_EDGE = CANVAS_PADDING;
+export const TOP_EDGE = CANVAS_PADDING_TOP;
+export const RIGHT_EDGE = GRID_WIDTH * RESOLUTION + CANVAS_PADDING_LEFT;
+export const BOTTOM_EDGE = GRID_HEIGHT * RESOLUTION + CANVAS_PADDING_TOP;
+export const LEFT_EDGE = CANVAS_PADDING_LEFT;
 
 export const NODE_RADIUS = 4;
 
@@ -74,6 +78,30 @@ export const LINE_RENDERING_ORDER = [
     SELECTED_LINE_CLASS_NAME,
     SOLVED_LINE_CLASS_NAME,
 ];
+
+export const ACCEPTABLE_SOLUTION_NODE_CLASSES = new Set([
+    USER_NODE_CLASS_NAME,
+    TASK_NODE_CLASS_NAME,
+    SELECTED_NODE_CLASS_NAME,
+]);
+
+export const ACCEPTABLE_SOLUTION_LINE_CLASSES = new Set([
+    TASK_LINE_CLASS_NAME,
+    USER_LINE_CLASS_NAME,
+    SELECTED_LINE_CLASS_NAME,
+]);
+
+export const ACCEPTABLE_USER_NODE_CLASSES = new Set([
+    USER_NODE_CLASS_NAME,
+    SELECTED_NODE_CLASS_NAME,
+]);
+
+export const ACCEPTABLE_USER_LINE_CLASSES = new Set([
+    USER_LINE_CLASS_NAME,
+    SELECTED_LINE_CLASS_NAME,
+]);
+
+export const FLASH_BUTTON_CLASS_NAME = 'button-flash';
 
 export const APP_NAME = 'Umíme matiku';
 export const EXERCISE_NAME = 'Mřížkovaná';

@@ -41,7 +41,7 @@ const WEBPACK_CONFIG_DEV = {
     plugins: [
         new webpack.DefinePlugin({
             LOG: JSON.stringify(true),
-            LOCAL_IO: JSON.stringify(false),
+            LOCAL_IO: JSON.stringify(true),
             CHANGE_BROWSER_HISTORY: JSON.stringify(false),
             API_URL: JSON.stringify('http://localhost:3443/'),
             API_ITEMS_ENDPOINT: JSON.stringify('api/v2/bundle-assignments/'),

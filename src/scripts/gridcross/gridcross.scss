@@ -2,6 +2,9 @@
 @import '../../styles/utils/breakpoints';
 
 $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
+//$primary-color: map-get($colors, primary);
+$primary-color: #31BD60;
+$task-color: map-get($apps, 'english');
 
 @font-face {
     font-family: 'umime-to-gridcross';
@@ -68,7 +71,7 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
             pointer-events: none;
 
             &.taskline {
-                stroke: map-get($apps, 'english');
+                stroke: $task-color;
                 stroke-width: 3;
                 pointer-events: auto;
             }
@@ -98,7 +101,7 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
             transition: $transition;
 
             &.tasknode {
-                stroke: map-get($apps, 'english');
+                stroke: $task-color;
                 fill: $white;
                 stroke-width: 2;
             }
@@ -167,7 +170,7 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
             pointer-events: none;
             font-size: $font-size;
             font-weight: $font-weight-bold;
-            fill: map-get($apps, 'english');
+            fill: $task-color;
         }
 
         .no-pointer-events {
@@ -176,8 +179,11 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
     }
 
     .button-wrapper {
-        margin: $vertical-padding * 2 auto 0;
-        text-align: center;
+        display: flex;
+        margin: ($button-vertical-padding * 2.25 + $font-size * $line-height) / -2 auto 0;
+        justify-content: center;
+        align-items: center;
+        position: relative;
     }
 
     .undo-button:before {
@@ -187,38 +193,44 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
 
     .undo-button,
     .next-button {
-        margin: 0 0.75rem;
-        background-color: $button-suppressed-background;
+        background-color: $white;
         border: none;
         border-radius: $button-border-radius;
-        padding: $button-padding;
-        transition: $button-transition;
+        box-shadow: $soft-shadow;
+        padding: $large-button-padding;
+        transition: $button-transition, transform $lightning-speed $default-easing;
         outline: none;
+        margin: 0 0.5rem;
         min-height: 2.75rem;
         font-size: $font-size;
         text-transform: none;
         -webkit-appearance: button;
 
         &:disabled {
+            background-color: #F9FBFB;
             color: $medium-gray;
         }
 
         &:not(:disabled):hover,
         &:not(:disabled):active {
-            background-color: $button-suppressed-background-hover;
+            transform: scale(1.0625);
             cursor: pointer;
         }
 
         &.next-button:not(:disabled) {
-            opacity: 1;
-            background-color: map-get($colors, primary);
+            background-color: $primary-color;
             color: $white;
+            animation: 0.5s 1 aura-success;
 
             &:hover,
             &:active {
-                background-color: scale-color(map-get($colors, primary), $lightness: -15%);
+                background-color: scale-color($primary-color, $lightness: -15%);
             }
         }
+    }
+
+    .button-flash {
+        animation: 0.85s 1 aura;
     }
 
     .loading-indicator {
@@ -234,7 +246,7 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
 
         &:after {
             content: '';
-            background-color: map-get($colors, primary);
+            background-color: $primary-color;
             display: block;
             width: 3rem;
             height: 3rem;
@@ -289,10 +301,10 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
 
     @keyframes flash-solved-line {
         0% {
-            stroke: rgba(map-get($colors, primary), 0.5);
+            stroke: rgba($primary-color, 0.5);
         }
         100% {
-            stroke: rgba(map-get($colors, primary), 0);
+            stroke: rgba($primary-color, 0);
             stroke-width: 16;
         }
     }
@@ -309,10 +321,10 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
 
     @keyframes flash-solved-node {
         0% {
-            stroke: rgba(map-get($colors, primary), 0.5);
+            stroke: rgba($primary-color, 0.5);
         }
         100% {
-            stroke: rgba(map-get($colors, primary), 0);
+            stroke: rgba($primary-color, 0);
             stroke-width: 24;
         }
     }
@@ -322,7 +334,7 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
             stroke: $black;
         }
         100% {
-            stroke: map-get($colors, primary);
+            stroke: $primary-color;
             stroke-width: 4;
         }
     }
@@ -332,9 +344,35 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
             stroke: $black;
         }
         100% {
-            stroke: map-get($colors, primary);
+            stroke: $primary-color;
             stroke-width: 2;
-            //fill: scale-color(map-get($colors, primary), $lightness: 80%);
+        }
+    }
+
+    @keyframes aura {
+        0% {
+            background-color: scale-color($task-color, $lightness: 90%);
+            box-shadow: 0 0 0 0 rgba($task-color, 0.5),
+            $soft-shadow;
+            color: $task-color;
+        }
+
+        50% {
+            box-shadow: 0 0 0 0.5rem rgba($task-color, 0),
+            $soft-shadow;
+            color: $task-color;
+        }
+    }
+
+    @keyframes aura-success {
+        from {
+            box-shadow: 0 0 0 0 rgba($primary-color, 0.75),
+            $soft-shadow;
+        }
+
+        to {
+            box-shadow: 0 0 0 0.5rem rgba($primary-color, 0),
+            $soft-shadow;
         }
     }
 

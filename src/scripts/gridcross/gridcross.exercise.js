@@ -8,15 +8,14 @@ import {
     findLine,
     isEmptyObject,
     enableButton,
-    disableButton, updateElemForState,
+    disableButton, updateElemForState, countGeometry, unifySets, flashButton, deleteFromSet,
 } from './functions';
-import {parseAssignment, checkSolution, highlightSolution, parseKatex} from './assignment';
+import { parseAssignment, checkSolution, highlightSolution, parseKatex, getConfigValue } from './assignment';
 import { render } from './render';
 import { intersectLineLine } from './intersections';
 import { bootstrap } from './bootstrap';
 import StateProvider from './StateProvider';
 import {
-    // API_URL,
     DUPLICATE_NODE_THRESHOLD,
     NODE_GROUP,
     PATH_GROUP,
@@ -31,22 +30,23 @@ import {
     NODE_STATE_COLLECTION,
     GRID_LINE_CLASS_NAME,
     API_LOAD_ERROR_TEXT,
-    // LOG,
-    // LOCAL_IO,
     SELECTED_NODE_CLASS_NAME,
     SELECTED_LINE_CLASS_NAME,
     LABEL_GROUP,
-    // API_ITEMS_ENDPOINT,
-    // API_ERROR_ENDPOINT,
-    // API_LOG_ENDPOINT,
     API_LOAD_TIMEOUT_TEXT,
     TASK_NODE_CLASS_NAME,
     TASK_LINE_CLASS_NAME,
     FRONTEND_URL,
     EXERCISE_NAME,
-    APP_NAME, TIMEOUT, CHANGE_BROWSER_HISTORY,
+    APP_NAME,
+    TIMEOUT,
+    ACCEPTABLE_SOLUTION_NODE_CLASSES,
+    ACCEPTABLE_SOLUTION_LINE_CLASSES,
+    ACCEPTABLE_USER_NODE_CLASSES,
+    ACCEPTABLE_USER_LINE_CLASSES, FLASH_BUTTON_CLASS_NAME,
 } from './constants';
 import { createLocalInput } from './util';
+import { logToRemote, logErrorToRemote } from './remoteLogging';
 
 
 // bootstrapping
@@ -97,7 +97,9 @@ if (LOG) console.timeEnd('init');
 
 export function presentAssignment(index) {
     // compose the state update based on the assignment data
-    state.set(parseAssignment(assignments, index, state.get()));
+    const assignment = parseAssignment(assignments, index, state.get());
+    state.set(assignment);
+    logToRemote(assignment.id);
 
     ui.taskText.innerHTML = parseKatex(assignments[index].item.text);
 
@@ -114,7 +116,6 @@ export function presentAssignment(index) {
     disableButton(ui.nextButton, [nextAssignment]);
     disableButton(ui.undoButton, [undo]);
 
-    // render assignment
     render(state, groups);
 }
 
@@ -259,8 +260,6 @@ export function handleNewPath(p1, p2) {
     const currentState = state.get();
     const workingState = [currentState];
 
-    enableButton(ui.undoButton, [undo]);
-
     if (!p1.equals(p2)) {
         workingState.push(composeNewStateForNode(p1, {add: [USER_NODE_CLASS_NAME]}, workingState[workingState.length - 1]));
         workingState.push(composeNewStateForNode(p2, {add: [USER_NODE_CLASS_NAME]}, workingState[workingState.length - 1]));
@@ -273,32 +272,33 @@ export function handleNewPath(p1, p2) {
         workingState.push(composeNewStateForNode(p1, classes, workingState[workingState.length - 1]));
     }
 
-    const validSolution = checkSolution(workingState[workingState.length - 1]);
-    if (!isEmptyObject(validSolution)) {
-        handleValidSolution(validSolution);
-        workingState.push(highlightSolution(validSolution, workingState[workingState.length - 1]));
-    }
-
-    // we only want one state change leading to one history entry, so we store all the stacked changes at once
-    state.set(workingState[workingState.length - 1]);
-
-    render(state, groups, isEmptyObject(validSolution));
+    handleGeometryChange(workingState[workingState.length - 1]);
 }
 
 
 export function handleSelectedElem(p1, p2) {
-    const workingState = [state.get()];
+    const stateSnapshot = state.get();
 
+    const updatedState = typeof p2 !== 'undefined'
+        ? composeNewStateForLine(p1, p2, {toggle: [SELECTED_LINE_CLASS_NAME]}, stateSnapshot)
+        : composeNewStateForNode(p1, {toggle: [SELECTED_NODE_CLASS_NAME]}, stateSnapshot);
+
+    handleGeometryChange(updatedState);
+}
+
+
+function handleGeometryChange(stateSnapshot) {
     enableButton(ui.undoButton, [undo]);
 
-    if (typeof p2 !== 'undefined') {
-        workingState.push(composeNewStateForLine(p1, p2, {toggle: [SELECTED_LINE_CLASS_NAME]}, workingState[workingState.length - 1]));
-    }
-    else {
-        workingState.push(composeNewStateForNode(p1, {toggle: [SELECTED_NODE_CLASS_NAME]}, workingState[workingState.length - 1]));
-    }
+    const workingState = [stateSnapshot];
 
     const validSolution = checkSolution(workingState[workingState.length - 1]);
+    const geometryMaxed = isGeometryMaxed(workingState[workingState.length - 1]);
+
+    if (geometryMaxed.isMaxed && isEmptyObject(validSolution)) flashButton(ui.undoButton);
+
+    if (geometryMaxed.diff > 0) return;
+
     if (!isEmptyObject(validSolution)) {
         handleValidSolution(validSolution);
         workingState.push(highlightSolution(validSolution, workingState[workingState.length - 1]));
@@ -306,6 +306,44 @@ export function handleSelectedElem(p1, p2) {
 
     state.set(workingState[workingState.length - 1]);
     render(state, groups, isEmptyObject(validSolution));
+}
+
+
+function isGeometryMaxed(stateSnaphot) {
+    const { config = {} } = stateSnaphot;
+    const { maxUserNodes, maxUserLines } = config;
+
+    if (typeof maxUserNodes === 'undefined' && typeof maxUserLines === 'undefined') return {
+        isMaxed: false,
+        diff: undefined,
+    };
+
+    // counting lines first, typically expecting fewer lines then nodes; then early return
+    const acceptableLineClasses = getConfigValue('uiEvalSegmentsAsLines', stateSnaphot)
+        ? deleteFromSet(ACCEPTABLE_USER_LINE_CLASSES, USER_LINE_CLASS_NAME).add(AXIS_LINE_CLASS_NAME)
+        : ACCEPTABLE_USER_LINE_CLASSES;
+    const linesCount = countGeometry(
+        stateSnaphot[PATH_STATE_COLLECTION],
+        acceptableLineClasses,
+    );
+
+    if (typeof maxUserLines !== 'undefined' && linesCount >= maxUserLines) return {
+        isMaxed: true,
+        diff: linesCount - maxUserLines,
+    };
+
+    const nodesCount = countGeometry(
+        stateSnaphot[NODE_STATE_COLLECTION],
+        ACCEPTABLE_USER_NODE_CLASSES,
+    );
+
+    console.log(nodesCount, maxUserNodes, nodesCount - maxUserNodes);
+    console.log(typeof maxUserNodes !== 'undefined' && nodesCount >= maxUserNodes);
+
+    return {
+        isMaxed: typeof maxUserNodes !== 'undefined' && nodesCount >= maxUserNodes,
+        diff: nodesCount - maxUserNodes,
+    };
 }
 
 
@@ -314,14 +352,15 @@ function handleValidSolution(solution) {
 
     const stateSnapshot = state.get();
 
-    const nodesCount = stateSnapshot[NODE_STATE_COLLECTION].filter(node => (
-        node.classes.has(USER_NODE_CLASS_NAME) || node.classes.has(TASK_NODE_CLASS_NAME) || node.classes.has(SELECTED_NODE_CLASS_NAME)
-    )).length;
-    const pathsCount = stateSnapshot[PATH_STATE_COLLECTION].filter(path => (
-        path.classes.has(TASK_LINE_CLASS_NAME) || path.classes.has(USER_LINE_CLASS_NAME) || path.classes.has(SELECTED_LINE_CLASS_NAME)
-    )).length;
+    const nodesCount = countGeometry(stateSnapshot[NODE_STATE_COLLECTION], ACCEPTABLE_SOLUTION_NODE_CLASSES);
+    const pathsCount = countGeometry(stateSnapshot[NODE_STATE_COLLECTION], ACCEPTABLE_SOLUTION_LINE_CLASSES);
 
-    logSolutionToRemote(stateSnapshot.id, nodesCount + pathsCount, state.getOperationsCount(), Date.now() - stateSnapshot.startTime);
+    logToRemote(stateSnapshot.id, {
+        geometryCount: nodesCount + pathsCount,
+        moves: state.getOperationsCount(),
+        responseTime: Date.now() - stateSnapshot.startTime,
+        correct: 1,
+    });
 
     enableButton(ui.nextButton, [nextAssignment]);
     disableButton(ui.undoButton, [undo]);
@@ -333,6 +372,8 @@ export function undo(event) {
     event.preventDefault();
 
     state.rewind(1);
+
+    ui.undoButton.classList.remove(FLASH_BUTTON_CLASS_NAME);
 
     if (state.length === 2) disableButton(ui.undoButton, [undo]);
 
@@ -368,36 +409,4 @@ export function handleAssignment(assignment) {
         });
         presentAssignment(0)
     }
-}
-
-
-function logSolutionToRemote(itemId, geometryCount, moves, responseTime) {
-    if (typeof API_LOG_ENDPOINT === 'undefined') return;
-
-    function handleTimeout() {
-        request.open('GET', url);
-        request.send();
-        logErrorToRemote(url);
-    }
-
-    const url = `${API_URL}${API_LOG_ENDPOINT}?ps=${ps}&user=${user}&item=${itemId}&answer=${geometryCount}&correct=1&moves=${moves}&responseTime=${responseTime}&cookieHash=${cookieHash}&deviceType=${deviceType}`;
-    const request = new XMLHttpRequest();
-    request.open('GET', url);
-    request.timeout = TIMEOUT;
-    request.onerror = () => {logErrorToRemote(url)};
-    request.ontimeout = handleTimeout;
-    request.onabort = () => {logErrorToRemote(url)};
-    request.onloadstart = () => {if (LOG) console.log(`%clogging solution: ${url}`, 'color: wheat')};
-    request.onload = () => {if (LOG && request.status === 200) console.log(`%csolution logged`, 'color: wheat')};
-    request.send();
-}
-
-
-function logErrorToRemote(error) {
-    if (typeof API_ERROR_ENDPOINT === 'undefined') return;
-
-    const errorLogUrl = `${API_URL}${API_ERROR_ENDPOINT}?user=${user}&description=${encodeURIComponent(error)}`;
-    const errorRequest = new XMLHttpRequest();
-    errorRequest.open('GET', errorLogUrl);
-    errorRequest.send();
 }

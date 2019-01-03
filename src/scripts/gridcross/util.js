@@ -7,8 +7,8 @@ import {
     USER_LINE_CLASS_NAME,
     USER_NODE_CLASS_NAME,
 } from './constants';
-import { fromCanvasCoord } from './functions';
 import { handleAssignment } from './gridcross.exercise';
+import { fromCanvasXCoord, fromCanvasYCoord } from './functions';
 
 export function exportGeometry(stateSnapshot) {
     if (!LOCAL_IO) return;
@@ -19,7 +19,7 @@ export function exportGeometry(stateSnapshot) {
             node.classes.has(USER_NODE_CLASS_NAME) || node.classes.has(TASK_NODE_CLASS_NAME)
         ))
         .map(node => (
-            [fromCanvasCoord(node.geometry.p1.x), fromCanvasCoord(node.geometry.p1.y)]
+            [fromCanvasXCoord(node.geometry.p1.x), fromCanvasYCoord(node.geometry.p1.y)]
         ));
 
     log['segments'] = stateSnapshot[PATH_STATE_COLLECTION]
@@ -28,8 +28,8 @@ export function exportGeometry(stateSnapshot) {
         ))
         .map(path => (
             [
-                [fromCanvasCoord(path.geometry.p1.x), fromCanvasCoord(path.geometry.p1.y)],
-                [fromCanvasCoord(path.geometry.p2.x), fromCanvasCoord(path.geometry.p2.y)]
+                [fromCanvasXCoord(path.geometry.p1.x), fromCanvasYCoord(path.geometry.p1.y)],
+                [fromCanvasXCoord(path.geometry.p2.x), fromCanvasYCoord(path.geometry.p2.y)]
             ]
         ));
 

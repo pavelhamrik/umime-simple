@@ -1,7 +1,6 @@
 import {
     AXIS_LINE_CLASS_NAME,
     CONFIG_STATE_COLLECTION,
-    // LOG,
     NODE_STATE_COLLECTION,
     PATH_STATE_COLLECTION, SELECTED_LINE_CLASS_NAME, SELECTED_NODE_CLASS_NAME,
     SOLUTION_STATE_COLLECTION,
@@ -13,7 +12,7 @@ import {
     USER_NODE_CLASS_NAME
 } from './constants';
 import Point from './Point';
-import { extendLineCoordinates, findLine, toCanvasCoord } from './functions';
+import { extendLineCoordinates, findLine, toCanvasXCoord, toCanvasYCoord } from './functions';
 import { composeNewStateForLine, composeNewStateForNode } from './gridcross.exercise';
 import { isSubsegment } from './intersections';
 
@@ -37,8 +36,8 @@ export function parseAssignment(assignments, index, stateSnapshot) {
             workingState.push(
                 composeNewStateForNode(
                     new Point(
-                        toCanvasCoord(point.geometry[0]),
-                        toCanvasCoord(point.geometry[1])
+                        toCanvasXCoord(point.geometry[0]),
+                        toCanvasYCoord(point.geometry[1])
                     ),
                     {add: [TASK_NODE_CLASS_NAME]},
                     workingState[workingState.length - 1],
@@ -51,12 +50,12 @@ export function parseAssignment(assignments, index, stateSnapshot) {
     if (typeof assignment.problem.segments !== 'undefined') {
         assignment.problem.segments.forEach(line => {
             const p1 = new Point(
-                toCanvasCoord(line.geometry[0][0]),
-                toCanvasCoord(line.geometry[0][1])
+                toCanvasXCoord(line.geometry[0][0]),
+                toCanvasYCoord(line.geometry[0][1])
             );
             const p2 = new Point(
-                toCanvasCoord(line.geometry[1][0]),
-                toCanvasCoord(line.geometry[1][1])
+                toCanvasXCoord(line.geometry[1][0]),
+                toCanvasYCoord(line.geometry[1][1])
             );
 
             workingState.push(
@@ -88,12 +87,12 @@ export function parseAssignment(assignments, index, stateSnapshot) {
         assignment.problem.lines.forEach(line => {
             const {p1, p2} = extendLineCoordinates(
                 new Point(
-                    toCanvasCoord(line.geometry[0][0]),
-                    toCanvasCoord(line.geometry[0][1])
+                    toCanvasXCoord(line.geometry[0][0]),
+                    toCanvasYCoord(line.geometry[0][1])
                 ),
                 new Point(
-                    toCanvasCoord(line.geometry[1][0]),
-                    toCanvasCoord(line.geometry[1][1])
+                    toCanvasXCoord(line.geometry[1][0]),
+                    toCanvasYCoord(line.geometry[1][1])
                 )
             );
 
@@ -114,8 +113,8 @@ export function parseAssignment(assignments, index, stateSnapshot) {
         if (typeof solution.points !== 'undefined') {
             transformed[NODE_STATE_COLLECTION] = solution.points.map(point => (
                 new Point(
-                    toCanvasCoord(point[0]),
-                    toCanvasCoord(point[1])
+                    toCanvasXCoord(point[0]),
+                    toCanvasYCoord(point[1])
                 )
             ));
         }
@@ -127,12 +126,12 @@ export function parseAssignment(assignments, index, stateSnapshot) {
                 ? solution.segments.map(path => (
                     {
                         p1: new Point(
-                            toCanvasCoord(path[0][0]),
-                            toCanvasCoord(path[0][1])
+                            toCanvasXCoord(path[0][0]),
+                            toCanvasYCoord(path[0][1])
                         ),
                         p2: new Point(
-                            toCanvasCoord(path[1][0]),
-                            toCanvasCoord(path[1][1])
+                            toCanvasXCoord(path[1][0]),
+                            toCanvasYCoord(path[1][1])
                         ),
                     }
                 ))
@@ -144,12 +143,12 @@ export function parseAssignment(assignments, index, stateSnapshot) {
                 ? solution.lines.map(path => (
                     extendLineCoordinates(
                         new Point(
-                            toCanvasCoord(path[0][0]),
-                            toCanvasCoord(path[0][1])
+                            toCanvasXCoord(path[0][0]),
+                            toCanvasYCoord(path[0][1])
                         ),
                         new Point(
-                            toCanvasCoord(path[1][0]),
-                            toCanvasCoord(path[1][1])
+                            toCanvasXCoord(path[1][0]),
+                            toCanvasYCoord(path[1][1])
                         )
                     )
                 ))

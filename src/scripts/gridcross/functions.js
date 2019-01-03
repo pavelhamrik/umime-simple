@@ -3,7 +3,6 @@ import Point from './Point';
 import {
     GRID_WIDTH,
     GRID_HEIGHT,
-    CANVAS_PADDING,
     RESOLUTION,
     TOP_EDGE,
     RIGHT_EDGE,
@@ -11,6 +10,8 @@ import {
     LEFT_EDGE,
     SNAP_THRESHOLD,
     DUPLICATE_LINE_THRESHOLD,
+    CANVAS_PADDING_TOP,
+    CANVAS_PADDING_LEFT, FLASH_BUTTON_CLASS_NAME,
 } from './constants';
 
 
@@ -98,27 +99,42 @@ export function extendLineCoordinates(p1, p2) {
 }
 
 
-export function toCanvasCoord(value) {
-    return value * RESOLUTION + CANVAS_PADDING;
+// export function toCanvasCoord(value) {
+//     return value * RESOLUTION + CANVAS_PADDING;
+// }
+
+export function toCanvasXCoord(value) {
+    return value * RESOLUTION + CANVAS_PADDING_LEFT;
 }
 
+export function toCanvasYCoord(value) {
+    return value * RESOLUTION + CANVAS_PADDING_TOP;
+}
 
-export function fromCanvasCoord(value) {
-    return (value - CANVAS_PADDING) / RESOLUTION;
+// export function fromCanvasCoord(value) {
+//     return (value - CANVAS_PADDING) / RESOLUTION;
+// }
+
+export function fromCanvasXCoord(value) {
+    return (value - CANVAS_PADDING_LEFT) / RESOLUTION;
+}
+
+export function fromCanvasYCoord(value) {
+    return (value - CANVAS_PADDING_TOP) / RESOLUTION;
 }
 
 
 export function generateGridLines(classes) {
     const xGrid = Array.from(Array(GRID_WIDTH + 1), (value, xLine) => {
         return composeStateObject((xLine + 1) * 2 - 1, classes, {
-            p1: new Point(toCanvasCoord(xLine), TOP_EDGE),
-            p2: new Point(toCanvasCoord(xLine), BOTTOM_EDGE),
+            p1: new Point(toCanvasXCoord(xLine), TOP_EDGE),
+            p2: new Point(toCanvasXCoord(xLine), BOTTOM_EDGE),
         }, 1);
     });
     const yGrid = Array.from(Array(GRID_WIDTH + 1), (value, yLine) => {
         return composeStateObject((yLine + 1) * 2, classes, {
-            p1: new Point(LEFT_EDGE, toCanvasCoord(yLine)),
-            p2: new Point(RIGHT_EDGE, toCanvasCoord(yLine)),
+            p1: new Point(LEFT_EDGE, toCanvasYCoord(yLine)),
+            p2: new Point(RIGHT_EDGE, toCanvasYCoord(yLine)),
         }, 1);
     });
     return xGrid.concat(yGrid);
@@ -129,7 +145,7 @@ export function generateGridNodes(classes) {
     const idMagnitude = Math.ceil(Math.log(GRID_WIDTH + 1) * Math.LOG10E);
     return Array.from(Array(GRID_WIDTH + 1), (value, xLine) => {
         return Array.from(Array(GRID_HEIGHT + 1), (value, yLine) => {
-            return composeStateObject(xLine * (10 ** idMagnitude) + yLine, classes, {p1: new Point(toCanvasCoord(xLine), toCanvasCoord(yLine))}, 1);
+            return composeStateObject(xLine * (10 ** idMagnitude) + yLine, classes, {p1: new Point(toCanvasXCoord(xLine), toCanvasYCoord(yLine))}, 1);
         })
     }).reduce((acc, nodeRow) => {
         return acc.concat(nodeRow)
@@ -207,15 +223,54 @@ export function disableButton(button, handlers = []) {
 }
 
 
+export function flashButton(button) {
+    button.classList.remove(FLASH_BUTTON_CLASS_NAME);
+
+    // triggers reflow so the repeated addition of the class would trigger the css animation
+    void button.offsetWidth;
+
+    button.classList.add(FLASH_BUTTON_CLASS_NAME);
+}
+
+
 export function noPointerEvents(elem) {
-    // elem.style.pointerEvents = 'none';
     elem.addClass('no-pointer-events');
 }
 
 
 export function determineResolution(gridWidth, gridHeight, canvasPadding) {
-    const viewSize = Math.min(window.innerWidth, window.innerHeight * 0.65) - 3 * canvasPadding;
+    const viewSize = Math.min(window.innerWidth, window.innerHeight * 0.65) - canvasPadding * 1.5;
     const gridSize = Math.max(gridWidth, gridHeight);
     const resolution = Math.floor(viewSize / gridSize / 5) * 5;
     return Math.min(resolution, 100);
 }
+
+
+export function countGeometry(collection, classNames) {
+    return collection.filter(elem =>
+        Array.from(classNames).filter(className => elem.classes.has(className)).length !== 0
+    ).length;
+}
+
+
+export function deleteFromSet(set, elem) {
+    const outputSet = new Set(set);
+    outputSet.delete(elem);
+    return outputSet;
+}
+
+
+// export function intersectSets(set1, set2) {
+//     const intersection = new Set();
+//     set1.forEach(elem => {
+//         if (set2.has(elem)) intersection.add(elem);
+//     });
+//     return intersection;
+// }
+
+
+// export function unifySets(set1, set2) {
+//     const union = new Set(set1);
+//     set2.forEach(elem => union.add(elem));
+//     return union;
+// }

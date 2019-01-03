@@ -13,6 +13,8 @@ Include the following three lines in your HTML file, making sure the paths point
 ```
 It's fine to simply put them into the `body` tag, grouped like this.
 
+To use [KaTeX](https://katex.org/) in your assignment's text, load the library separately. Gridcross checks for its presence and strips all unsupported markup if the library is not loaded.
+
 ### API
 
 The app loads the assignments over standard XMLHttpRequest in JSON format.
@@ -21,7 +23,7 @@ The format it expects it:
 
 ```
 {
-    "text": "Description of the exercise",
+    "text": "Description of the exercise, specifying the problem to the person solving it.",
     "problem": {
         "points": [
             {geometry: [4, 3], label: {text: "A", position: [1, 0]}}
@@ -39,14 +41,14 @@ The format it expects it:
     ],
     "config": {
         "uiOnlySelect": true,
-        "uiEvalSegmentsAsLines": false
+        "uiEvalSegmentsAsLines": false,
+        "maxUserNodes": 3,
+        "maxUserLines": 2,
     }
 }
 ```
 
 Recognized keys for both `problem` and `solutions` are `points`, `segments` and `lines`. `solutions` must be an array, even if it contains just one element.
-
-The `text` top-level key is displayed as assignment text to the player. Other keys in the object are allowed and ignored.
 
 The `label` optional attribute displays the associated object. `position` is optional and defaults to `[1, -1]` (to the left and top from the object). 
 
@@ -54,6 +56,7 @@ The `label` optional attribute displays the associated object. `position` is opt
 
 - `uiOnlySelect` – the user is only allowed to select existing objects. Defaults to `false`.
 - `uiEvalSegmentsAsLines` – user's segments are considered lines when evaluating. Defaults to `false`.
+- `maxUserNodes`, `maxUserLines` – user can create or select no more than the set amount of objects. Defaults to `0` – unlimited.'
 
 
 ## Development
@@ -65,7 +68,6 @@ Ask for a demo, docs TBD thereafter.
 - `svg.draggable.js` plugin for `svg.js` had to be modified to work in a ES6 module environment
 - Uhe `intersections.js` file contains a syntactically modified part of the [KLD Intersections](https://github.com/thelonious/kld-intersections) library 
 - If you are using only the distribution version of gridcross, you don't have to worry about this as they are both included in the package.
-- Both modified libraries are checked into the repository.
 
 ## Todos
 
@@ -98,11 +100,12 @@ Ask for a demo, docs TBD thereafter.
 - [x] `done, nov 22` emphasize reaction to selection and finding a correct solution
 - [x] `done, nov 22` allow HTML in assignment's text
 - [x] `done, nov 22` KaTeX support
-- [ ] log an assignment's opening (all values `0`) 
+- [x] log an assignment's opening (all values `0`)
+- [x] improve the `undo` and `redo` buttons placement
 - [ ] limit user geometry count, signalize failure and enforce undo
 - [ ] connecting & separating lines
 
-### Next up
+### Later
 
 - [ ] drawing circles
 - [ ] getting the background image from assignment
@@ -121,4 +124,4 @@ Ask for a demo, docs TBD thereafter.
 - [x] `fixed, nov 19` gridlines coinciding with axislines are not updated with the axisline class  
 - [x] `fixed, nov 22` existing geometry is ignoring labels from the assignment  
 - [x] `fixed, nov 22` selection-style exercises are not working on touch devices
-- [ ] window url is not updating when changing exercise
+- [x] window url is not updating when changing exercise (wrong build config was being used)
