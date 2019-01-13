@@ -38,6 +38,7 @@
         "yargs": "^12.0.2"
     },
     "dependencies": {
+        "js-cookie": "^2.2.0",
         "sanitize.css": "^8.0.0",
         "smoothscroll-polyfill": "^0.4.3"
     }

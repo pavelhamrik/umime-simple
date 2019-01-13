@@ -206,6 +206,8 @@ export function isEmptyObject(object) {
 
 
 export function enableButton(button, handlers = []) {
+    if (typeof button === 'undefined' || button == null) return;
+
     button.disabled = false;
     handlers.forEach(handler => {
         button.addEventListener('touchstart', handler);
@@ -215,6 +217,8 @@ export function enableButton(button, handlers = []) {
 
 
 export function disableButton(button, handlers = []) {
+    if (typeof button === 'undefined' || button == null) return;
+
     button.disabled = true;
     handlers.forEach(handler => {
         button.removeEventListener('touchstart', handler);
@@ -224,12 +228,28 @@ export function disableButton(button, handlers = []) {
 
 
 export function flashButton(button) {
+    if (typeof button === 'undefined' || button == null) return;
+
     button.classList.remove(FLASH_BUTTON_CLASS_NAME);
 
     // triggers reflow so the repeated addition of the class would trigger the css animation
     void button.offsetWidth;
 
     button.classList.add(FLASH_BUTTON_CLASS_NAME);
+}
+
+
+export function enableKeyboardShortcuts(handlers) {
+    handlers.forEach(handler => {
+        document.addEventListener('keydown', handler);
+    });
+}
+
+
+export function disableKeyboardShortcuts(handlers) {
+    handlers.forEach(handler => {
+        document.removeEventListener('keydown', handler);
+    });
 }
 
 

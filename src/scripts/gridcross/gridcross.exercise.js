@@ -8,7 +8,13 @@ import {
     findLine,
     isEmptyObject,
     enableButton,
-    disableButton, updateElemForState, countGeometry, unifySets, flashButton, deleteFromSet,
+    disableButton,
+    updateElemForState,
+    countGeometry,
+    flashButton,
+    deleteFromSet,
+    enableKeyboardShortcuts,
+    disableKeyboardShortcuts,
 } from './functions';
 import { parseAssignment, checkSolution, highlightSolution, parseKatex, getConfigValue } from './assignment';
 import { render } from './render';
@@ -34,8 +40,6 @@ import {
     SELECTED_LINE_CLASS_NAME,
     LABEL_GROUP,
     API_LOAD_TIMEOUT_TEXT,
-    TASK_NODE_CLASS_NAME,
-    TASK_LINE_CLASS_NAME,
     FRONTEND_URL,
     EXERCISE_NAME,
     APP_NAME,
@@ -43,10 +47,13 @@ import {
     ACCEPTABLE_SOLUTION_NODE_CLASSES,
     ACCEPTABLE_SOLUTION_LINE_CLASSES,
     ACCEPTABLE_USER_NODE_CLASSES,
-    ACCEPTABLE_USER_LINE_CLASSES, FLASH_BUTTON_CLASS_NAME,
+    ACCEPTABLE_USER_LINE_CLASSES,
+    FLASH_BUTTON_CLASS_NAME,
+    RESET_BUTTON_TEST,
 } from './constants';
 import { createLocalInput } from './util';
 import { logToRemote, logErrorToRemote } from './remoteLogging';
+import GAUtils from '../utils/googleAnalytics';
 
 
 // bootstrapping
@@ -77,6 +84,7 @@ function init() {
     ui.taskText =  uiBootstrap.taskText;
     ui.nextButton = uiBootstrap.nextButton;
     ui.undoButton = uiBootstrap.undoButton;
+    ui.resetButton = uiBootstrap.resetButton;
 
     groups[BACK_GROUP] = ui.canvas.group().addClass(BACK_GROUP);
     groups[PATH_GROUP] = ui.canvas.group().addClass(PATH_GROUP);
@@ -113,8 +121,19 @@ export function presentAssignment(index) {
         document.title = historyTitle;
     }
 
+    if (index > 0) {
+        GAUtils.getTestVariant(RESET_BUTTON_TEST.name, false);
+        GAUtils.sendPageView();
+    }
+
     disableButton(ui.nextButton, [nextAssignment]);
     disableButton(ui.undoButton, [undo]);
+    disableButton(ui.resetButton, [reset]);
+    disableKeyboardShortcuts([
+        handleUndoKeyboardShortcut,
+        handleResetKeyboardShortcut,
+        handleNextAssignmentKeyboardShortcut
+    ]);
 
     render(state, groups);
 }
@@ -289,13 +308,18 @@ export function handleSelectedElem(p1, p2) {
 
 function handleGeometryChange(stateSnapshot) {
     enableButton(ui.undoButton, [undo]);
+    enableButton(ui.resetButton, [reset]);
+    enableKeyboardShortcuts([handleUndoKeyboardShortcut, handleResetKeyboardShortcut]);
 
     const workingState = [stateSnapshot];
 
     const validSolution = checkSolution(workingState[workingState.length - 1]);
     const geometryMaxed = isGeometryMaxed(workingState[workingState.length - 1]);
 
-    if (geometryMaxed.diff > 0 || (geometryMaxed.isMaxed && isEmptyObject(validSolution))) flashButton(ui.undoButton);
+    if (geometryMaxed.diff > 0 || (geometryMaxed.isMaxed && isEmptyObject(validSolution))) {
+        flashButton(ui.undoButton);
+        flashButton(ui.resetButton);
+    }
 
     if (geometryMaxed.diff > 0) return;
 
@@ -337,9 +361,6 @@ function isGeometryMaxed(stateSnaphot) {
         ACCEPTABLE_USER_NODE_CLASSES,
     );
 
-    console.log(nodesCount, maxUserNodes, nodesCount - maxUserNodes);
-    console.log(typeof maxUserNodes !== 'undefined' && nodesCount >= maxUserNodes);
-
     return {
         isMaxed: typeof maxUserNodes !== 'undefined' && nodesCount >= maxUserNodes,
         diff: nodesCount - maxUserNodes,
@@ -363,7 +384,11 @@ function handleValidSolution(solution) {
     });
 
     enableButton(ui.nextButton, [nextAssignment]);
+    enableKeyboardShortcuts([handleNextAssignmentKeyboardShortcut]);
+
     disableButton(ui.undoButton, [undo]);
+    disableButton(ui.resetButton, [reset]);
+    disableKeyboardShortcuts([handleUndoKeyboardShortcut, handleResetKeyboardShortcut]);
 }
 
 
@@ -371,19 +396,67 @@ export function undo(event) {
     event.stopPropagation();
     event.preventDefault();
 
+    if (typeof this !== 'undefined' && typeof this.blur === 'function') this.blur();
+
+    GAUtils.sendEvent({action: 'Undo button click', label: 'Mrizkovana'});
+
     state.rewind(1);
+    handleRewindUIChanges();
+}
 
+
+export function reset(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (typeof this !== 'undefined' && typeof this.blur === 'function') this.blur();
+
+    GAUtils.sendEvent({action: 'Reset button click', label: 'Mrizkovana'});
+
+    state.rewind(state.length - 2);
+    handleRewindUIChanges();
+}
+
+
+function handleRewindUIChanges() {
     ui.undoButton.classList.remove(FLASH_BUTTON_CLASS_NAME);
+    if (ui.resetButton) ui.resetButton.classList.remove(FLASH_BUTTON_CLASS_NAME);
 
-    if (state.length === 2) disableButton(ui.undoButton, [undo]);
+    if (state.length === 2) {
+        disableButton(ui.undoButton, [undo]);
+        disableButton(ui.resetButton, [reset]);
+        disableKeyboardShortcuts([handleUndoKeyboardShortcut, handleResetKeyboardShortcut]);
+    }
 
     render(state, groups);
+}
+
+
+function handleUndoKeyboardShortcut(event) {
+    if (event.code === 'KeyZ') undo(event);
+}
+
+function handleResetKeyboardShortcut(event) {
+    if (event.code === 'KeyR') reset(event);
+}
+
+function handleNextAssignmentKeyboardShortcut(event) {
+    if ((event.code === 'Space' || event.code === 'Enter') && event.target === document.body) {
+        event.stopPropagation();
+        event.preventDefault();
+        nextAssignment(event);
+    }
 }
 
 
 export function nextAssignment(event) {
     event.stopPropagation();
     event.preventDefault();
+
+    if (typeof this !== 'undefined' && typeof this.blur === 'function') this.blur();
+
+    GAUtils.sendEvent({action: 'Next button click', label: 'Mrizkovana'});
+
     handleAssignment();
 }
 

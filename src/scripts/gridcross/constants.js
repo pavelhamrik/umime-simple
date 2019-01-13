@@ -107,6 +107,7 @@ export const APP_NAME = 'Umíme matiku';
 export const EXERCISE_NAME = 'Mřížkovaná';
 
 export const BACK_BUTTON_LABEL = 'Zpět';
+export const RESET_BUTTON_LABEL = 'Od začátku';
 export const NEXT_BUTTON_LABEL = 'Další';
 export const TASK_TEXT_DEFAULT = 'Načítám zadání…';
 export const API_LOAD_ERROR_TEXT = 'Nepodařilo se načíst zadání. Zkuste prosím obnovit stránku.';
@@ -124,4 +125,8 @@ export const FRONTEND_URL = 'https://www.umimematiku.cz/';
 
 export const TIMEOUT = 20000;
 
-
+export const RESET_BUTTON_TEST = {
+    name: 'reset-button',
+    variants: 2,
+    id: 'lX-VcSRhTd2nyk-Rr1kQrA',
+};

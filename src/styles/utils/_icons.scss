@@ -1,10 +1,10 @@
 @font-face {
     font-family: 'umime-to';
-    src: url('../../assets/icons/umime-to.eot?cgqr3h');
-    src: url('../../assets/icons/umime-to.eot?cgqr3h#iefix') format('embedded-opentype'),
-    url('../../assets/icons/umime-to.ttf?cgqr3h') format('truetype'),
-    url('../../assets/icons/umime-to.woff?cgqr3h') format('woff'),
-    url('../../assets/icons/umime-to.svg?cgqr3h#umime-to') format('svg');
+    src: url('../../assets/icons/umime-to.eot?4kz38l');
+    src: url('../../assets/icons/umime-to.eot?4kz38l#iefix') format('embedded-opentype'),
+    url('../../assets/icons/umime-to.ttf?4kz38l') format('truetype'),
+    url('../../assets/icons/umime-to.woff?4kz38l') format('woff'),
+    url('../../assets/icons/umime-to.svg?4kz38l#umime-to') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -29,6 +29,9 @@
 }
 .icon-reload:before {
     content: "\e907";
+}
+.icon-reload-reverse:before {
+    content: "\e90b";
 }
 .icon-undo:before {
     content: "\e908";

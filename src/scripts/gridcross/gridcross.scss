@@ -6,17 +6,6 @@ $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
 $primary-color: #31BD60;
 $task-color: map-get($apps, 'english');
 
-@font-face {
-    font-family: 'umime-to-gridcross';
-    src: url($asset-url + 'umime-to.eot?cgqr3h');
-    src: url($asset-url + 'umime-to.eot?cgqr3h#iefix') format('embedded-opentype'),
-    url($asset-url + 'umime-to.ttf?cgqr3h') format('truetype'),
-    url($asset-url + 'umime-to.woff?cgqr3h') format('woff'),
-    url($asset-url + 'umime-to.svg?cgqr3h#umime-to') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-
 #gridcross {
     $transition: fill $lightning-speed $default-easing,
     stroke $lightning-speed $default-easing;
@@ -179,20 +168,30 @@ $task-color: map-get($apps, 'english');
     }
 
     .button-wrapper {
-        display: flex;
-        margin: ($button-vertical-padding * 2.25 + $font-size * $line-height) / -2 auto 0;
-        justify-content: center;
         align-items: center;
-        position: relative;
+        bottom: ($button-vertical-padding * 2.25 + $font-size * $line-height) / -2;
+        display: flex;
+        //justify-content: space-around;
+        left: 0;
+        position: absolute;
+        right: 0;
     }
 
-    .undo-button:before {
-        font-family: 'umime-to-gridcross';
-        content: "\e908";
+    .button-wrapper-left {
+        flex: 1 0 50%;
+        text-align: right;
+        padding-right: 1rem;
+    }
+
+    .button-wrapper-right {
+        flex: 1 0 50%;
+        text-align: left;
+        padding-left: 1rem;
     }
 
     .undo-button,
-    .next-button {
+    .next-button,
+    .reset-button {
         background-color: $white;
         border: none;
         border-radius: $button-border-radius;
@@ -200,7 +199,7 @@ $task-color: map-get($apps, 'english');
         padding: $large-button-padding;
         transition: $button-transition, transform $lightning-speed $default-easing;
         outline: none;
-        margin: 0 0.5rem;
+        margin: 0 0.25rem;
         min-height: 2.75rem;
         font-size: $font-size;
         text-transform: none;
@@ -227,6 +226,16 @@ $task-color: map-get($apps, 'english');
                 background-color: scale-color($primary-color, $lightness: -15%);
             }
         }
+    }
+
+    .undo-button:before {
+        font-family: $icon-font;
+        content: "\e908";
+    }
+
+    .reset-button:before {
+        font-family: $icon-font;
+        content: "\e90b";
     }
 
     .button-flash {
@@ -293,7 +302,7 @@ $task-color: map-get($apps, 'english');
             outline: none;
 
             &:before {
-                font-family: 'umime-to-gridcross';
+                font-family: $icon-font;
                 content: "\e902";
             }
         }
