@@ -1,13 +1,8 @@
 import { determineResolution } from './functions';
 
-// export const LOG = true;
-// export const LOCAL_IO = false;
-// export const CHANGE_BROWSER_HISTORY = true;
-
 export const GRID_WIDTH = 6;
 export const GRID_HEIGHT = 6;
 
-// export const CANVAS_PADDING = 10;
 export const CANVAS_PADDING_TOP = 20;
 export const CANVAS_PADDING_RIGHT = 20;
 export const CANVAS_PADDING_BOTTOM = 40;
@@ -39,7 +34,6 @@ export const TOUCH_SELECT_TOLERANCE = 20;
 
 export const NODE = 'NODE';
 export const LINE = 'LINE';
-// export const CIRCLE = 'CIRCLE';
 
 export const BACK_GROUP = 'backGroup';
 export const PATH_GROUP = 'pathGroup';
@@ -63,6 +57,7 @@ export const SOLVED_NODE_CLASS_NAME = 'solvednode';
 export const FLASH_NODE_CLASS_NAME = 'flashnode';
 
 export const GRID_LINE_CLASS_NAME = 'gridline';
+export const AUX_LINE_CLASS_NAME = 'auxline';
 export const AXIS_LINE_CLASS_NAME = 'axisline';
 export const TASK_LINE_CLASS_NAME = 'taskline';
 export const USER_LINE_CLASS_NAME = 'userline';
@@ -88,15 +83,16 @@ export const ACCEPTABLE_SOLUTION_NODE_CLASSES = new Set([
 export const ACCEPTABLE_SOLUTION_LINE_CLASSES = new Set([
     TASK_LINE_CLASS_NAME,
     USER_LINE_CLASS_NAME,
+    AUX_LINE_CLASS_NAME,
     SELECTED_LINE_CLASS_NAME,
 ]);
 
-export const ACCEPTABLE_USER_NODE_CLASSES = new Set([
+export const LIMITED_USER_NODE_CLASSES = new Set([
     USER_NODE_CLASS_NAME,
     SELECTED_NODE_CLASS_NAME,
 ]);
 
-export const ACCEPTABLE_USER_LINE_CLASSES = new Set([
+export const LIMITED_USER_LINE_CLASSES = new Set([
     USER_LINE_CLASS_NAME,
     SELECTED_LINE_CLASS_NAME,
 ]);
@@ -114,14 +110,6 @@ export const API_LOAD_ERROR_TEXT = 'Nepodařilo se načíst zadání. Zkuste pro
 export const API_LOAD_TIMEOUT_TEXT = 'Načítání zadání nám trochu trvá, ale zkoušíme dál…';
 
 export const FRONTEND_URL = 'https://www.umimematiku.cz/';
-
-// export const API_URL = 'https://www.umimematiku.cz/ajax/';
-// export const API_URL = 'http://localhost:3443/';
-
-// export const API_ITEMS_ENDPOINT = 'mrizkovanaLoadItems.php';
-// export const API_ITEMS_ENDPOINT = 'api/v2/bundle-assignments/';
-// export const API_LOG_ENDPOINT = 'logItemDone.php';
-// export const API_ERROR_ENDPOINT = 'errorProxy.php';
 
 export const TIMEOUT = 20000;
 

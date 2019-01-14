@@ -1,4 +1,10 @@
-import { intersectCircleCircle, intersectLineLine } from './intersections';
+import {
+    combineOverlappingLines,
+    intersectCircleCircle,
+    intersectLineLine,
+    isSubsegment,
+    lineCoincidence
+} from './intersections';
 import Point from './Point';
 import {
     GRID_WIDTH,
@@ -11,7 +17,7 @@ import {
     SNAP_THRESHOLD,
     DUPLICATE_LINE_THRESHOLD,
     CANVAS_PADDING_TOP,
-    CANVAS_PADDING_LEFT, FLASH_BUTTON_CLASS_NAME,
+    CANVAS_PADDING_LEFT, FLASH_BUTTON_CLASS_NAME, USER_LINE_CLASS_NAME, TASK_LINE_CLASS_NAME,
 } from './constants';
 
 
@@ -99,25 +105,20 @@ export function extendLineCoordinates(p1, p2) {
 }
 
 
-// export function toCanvasCoord(value) {
-//     return value * RESOLUTION + CANVAS_PADDING;
-// }
-
 export function toCanvasXCoord(value) {
     return value * RESOLUTION + CANVAS_PADDING_LEFT;
 }
+
 
 export function toCanvasYCoord(value) {
     return value * RESOLUTION + CANVAS_PADDING_TOP;
 }
 
-// export function fromCanvasCoord(value) {
-//     return (value - CANVAS_PADDING) / RESOLUTION;
-// }
 
 export function fromCanvasXCoord(value) {
     return (value - CANVAS_PADDING_LEFT) / RESOLUTION;
 }
+
 
 export function fromCanvasYCoord(value) {
     return (value - CANVAS_PADDING_TOP) / RESOLUTION;
@@ -197,6 +198,29 @@ export function findLine(point1, point2, stateCollection, tolerance = DUPLICATE_
         );
         return distance1 <= tolerance && distance2 <= tolerance;
     })
+}
+
+
+export function splitOrCombineLinesWithLine(p1, p2, collection, classes) {
+    // early return to prevent checking for supplementary geometry such as solution highlights
+    if (typeof classes.add === 'undefined' || !classes.add.includes(USER_LINE_CLASS_NAME)) return;
+
+    const auxLines = [];
+
+    collection
+        .filter(line => line.classes.has(USER_LINE_CLASS_NAME) || line.classes.has(TASK_LINE_CLASS_NAME))
+        .forEach(line => {
+            const {p1: o1, p2: o2} = line.geometry;
+            const coincident = lineCoincidence(p1, p2, o1, o2);
+
+            if (coincident) {
+                const overlap = combineOverlappingLines(p1, p2, o1, o2);
+                console.log(`%coverlap type:`, 'color: lime', overlap);
+
+            }
+        });
+
+    return auxLines;
 }
 
 

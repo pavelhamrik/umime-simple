@@ -102,7 +102,8 @@ Ask for a demo, docs TBD thereafter.
 - [x] `done, nov 22` KaTeX support
 - [x] log an assignment's opening (all values `0`)
 - [x] improve the `undo` and `redo` buttons placement
-- [ ] limit user geometry count, signalize failure and enforce undo
+- [x] limit user geometry count, signalize failure and enforce undo
+- [x] implement the reset button
 - [ ] connecting & separating lines
 
 ### Later
@@ -124,4 +125,4 @@ Ask for a demo, docs TBD thereafter.
 - [x] `fixed, nov 19` gridlines coinciding with axislines are not updated with the axisline class  
 - [x] `fixed, nov 22` existing geometry is ignoring labels from the assignment  
 - [x] `fixed, nov 22` selection-style exercises are not working on touch devices
-- [x] window url is not updating when changing exercise (wrong build config was being used)
+- [x] `irreproducible` window url is not updating when changing exercise (wrong build config was being used)

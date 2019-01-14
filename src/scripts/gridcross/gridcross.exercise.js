@@ -15,6 +15,7 @@ import {
     deleteFromSet,
     enableKeyboardShortcuts,
     disableKeyboardShortcuts,
+    splitOrCombineLinesWithLine,
 } from './functions';
 import { parseAssignment, checkSolution, highlightSolution, parseKatex, getConfigValue } from './assignment';
 import { render } from './render';
@@ -46,10 +47,10 @@ import {
     TIMEOUT,
     ACCEPTABLE_SOLUTION_NODE_CLASSES,
     ACCEPTABLE_SOLUTION_LINE_CLASSES,
-    ACCEPTABLE_USER_NODE_CLASSES,
-    ACCEPTABLE_USER_LINE_CLASSES,
+    LIMITED_USER_NODE_CLASSES,
+    LIMITED_USER_LINE_CLASSES,
     FLASH_BUTTON_CLASS_NAME,
-    RESET_BUTTON_TEST,
+    RESET_BUTTON_TEST, AUX_LINE_CLASS_NAME,
 } from './constants';
 import { createLocalInput } from './util';
 import { logToRemote, logErrorToRemote } from './remoteLogging';
@@ -222,13 +223,35 @@ export function composeNewStateForLine(p1, p2, classes, stateSnapshot, label = {
     const newPathsStateObject = foundLines.length !== 0
         ? updateElemForState(stateSnapshot.paths, foundLines[0].id, classes, state.length + 1, label)
         : stateSnapshot.paths.concat(
-            composeStateObject(createStateId(PATH_STATE_COLLECTION, stateSnapshot), new Set(classes.add), {p1: p1, p2: p2}, state.length + 1, label)
+            composeStateObject(
+                createStateId(PATH_STATE_COLLECTION, stateSnapshot),
+                new Set(classes.add),
+                {p1: p1, p2: p2},
+                state.length + 1,
+                label
+            )
         );
     workingState.push(
         Object.assign({}, stateSnapshot, {
             paths: newPathsStateObject
         })
     );
+
+    const auxLines = splitOrCombineLinesWithLine(p1, p2, stateSnapshot.paths, classes);
+    const auxPathsStateObject = auxLines.map(line =>
+        composeStateObject(
+            createStateId(PATH_STATE_COLLECTION, stateSnapshot),
+            new Set([AUX_LINE_CLASS_NAME]),
+            {p1: line.geometry.p1, p2: line.geometry.p2},
+            state.length + 1,
+        )
+    );
+    workingState.push(
+        Object.assign({}, workingState[workingState.length - 1], {
+            paths: workingState[workingState.length - 1].paths.concat(auxPathsStateObject)
+        })
+    );
+
 
     // create the hinting 'axis line'
     const axisLine = extendLineCoordinates(p1, p2);
@@ -344,8 +367,8 @@ function isGeometryMaxed(stateSnaphot) {
 
     // counting lines first, typically expecting fewer lines then nodes; then early return
     const acceptableLineClasses = getConfigValue('uiEvalSegmentsAsLines', stateSnaphot)
-        ? deleteFromSet(ACCEPTABLE_USER_LINE_CLASSES, USER_LINE_CLASS_NAME).add(AXIS_LINE_CLASS_NAME)
-        : ACCEPTABLE_USER_LINE_CLASSES;
+        ? deleteFromSet(LIMITED_USER_LINE_CLASSES, USER_LINE_CLASS_NAME).add(AXIS_LINE_CLASS_NAME)
+        : LIMITED_USER_LINE_CLASSES;
     const linesCount = countGeometry(
         stateSnaphot[PATH_STATE_COLLECTION],
         acceptableLineClasses,
@@ -358,7 +381,7 @@ function isGeometryMaxed(stateSnaphot) {
 
     const nodesCount = countGeometry(
         stateSnaphot[NODE_STATE_COLLECTION],
-        ACCEPTABLE_USER_NODE_CLASSES,
+        LIMITED_USER_NODE_CLASSES,
     );
 
     return {

@@ -4,7 +4,7 @@
     "description": "",
     "main": "gulpfile.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "jest",
         "start": "gulp",
         "build": "gulp build --prod",
         "stage": "gulp build --stg"
@@ -20,8 +20,10 @@
     },
     "homepage": "https://github.com/pavelhamrik/umime-simple#readme",
     "devDependencies": {
-        "@babel/core": "^7.1.6",
+        "@babel/core": "^7.2.2",
         "@babel/preset-env": "^7.1.6",
+        "babel-core": "^7.0.0-bridge.0",
+        "babel-jest": "^23.6.0",
         "babel-loader": "^8.0.4",
         "browser-sync": "^2.26.3",
         "del": "^3.0.0",
@@ -30,7 +32,9 @@
         "gulp-plumber": "^1.2.0",
         "gulp-sass": "^4.0.1",
         "gulp-sourcemaps": "^2.6.4",
+        "jest": "^23.6.0",
         "panini": "^1.6.2",
+        "regenerator-runtime": "^0.13.1",
         "svg.js": "^2.6.6",
         "vinyl-named": "^1.1.0",
         "webpack": "^4.26.0",
