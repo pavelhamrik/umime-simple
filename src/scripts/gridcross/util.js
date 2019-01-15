@@ -1,4 +1,5 @@
 import {
+    AUX_LINE_CLASS_NAME,
     // LOCAL_IO,
     NODE_STATE_COLLECTION,
     PATH_STATE_COLLECTION,
@@ -25,6 +26,17 @@ export function exportGeometry(stateSnapshot) {
     log['segments'] = stateSnapshot[PATH_STATE_COLLECTION]
         .filter(path => (
             path.classes.has(USER_LINE_CLASS_NAME) || path.classes.has(TASK_LINE_CLASS_NAME)
+        ))
+        .map(path => (
+            [
+                [fromCanvasXCoord(path.geometry.p1.x), fromCanvasYCoord(path.geometry.p1.y)],
+                [fromCanvasXCoord(path.geometry.p2.x), fromCanvasYCoord(path.geometry.p2.y)]
+            ]
+        ));
+
+    log['auxiliary segments'] = stateSnapshot[PATH_STATE_COLLECTION]
+        .filter(path => (
+            path.classes.has(AUX_LINE_CLASS_NAME)
         ))
         .map(path => (
             [

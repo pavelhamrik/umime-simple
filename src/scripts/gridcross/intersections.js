@@ -97,7 +97,7 @@ export const intersectCircleCircle = function(c1, r1, c2, r2) {
 // because we consider lines automatically extended from segments, we need to introduce a small tolerance
 // to account for computational imprecision
 
-export const lineCoincidence = function(a1, a2, b1, b2, tolerance = COINCIDENT_LINE_THRESHOLD) {
+export const isCoincident = function(a1, a2, b1, b2, tolerance = COINCIDENT_LINE_THRESHOLD) {
     let ua_t = (b2.x - b1.x) * (a1.y - b1.y) - (b2.y - b1.y) * (a1.x - b1.x);
     let ub_t = (a2.x - a1.x) * (a1.y - b1.y) - (a2.y - a1.y) * (a1.x - b1.x);
     let u_b = (b2.y - b1.y) * (a2.x - a1.x) - (b2.x - b1.x) * (a2.y - a1.y);
@@ -106,65 +106,127 @@ export const lineCoincidence = function(a1, a2, b1, b2, tolerance = COINCIDENT_L
 };
 
 
-// test if a path segment is a sub-segment of another one
+export const subsegmentLines = function(p1, p2, q1, q2, symmetric = true) {
+    if (!isCoincident(p1, p2, q1, q2)) return {applies: false, geometry: []};
 
-const minMaxPoints = function(a1, a2, b1, b2) {
-    return {
-        l1x: Math.min(a1.x, a2.x),
-        l2x: Math.max(a1.x, a2.x),
-        l1y: Math.min(a1.y, a2.y),
-        l2y: Math.max(a1.y, a2.y),
+    const p = sortPoints([p1, p2]);
+    const q = sortPoints([q1, q2]);
 
-        p1x: Math.min(b1.x, b2.x),
-        p2x: Math.max(b1.x, b2.x),
-        p1y: Math.min(b1.y, b2.y),
-        p2y: Math.max(b1.y, b2.y),
-    }
-};
+    const swap = symmetric && calculateDistance(p[0], p[1]) < calculateDistance(q[0], q[1]);
+    const a = swap ? q : p;
+    const b = swap ? p : q;
 
+    const xs = [a[0].x, b[0].x, b[1].x, a[1].x];
+    const ys = [a[0].y, b[0].y, b[1].y, a[1].y];
 
-export const isSubsegment = function(a1, a2, b1, b2, tolerance = COINCIDENT_LINE_THRESHOLD) {
-    const {l1x, l2x, l1y, l2y, p1x, p2x, p1y, p2y} = minMaxPoints(a1, a2, b1, b2);
+    if (isAsc(xs) && (isAsc(ys) || isAsc(ys.slice().reverse()))) {
+        const unique = getUniquePoints([a[0], a[1], b[0], b[1]]);
 
-    // todo: replace with the condition from the function below and test
-    return lineCoincidence(a1, a2, b1, b2, tolerance)
-        ? l1x <= p1x && p1x <= p2x && p2x <= l2x && l1y <= p1y && p1y <= p2y && p2y <= l2y
-        : false;
-};
+        const geometry = [];
 
-export const combineOverlappingLines = function(a1, a2, b1, b2) {
-    console.log(sortPoints([a1, a2]));
-    console.log(sortPoints([b1, b2]));
-    console.log(sortPoints([a1, a2, b1, b2]));
+        if (unique.length === 4) {
+            geometry.push({geometry: {p1: a[0], p2: b[0]}});
+            geometry.push({geometry: {p1: b[1], p2: a[1]}});
+        }
+        else if (unique.length === 3) {
+            if (a[0].equals(b[0])) geometry.push({geometry: {p1: a[1], p2: b[1]}});
+            else if (a[1].equals(b[1])) geometry.push({geometry: {p1: a[0], p2: b[0]}});
+        }
 
-    const aSorted = sortPoints([a1, a2]);
-    const bSorted = sortPoints([b1, b2]);
-
-    const minMaxedPoints = minMaxPoints(a1, a2, b1, b2);
-    const {l1x, l2x, l1y, l2y, p1x, p2x, p1y, p2y} = minMaxedPoints;
-
-    if (
-        // (isAsc([l1x, p1x, p2x, l2x]) && isAsc([p1y, l1y, p2y, l2y]))
-        // || (isAsc([p1x, l1x, l2x, p2x]) && isAsc([p1y, l1y, p2y, l2y]))
-        isAsc([])
-    ) return 'SUBSEGMENT';
-    else if (countUniquePoints([a1, a2, b1, b2]) === 3) {
         return {
-            connectionType: 'CONNECTED',
-            geometry: [connectLines(minMaxedPoints)]
-        };
+            applies: true,
+            geometry: geometry,
+        }
     }
-    else if (
-        (isAsc([p1x, l1x, p2x, l2x]) && isAsc([l1y, p1y, l2y, p2y]))
-        || (isAsc([p1x, l1x, p2x, l2x]) && isAsc([p1y, l1y, p2y, l2y]))
-    ) return 'OVERLAP';
+
+    return {applies: false, geometry: []}
+};
+
+
+export const overlapLines = function(p1, p2, q1, q2) {
+    if (!isCoincident(p1, p2, q1, q2)) return {applies: false, geometry: []};
+
+    const p = sortPoints([p1, p2]);
+    const q = sortPoints([q1, q2]);
+
+    const swap = p[0].x > q[0].x;
+    const a = swap ? q : p;
+    const b = swap ? p : q;
+
+    const xs = [a[0].x, b[0].x, a[1].x, b[1].x];
+    const ys1 = [a[0].y, b[0].y, a[1].y, b[1].y];
+    const ys2 = [b[0].y, a[0].y, b[1].y, a[1].y];
+
+    // console.log(xs, ys1, ys2);
+
+    if (isAsc(xs)) {
+        if (isAsc(ys1) || isAsc(ys1.slice().reverse())) {
+            return {
+                applies: true,
+                geometry: [
+                    {geometry: {p1: new Point(a[0].x, a[0].y), p2: new Point(b[0].x, b[0].y)}},
+                    {geometry: {p1: new Point(b[0].x, b[0].y), p2: new Point(a[1].x, a[1].y)}},
+                    {geometry: {p1: new Point(a[1].x, a[1].y), p2: new Point(b[1].x, b[1].y)}},
+                ]
+            }
+        }
+        if (isAsc(ys2) || isAsc(ys2.slice().reverse())) {
+            return {
+                applies: true,
+                geometry: [
+                    {geometry: {p1: new Point(a[0].x, b[0].y), p2: new Point(b[0].x, a[0].y)}},
+                    {geometry: {p1: new Point(b[0].x, a[0].y), p2: new Point(a[1].x, b[1].y)}},
+                    {geometry: {p1: new Point(a[1].x, b[1].y), p2: new Point(b[1].x, a[1].y)}},
+                ]
+            }
+        }
+    }
+
+    return {applies: false, geometry: []};
+};
+
+
+export const isConnected = function(p1, p2, q1, q2) {
+    if (!isCoincident(p1, p2, q1, q2)) return false;
+
+    const uniques = getUniquePoints([p1, p2, q1, q2]);
+    if (uniques.length === 3) {
+        const pLength = calculateDistance(p1, p2);
+        const qLength = calculateDistance(q1, q2);
+        const abLength = calculateDistance(uniques[0], uniques[1]);
+        const bcLength = calculateDistance(uniques[1], uniques[2]);
+        const acLength = calculateDistance(uniques[0], uniques[2]);
+
+        if (Math.max(abLength, bcLength, acLength) > Math.max(pLength, qLength)) return true;
+    }
+
+    return false;
+};
+
+
+export const combineOverlappingLines = function(p1, p2, q1, q2) {
+    const subsegment = subsegmentLines(p1, p2, q1, q2);
+    if (subsegment.applies) {
+        console.log('%cSUBSEGMENT', 'color: aqua');
+        return subsegment.geometry;
+    }
+    if (isConnected(p1, p2, q1, q2)) {
+        console.log('%cCONNECTED', 'color: yellow');
+        if (p2.equals(q1)) return {geometry: {p1: p1, p2: q2}};
+        if (p2.equals(q2)) return {geometry: {p1: p1, p2: q1}};
+        if (p1.equals(q1)) return {geometry: {p1: p2, p2: q2}};
+        if (p1.equals(q2)) return {geometry: {p1: p2, p2: q1}};
+    }
+
+    const overlap = overlapLines(p1, p2, q1, q2);
+    console.log(overlap);
+    if (overlap.applies) {
+        console.log('%cOVERLAP', 'color: lime');
+        return overlap.geometry;
+    }
 
     if (LOG) console.error('Unhandled intersect type');
-};
-
-
-export const connectLines = function(minMaxedPoints) {
-    console.log(minMaxedPoints);
+    return [];
 };
 
 
@@ -174,6 +236,15 @@ export const countUniquePoints = function(array) {
         .slice(1)
         .filter(point => !array[0].equals(point));
     return 1 + countUniquePoints(filtered);
+};
+
+
+export const getUniquePoints = function(array) {
+    if (array.length === 0) return [];
+    const filtered = array
+        .slice(1)
+        .filter(point => !array[0].equals(point));
+    return [array[0]].concat(getUniquePoints(filtered));
 };
 
 

@@ -1,4 +1,5 @@
 import {
+    ACCEPTABLE_SOLUTION_LINE_CLASSES, AUX_LINE_CLASS_NAME,
     AXIS_LINE_CLASS_NAME,
     CONFIG_STATE_COLLECTION,
     NODE_STATE_COLLECTION,
@@ -14,7 +15,7 @@ import {
 import Point from './Point';
 import { extendLineCoordinates, findLine, toCanvasXCoord, toCanvasYCoord } from './functions';
 import { composeNewStateForLine, composeNewStateForNode } from './gridcross.exercise';
-import { isSubsegment } from './intersections';
+import { subsegmentLines } from './intersections';
 
 
 export function parseAssignment(assignments, index, stateSnapshot) {
@@ -173,11 +174,22 @@ export function checkSolution(stateSnapshot) {
     }
 
     function checkAllowedPathClasses(path) {
-        return uiOnlySelect
-            ? path.classes.has(SELECTED_LINE_CLASS_NAME)
-            : path.classes.has(USER_LINE_CLASS_NAME)
-                || path.classes.has(TASK_LINE_CLASS_NAME)
-                || (uiEvalSegmentsAsLines ? path.classes.has(AXIS_LINE_CLASS_NAME) : false)
+        if (uiOnlySelect && path.classes.has(SELECTED_LINE_CLASS_NAME)) return true;
+
+        const acceptable = uiEvalSegmentsAsLines
+            ? new Set(ACCEPTABLE_SOLUTION_LINE_CLASSES).add(AXIS_LINE_CLASS_NAME)
+            : ACCEPTABLE_SOLUTION_LINE_CLASSES;
+        for (let className of acceptable) {
+            if (path.classes.has(className)) return true;
+        }
+
+        return false;
+
+        // return uiOnlySelect
+        //     ? path.classes.has(SELECTED_LINE_CLASS_NAME)
+        //     : path.classes.has(USER_LINE_CLASS_NAME)
+        //         || path.classes.has(TASK_LINE_CLASS_NAME)
+        //         || (uiEvalSegmentsAsLines ? path.classes.has(AXIS_LINE_CLASS_NAME) : false)
     }
 
     for (const solution of stateSnapshot.solutions) {
@@ -191,9 +203,9 @@ export function checkSolution(stateSnapshot) {
 
         const pathCheck = typeof solution[PATH_STATE_COLLECTION] !== 'undefined'
             ? solution[PATH_STATE_COLLECTION].filter(path => {
-            const matches = findLine(path.p1, path.p2, stateSnapshot.paths);
-            return matches.length === 0 || matches.filter(match => checkAllowedPathClasses(match)).length === 0
-        }).length === 0
+                const matches = findLine(path.p1, path.p2, stateSnapshot.paths);
+                return matches.length === 0 || matches.filter(match => checkAllowedPathClasses(match)).length === 0
+            }).length === 0
             : true;
 
         if (pointCheck && pathCheck) {
@@ -242,6 +254,8 @@ function highlightSegment(p1, p2, stateSnapshot) {
 
 
 export function highlightSolution(solution, stateSnapshot) {
+    console.log(solution);
+
     if (LOG) console.time('highlightSolution');
     const workingState = [stateSnapshot];
 
@@ -261,13 +275,18 @@ export function highlightSolution(solution, stateSnapshot) {
 
                 // also highlight coincident segments shorter than those which are part of the solution
                 stateSnapshot[PATH_STATE_COLLECTION]
-                    .filter(userPath => userPath.classes.has(USER_LINE_CLASS_NAME) || userPath.classes.has(TASK_LINE_CLASS_NAME))
+                    .filter(userPath => (
+                        userPath.classes.has(USER_LINE_CLASS_NAME)
+                        || userPath.classes.has(TASK_LINE_CLASS_NAME)
+                        || userPath.classes.has(AUX_LINE_CLASS_NAME)
+                    ))
                     .map(userPath => {
-                        const subsegment = isSubsegment(
+                        const subsegment = subsegmentLines(
                             path.p1, path.p2,
-                            userPath.geometry.p1, userPath.geometry.p2
+                            userPath.geometry.p1, userPath.geometry.p2,
+                            false
                         );
-                        if (subsegment) {
+                        if (subsegment.applies) {
                             workingState.push(highlightSegment(
                                 userPath.geometry.p1, userPath.geometry.p2,
                                 workingState[workingState.length - 1])

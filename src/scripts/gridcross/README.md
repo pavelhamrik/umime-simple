@@ -126,3 +126,8 @@ Ask for a demo, docs TBD thereafter.
 - [x] `fixed, nov 22` existing geometry is ignoring labels from the assignment  
 - [x] `fixed, nov 22` selection-style exercises are not working on touch devices
 - [x] `irreproducible` window url is not updating when changing exercise (wrong build config was being used)
+- [x] `fixex, jan 14` edge-to-edge connected lines are not being connected by an auxline
+- [ ] auxlines are not connecting recursively
+- [ ] auxlines are getting duplicated
+- [ ] solutions including auxlines highlight more geometry than they should
+ 

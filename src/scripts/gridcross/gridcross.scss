@@ -65,6 +65,11 @@ $task-color: map-get($apps, 'english');
                 pointer-events: auto;
             }
 
+            &.auxline {
+                stroke-width: 1;
+                stroke: yellow;
+            }
+
             &.userline,
             &.selectedline {
                 stroke: $black;

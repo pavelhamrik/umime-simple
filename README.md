@@ -11,6 +11,7 @@ simplified boilerplate for the front ends of the [Umime to](https://www.umimeto.
 - `panini`: html templating
 - `webpack`: js compiling
 - `babel`: js transpiling
+- `jest`: tests
 
 ## todos
 

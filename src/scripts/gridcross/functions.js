@@ -2,8 +2,8 @@ import {
     combineOverlappingLines,
     intersectCircleCircle,
     intersectLineLine,
-    isSubsegment,
-    lineCoincidence
+    subsegmentLines,
+    isCoincident
 } from './intersections';
 import Point from './Point';
 import {
@@ -17,7 +17,12 @@ import {
     SNAP_THRESHOLD,
     DUPLICATE_LINE_THRESHOLD,
     CANVAS_PADDING_TOP,
-    CANVAS_PADDING_LEFT, FLASH_BUTTON_CLASS_NAME, USER_LINE_CLASS_NAME, TASK_LINE_CLASS_NAME,
+    CANVAS_PADDING_LEFT,
+    FLASH_BUTTON_CLASS_NAME,
+    USER_LINE_CLASS_NAME,
+    TASK_LINE_CLASS_NAME,
+    AUX_LINE_CLASS_NAME,
+    SOLVED_LINE_CLASS_NAME,
 } from './constants';
 
 
@@ -154,7 +159,7 @@ export function generateGridNodes(classes) {
 }
 
 
-export function updateElemForState(container, elemId, classes, updatedAt, label) {
+export function updateElemForState(container, elemId, classes, updatedAt, label = {}) {
     const { add = [], remove = [], toggle = [] } = classes;
     return container.map(elem => {
         if (elem.id === elemId) {
@@ -187,37 +192,45 @@ export function createStateId(stateType, stateSnapshot) {
 
 
 export function findLine(point1, point2, stateCollection, tolerance = DUPLICATE_LINE_THRESHOLD) {
-    return stateCollection.filter(path => {
-        const distance1 = Math.min(
-            calculateDistance(path.geometry.p1, point1),
-            calculateDistance(path.geometry.p1, point2)
-        );
-        const distance2 = Math.min(
-            calculateDistance(path.geometry.p2, point1),
-            calculateDistance(path.geometry.p2, point2)
-        );
-        return distance1 <= tolerance && distance2 <= tolerance;
-    })
+    return stateCollection.filter(path => isSameLine(path.geometry.p1, path.geometry.p2, point1, point2, tolerance))
+}
+
+
+export function isSameLine(p1, p2, q1, q2, tolerance = DUPLICATE_LINE_THRESHOLD) {
+    const distance1 = Math.min(
+        calculateDistance(p1, q1),
+        calculateDistance(p1, q2)
+    );
+    const distance2 = Math.min(
+        calculateDistance(p2, q1),
+        calculateDistance(p2, q2)
+    );
+    return distance1 <= tolerance && distance2 <= tolerance;
 }
 
 
 export function splitOrCombineLinesWithLine(p1, p2, collection, classes) {
     // early return to prevent checking for supplementary geometry such as solution highlights
-    if (typeof classes.add === 'undefined' || !classes.add.includes(USER_LINE_CLASS_NAME)) return;
+    if (
+        typeof classes.add === 'undefined'
+        || classes.add.includes(SOLVED_LINE_CLASS_NAME)
+        || !classes.add.includes(USER_LINE_CLASS_NAME)
+    ) return [];
 
-    const auxLines = [];
+    let auxLines = [];
 
     collection
-        .filter(line => line.classes.has(USER_LINE_CLASS_NAME) || line.classes.has(TASK_LINE_CLASS_NAME))
+        .filter(line => (
+            line.classes.has(USER_LINE_CLASS_NAME)
+            || line.classes.has(TASK_LINE_CLASS_NAME)
+            || line.classes.has(AUX_LINE_CLASS_NAME)
+        ))
+        .filter(line => !isSameLine(line.geometry.p1, line.geometry.p2, p1, p2))
         .forEach(line => {
-            const {p1: o1, p2: o2} = line.geometry;
-            const coincident = lineCoincidence(p1, p2, o1, o2);
+            const {p1: q1, p2: q2} = line.geometry;
 
-            if (coincident) {
-                const overlap = combineOverlappingLines(p1, p2, o1, o2);
-                console.log(`%coverlap type:`, 'color: lime', overlap);
-
-            }
+            const newLines = combineOverlappingLines(p1, p2, q1, q2);
+            if (newLines.length !== 0) auxLines = auxLines.concat(newLines);
         });
 
     return auxLines;
