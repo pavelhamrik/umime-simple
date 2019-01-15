@@ -59,7 +59,7 @@ export function render(state, groups, interactive = true) {
         console.time('render');
         exportGeometry(stateSnapshot);
         console.log('%crender:', 'color: plum' , Object.assign({}, stateSnapshot, {}));
-        console.log('%centire state:', 'color: plum' , Object.assign({}, state, {}));
+        // console.log('%centire state:', 'color: plum' , Object.assign({}, state, {}));
     }
 
     Object.keys(groups).forEach(key => {

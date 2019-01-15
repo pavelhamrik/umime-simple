@@ -43,7 +43,6 @@ export function composeNewStateForNode(point, classes, stateSnapshot, label = {}
         const newNodeClasses = typeof classes.add !== 'undefined'
             ? new Set(classes.add.concat(NODE_CLASS))
             : new Set([NODE_CLASS]);
-        console.log(newNodeClasses);
         const stateUpdate = Object.assign({}, workingState[workingState.length - 1], {
             nodes: workingState[workingState.length - 1].nodes.concat(
                 composeStateObject(
@@ -75,7 +74,6 @@ export function composeNewStateForAuxLines(lines, stateSnapshot) {
     lines.forEach(line => {
         const existingLines = findLine(line.geometry.p1, line.geometry.p2, workingState[workingState.length - 1].paths);
         if (existingLines.length === 0) {
-            // console.log('auxing: creating new line');
             const newLine = composeStateObject(
                 createStateId(PATH_STATE_COLLECTION, workingState[workingState.length - 1]),
                 new Set([AUX_LINE_CLASS]),
@@ -90,7 +88,6 @@ export function composeNewStateForAuxLines(lines, stateSnapshot) {
         }
         else {
             existingLines.forEach(line => {
-                // console.log('auxing: existing line found');
                 const updatedPathState = updateElemForState(
                     workingState[workingState.length - 1].paths,
                     line.id,
