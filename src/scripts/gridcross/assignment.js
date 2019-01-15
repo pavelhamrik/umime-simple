@@ -286,7 +286,7 @@ export function highlightSolution(solution, stateSnapshot) {
                             userPath.geometry.p1, userPath.geometry.p2,
                             false
                         );
-                        if (subsegment.applies) {
+                        if (subsegment) {
                             workingState.push(highlightSegment(
                                 userPath.geometry.p1, userPath.geometry.p2,
                                 workingState[workingState.length - 1])
