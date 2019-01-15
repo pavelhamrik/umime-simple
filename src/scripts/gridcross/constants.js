@@ -26,13 +26,14 @@ export const PARALLEL = 'PARALLEL';
 export const COINCIDENT = 'COINCIDENT';
 export const NO_INTERSECTION = 'NO_INTERSECTION';
 
-export const SNAP_THRESHOLD = 10;
-export const DUPLICATE_NODE_THRESHOLD = 0.1;
-export const DUPLICATE_LINE_THRESHOLD = 0.1;
-export const COINCIDENT_LINE_THRESHOLD = 0.001;
+export const SNAP_THRESHOLD = 20;
+export const DUPLICATE_NODE_TOLERANCE = 0.1;
+export const DUPLICATE_LINE_TOLERANCE = 0.1;
+export const COINCIDENT_LINE_TOLERANCE = 0.001;
+export const GEOMETRY_PRECISION_TOLERANCE = 0.001;
 export const TOUCH_SELECT_TOLERANCE = 20;
 
-export const NODE = 'NODE';
+// export const NODE = 'NODE';
 export const LINE = 'LINE';
 
 export const BACK_GROUP = 'backGroup';
@@ -46,59 +47,62 @@ export const PATH_STATE_COLLECTION = 'paths';
 export const SOLUTION_STATE_COLLECTION = 'solutions';
 export const CONFIG_STATE_COLLECTION = 'config';
 
-export const LABEL_CLASS_NAME = 'label';
+export const LABEL_CLASS = 'label';
 
-export const NODE_CLASS_NAME = 'node';
-export const GRID_NODE_CLASS_NAME = 'gridnode';
-export const USER_NODE_CLASS_NAME = 'usernode';
-export const TASK_NODE_CLASS_NAME = 'tasknode';
-export const SELECTED_NODE_CLASS_NAME = 'selectednode';
-export const SOLVED_NODE_CLASS_NAME = 'solvednode';
-export const FLASH_NODE_CLASS_NAME = 'flashnode';
+export const NODE_CLASS = 'node';
+export const GRID_NODE_CLASS = 'gridnode';
+export const AUX_NODE_CLASS = 'auxnode';
+export const USER_NODE_CLASS = 'usernode';
+export const TASK_NODE_CLASS = 'tasknode';
+export const SELECTED_NODE_CLASS = 'selectednode';
+export const SOLVED_NODE_CLASS = 'solvednode';
+export const FLASH_NODE_CLASS = 'flashnode';
 
-export const GRID_LINE_CLASS_NAME = 'gridline';
-export const AUX_LINE_CLASS_NAME = 'auxline';
-export const AXIS_LINE_CLASS_NAME = 'axisline';
-export const TASK_LINE_CLASS_NAME = 'taskline';
-export const USER_LINE_CLASS_NAME = 'userline';
-export const SELECTED_LINE_CLASS_NAME = 'selectedline';
-export const SOLVED_LINE_CLASS_NAME = 'solvedline';
-export const FLASH_LINE_CLASS_NAME = 'flashline';
+export const GRID_LINE_CLASS = 'gridline';
+export const AUX_LINE_CLASS = 'auxline';
+export const AXIS_LINE_CLASS = 'axisline';
+export const TASK_LINE_CLASS = 'taskline';
+export const USER_LINE_CLASS = 'userline';
+export const SELECTED_LINE_CLASS = 'selectedline';
+export const SOLVED_LINE_CLASS = 'solvedline';
+export const FLASH_LINE_CLASS = 'flashline';
 
 export const LINE_RENDERING_ORDER = [
-    GRID_LINE_CLASS_NAME,
-    AXIS_LINE_CLASS_NAME,
-    TASK_LINE_CLASS_NAME,
-    USER_LINE_CLASS_NAME,
-    SELECTED_LINE_CLASS_NAME,
-    SOLVED_LINE_CLASS_NAME,
-    AUX_LINE_CLASS_NAME,
+    GRID_LINE_CLASS,
+    AXIS_LINE_CLASS,
+    TASK_LINE_CLASS,
+    USER_LINE_CLASS,
+    SELECTED_LINE_CLASS,
+    SOLVED_LINE_CLASS,
+    // AUX_LINE_CLASS,
 ];
 
 export const ACCEPTABLE_SOLUTION_NODE_CLASSES = new Set([
-    USER_NODE_CLASS_NAME,
-    TASK_NODE_CLASS_NAME,
-    SELECTED_NODE_CLASS_NAME,
+    USER_NODE_CLASS,
+    TASK_NODE_CLASS,
+    SELECTED_NODE_CLASS,
 ]);
 
 export const ACCEPTABLE_SOLUTION_LINE_CLASSES = new Set([
-    TASK_LINE_CLASS_NAME,
-    USER_LINE_CLASS_NAME,
-    AUX_LINE_CLASS_NAME,
-    SELECTED_LINE_CLASS_NAME,
+    TASK_LINE_CLASS,
+    USER_LINE_CLASS,
+    AUX_LINE_CLASS,
+    SELECTED_LINE_CLASS,
 ]);
 
 export const LIMITED_USER_NODE_CLASSES = new Set([
-    USER_NODE_CLASS_NAME,
-    SELECTED_NODE_CLASS_NAME,
+    USER_NODE_CLASS,
+    SELECTED_NODE_CLASS,
 ]);
 
 export const LIMITED_USER_LINE_CLASSES = new Set([
-    USER_LINE_CLASS_NAME,
-    SELECTED_LINE_CLASS_NAME,
+    USER_LINE_CLASS,
+    SELECTED_LINE_CLASS,
 ]);
 
-export const FLASH_BUTTON_CLASS_NAME = 'button-flash';
+export const LOCAL_IO_LOG_AUX_GEOMETRY = false;
+
+export const FLASH_BUTTON_CLASS = 'button-flash';
 
 export const APP_NAME = 'Umíme matiku';
 export const EXERCISE_NAME = 'Mřížkovaná';

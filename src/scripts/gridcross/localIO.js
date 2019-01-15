@@ -1,11 +1,11 @@
 import {
-    AUX_LINE_CLASS_NAME,
+    AUX_LINE_CLASS, LOCAL_IO_LOG_AUX_GEOMETRY,
     NODE_STATE_COLLECTION,
     PATH_STATE_COLLECTION,
-    TASK_LINE_CLASS_NAME,
-    TASK_NODE_CLASS_NAME,
-    USER_LINE_CLASS_NAME,
-    USER_NODE_CLASS_NAME
+    TASK_LINE_CLASS,
+    TASK_NODE_CLASS,
+    USER_LINE_CLASS,
+    USER_NODE_CLASS
 } from './constants';
 import {fromCanvasXCoord, fromCanvasYCoord} from './geometry';
 import {handleAssignment} from './gridcross.exercise';
@@ -17,7 +17,7 @@ export function exportGeometry(stateSnapshot) {
     const log = {};
     log['points'] = stateSnapshot[NODE_STATE_COLLECTION]
         .filter(node => (
-            node.classes.has(USER_NODE_CLASS_NAME) || node.classes.has(TASK_NODE_CLASS_NAME)
+            node.classes.has(USER_NODE_CLASS) || node.classes.has(TASK_NODE_CLASS)
         ))
         .map(node => (
             [fromCanvasXCoord(node.geometry.p1.x), fromCanvasYCoord(node.geometry.p1.y)]
@@ -25,7 +25,7 @@ export function exportGeometry(stateSnapshot) {
 
     log['segments'] = stateSnapshot[PATH_STATE_COLLECTION]
         .filter(path => (
-            path.classes.has(USER_LINE_CLASS_NAME) || path.classes.has(TASK_LINE_CLASS_NAME)
+            path.classes.has(USER_LINE_CLASS) || path.classes.has(TASK_LINE_CLASS)
         ))
         .map(path => (
             [
@@ -34,16 +34,18 @@ export function exportGeometry(stateSnapshot) {
             ]
         ));
 
-    log['auxiliary segments'] = stateSnapshot[PATH_STATE_COLLECTION]
-        .filter(path => (
-            path.classes.has(AUX_LINE_CLASS_NAME)
-        ))
-        .map(path => (
-            [
-                [fromCanvasXCoord(path.geometry.p1.x), fromCanvasYCoord(path.geometry.p1.y)],
-                [fromCanvasXCoord(path.geometry.p2.x), fromCanvasYCoord(path.geometry.p2.y)]
-            ]
-        ));
+    if (LOCAL_IO_LOG_AUX_GEOMETRY) {
+        log['auxiliary segments'] = stateSnapshot[PATH_STATE_COLLECTION]
+            .filter(path => (
+                path.classes.has(AUX_LINE_CLASS)
+            ))
+            .map(path => (
+                [
+                    [fromCanvasXCoord(path.geometry.p1.x), fromCanvasYCoord(path.geometry.p1.y)],
+                    [fromCanvasXCoord(path.geometry.p2.x), fromCanvasYCoord(path.geometry.p2.y)]
+                ]
+            ));
+    }
 
     console.log(
         JSON.stringify(log, (key, value) => {

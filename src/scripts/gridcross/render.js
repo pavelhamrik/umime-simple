@@ -4,27 +4,27 @@ import {
     CANVAS_PADDING_LEFT,
     CANVAS_PADDING_RIGHT,
     CANVAS_PADDING_TOP,
-    FLASH_LINE_CLASS_NAME,
-    FLASH_NODE_CLASS_NAME,
+    FLASH_LINE_CLASS,
+    FLASH_NODE_CLASS,
     GRID_HEIGHT,
     GRID_WIDTH,
-    LABEL_CLASS_NAME,
+    LABEL_CLASS,
     LABEL_GROUP,
     LABEL_OFFSET,
     LABEL_OFFSET_VERTICAL_CORRECTION,
     LINE_RENDERING_ORDER,
-    NODE_CLASS_NAME,
+    NODE_CLASS,
     NODE_GROUP,
     NODE_RADIUS,
     NODE_STATE_COLLECTION,
     PATH_GROUP,
     PATH_STATE_COLLECTION,
     RESOLUTION,
-    SELECTED_LINE_CLASS_NAME,
-    SELECTED_NODE_CLASS_NAME,
-    SOLVED_LINE_CLASS_NAME,
-    SOLVED_NODE_CLASS_NAME, TASK_NODE_CLASS_NAME,
-    USER_NODE_CLASS_NAME,
+    SELECTED_LINE_CLASS,
+    SELECTED_NODE_CLASS,
+    SOLVED_LINE_CLASS,
+    SOLVED_NODE_CLASS, TASK_NODE_CLASS,
+    USER_NODE_CLASS,
     WORK_GROUP
 } from './constants';
 import { attachDraggable, attachTouchSurfaceDraggable } from './draggable';
@@ -57,8 +57,9 @@ export function render(state, groups, interactive = true) {
 
     if (LOG) {
         console.time('render');
-        console.log('%crender:', 'color: plum' , Object.assign({}, stateSnapshot, {}));
         exportGeometry(stateSnapshot);
+        console.log('%crender:', 'color: plum' , Object.assign({}, stateSnapshot, {}));
+        console.log('%centire state:', 'color: plum' , Object.assign({}, state, {}));
     }
 
     Object.keys(groups).forEach(key => {
@@ -69,14 +70,14 @@ export function render(state, groups, interactive = true) {
         if (elemGroup === NODE_STATE_COLLECTION) {
             stateSnapshot[elemGroup].forEach(elem => {
                 if (elem.updatedAt === stateTime
-                    && (elem.classes.has(USER_NODE_CLASS_NAME) || elem.classes.has(TASK_NODE_CLASS_NAME))
-                    && (elem.classes.has(SELECTED_NODE_CLASS_NAME) || elem.classes.has(SOLVED_NODE_CLASS_NAME))) {
+                    && (elem.classes.has(USER_NODE_CLASS) || elem.classes.has(TASK_NODE_CLASS))
+                    && (elem.classes.has(SELECTED_NODE_CLASS) || elem.classes.has(SOLVED_NODE_CLASS))) {
                     const flashnode = groups[NODE_GROUP]
                         .circle(NODE_RADIUS * 2)
                         .move(elem.geometry.p1.x - NODE_RADIUS, elem.geometry.p1.y - NODE_RADIUS);
-                    flashnode.addClass(NODE_CLASS_NAME);
-                    flashnode.addClass(FLASH_NODE_CLASS_NAME);
-                    if (elem.classes.has(SOLVED_NODE_CLASS_NAME)) flashnode.addClass(SOLVED_NODE_CLASS_NAME)
+                    flashnode.addClass(NODE_CLASS);
+                    flashnode.addClass(FLASH_NODE_CLASS);
+                    if (elem.classes.has(SOLVED_NODE_CLASS)) flashnode.addClass(SOLVED_NODE_CLASS)
                 }
                 const node = groups[NODE_GROUP]
                     .circle(NODE_RADIUS * 2)
@@ -94,7 +95,7 @@ export function render(state, groups, interactive = true) {
                     const label = groups[LABEL_GROUP]
                         .text(elem.label.text)
                         .center(position.x, position.y);
-                    label.addClass(LABEL_CLASS_NAME);
+                    label.addClass(LABEL_CLASS);
                 }
             })
         }
@@ -110,11 +111,11 @@ export function render(state, groups, interactive = true) {
                         return elem.classes.has(group) && !inLaterGroup;
                     })
                     .forEach(elem => {
-                        if (elem.updatedAt === stateTime && (elem.classes.has(SELECTED_LINE_CLASS_NAME) || elem.classes.has(SOLVED_LINE_CLASS_NAME))) {
+                        if (elem.updatedAt === stateTime && (elem.classes.has(SELECTED_LINE_CLASS) || elem.classes.has(SOLVED_LINE_CLASS))) {
                             const flashline = groups[PATH_GROUP]
                                 .line(elem.geometry.p1.x, elem.geometry.p1.y, elem.geometry.p2.x, elem.geometry.p2.y);
-                            flashline.addClass(FLASH_LINE_CLASS_NAME);
-                            if (elem.classes.has(SOLVED_LINE_CLASS_NAME)) flashline.addClass(SOLVED_LINE_CLASS_NAME)
+                            flashline.addClass(FLASH_LINE_CLASS);
+                            if (elem.classes.has(SOLVED_LINE_CLASS)) flashline.addClass(SOLVED_LINE_CLASS)
                         }
                         const line = groups[PATH_GROUP]
                             .line(elem.geometry.p1.x, elem.geometry.p1.y, elem.geometry.p2.x, elem.geometry.p2.y);
@@ -127,7 +128,7 @@ export function render(state, groups, interactive = true) {
                             const label = groups[LABEL_GROUP]
                                 .text(elem.label.text)
                                 .center(position.x, position.y);
-                            label.addClass(LABEL_CLASS_NAME);
+                            label.addClass(LABEL_CLASS);
                         }
                     });
             });

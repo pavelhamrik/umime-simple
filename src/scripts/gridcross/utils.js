@@ -1,4 +1,4 @@
-import {FLASH_BUTTON_CLASS_NAME,} from './constants';
+import {FLASH_BUTTON_CLASS,} from './constants';
 
 export function isValidJSON(json) {
     try {
@@ -36,12 +36,12 @@ export function disableButton(button, handlers = []) {
 export function flashButton(button) {
     if (typeof button === 'undefined' || button == null) return;
 
-    button.classList.remove(FLASH_BUTTON_CLASS_NAME);
+    button.classList.remove(FLASH_BUTTON_CLASS);
 
     // triggers reflow so the repeated addition of the class would trigger the css animation
     void button.offsetWidth;
 
-    button.classList.add(FLASH_BUTTON_CLASS_NAME);
+    button.classList.add(FLASH_BUTTON_CLASS);
 }
 
 export function enableKeyboardShortcuts(handlers) {
@@ -79,6 +79,20 @@ export function deleteFromSet(set, elem) {
 //     set2.forEach(elem => union.add(elem));
 //     return union;
 // }
+
+export function setIncludes(set, elems) {
+    for (let elem of elems) {
+        if (set.has(elem)) return true;
+    }
+    return false;
+}
+
+export function arrayIncludes(array, elems) {
+    for (let elem of elems) {
+        if (array.includes(elem)) return true;
+    }
+    return false;
+}
 
 export function isAsc(array) {
     let max = -Infinity;

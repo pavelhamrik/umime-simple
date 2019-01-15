@@ -11,22 +11,22 @@ import {
     APP_NAME,
     BACK_GROUP,
     EXERCISE_NAME,
-    FLASH_BUTTON_CLASS_NAME,
+    FLASH_BUTTON_CLASS,
     FRONTEND_URL,
-    GRID_LINE_CLASS_NAME,
-    GRID_NODE_CLASS_NAME,
+    GRID_LINE_CLASS,
+    GRID_NODE_CLASS,
     LABEL_GROUP,
-    NODE_CLASS_NAME,
+    NODE_CLASS,
     NODE_GROUP,
     NODE_STATE_COLLECTION,
     PATH_GROUP,
     PATH_STATE_COLLECTION,
     RESET_BUTTON_TEST,
-    SELECTED_LINE_CLASS_NAME,
-    SELECTED_NODE_CLASS_NAME,
+    SELECTED_LINE_CLASS,
+    SELECTED_NODE_CLASS,
     TIMEOUT,
-    USER_LINE_CLASS_NAME,
-    USER_NODE_CLASS_NAME,
+    USER_LINE_CLASS,
+    USER_NODE_CLASS,
     WORK_GROUP,
 } from './constants';
 import {
@@ -52,10 +52,10 @@ const groups = {};
 
 const initialState = {};
 initialState[NODE_STATE_COLLECTION] = generateGridNodes(
-    new Set([NODE_CLASS_NAME, GRID_NODE_CLASS_NAME]), NODE_STATE_COLLECTION, NODE_GROUP
+    new Set([NODE_CLASS, GRID_NODE_CLASS]), NODE_STATE_COLLECTION, NODE_GROUP
 );
 initialState[PATH_STATE_COLLECTION] = generateGridLines(
-    new Set([GRID_LINE_CLASS_NAME]), PATH_STATE_COLLECTION, PATH_GROUP
+    new Set([GRID_LINE_CLASS]), PATH_STATE_COLLECTION, PATH_GROUP
 );
 
 export const state = new StateProvider(initialState);
@@ -75,9 +75,9 @@ function init() {
 
     groups[BACK_GROUP] = ui.canvas.group().addClass(BACK_GROUP);
     groups[PATH_GROUP] = ui.canvas.group().addClass(PATH_GROUP);
-    groups[WORK_GROUP] = ui.canvas.group().addClass(WORK_GROUP);
     groups[NODE_GROUP] = ui.canvas.group().addClass(NODE_GROUP);
     groups[LABEL_GROUP] = ui.canvas.group().addClass(LABEL_GROUP);
+    groups[WORK_GROUP] = ui.canvas.group().addClass(WORK_GROUP);
 
     if (LOCAL_IO) createLocalInput();
 
@@ -183,18 +183,20 @@ function getAssignment() {
 // node manipulation; expect access to the file-scoped state object
 
 export function handleNewPath(p1, p2) {
+    if(LOG) console.log('\n\n');
+
     const currentState = state.get();
     const workingState = [currentState];
 
     if (!p1.equals(p2)) {
-        workingState.push(composeNewStateForNode(p1, {add: [USER_NODE_CLASS_NAME]}, workingState[workingState.length - 1]));
-        workingState.push(composeNewStateForNode(p2, {add: [USER_NODE_CLASS_NAME]}, workingState[workingState.length - 1]));
-        workingState.push(composeNewStateForLine(p1, p2, {add: [USER_LINE_CLASS_NAME]}, workingState[workingState.length - 1]));
+        workingState.push(composeNewStateForNode(p1, {add: [USER_NODE_CLASS]}, workingState[workingState.length - 1]));
+        workingState.push(composeNewStateForNode(p2, {add: [USER_NODE_CLASS]}, workingState[workingState.length - 1]));
+        workingState.push(composeNewStateForLine(p1, p2, {add: [USER_LINE_CLASS]}, workingState[workingState.length - 1]));
     }
     else {
         const classes = currentState.config.uiOnlySelect
-            ? {add: [USER_NODE_CLASS_NAME, SELECTED_NODE_CLASS_NAME]}
-            : {add: [USER_NODE_CLASS_NAME]};
+            ? {add: [USER_NODE_CLASS, SELECTED_NODE_CLASS]}
+            : {add: [USER_NODE_CLASS]};
         workingState.push(composeNewStateForNode(p1, classes, workingState[workingState.length - 1]));
     }
 
@@ -203,11 +205,13 @@ export function handleNewPath(p1, p2) {
 
 
 export function handleSelectedElem(p1, p2) {
+    if(LOG) console.log('\n\n');
+
     const stateSnapshot = Object.assign({}, state.get(), {});
 
     const updatedState = typeof p2 !== 'undefined'
-        ? composeNewStateForLine(p1, p2, {toggle: [SELECTED_LINE_CLASS_NAME]}, stateSnapshot)
-        : composeNewStateForNode(p1, {toggle: [SELECTED_NODE_CLASS_NAME]}, stateSnapshot);
+        ? composeNewStateForLine(p1, p2, {toggle: [SELECTED_LINE_CLASS]}, stateSnapshot)
+        : composeNewStateForNode(p1, {toggle: [SELECTED_NODE_CLASS]}, stateSnapshot);
 
     handleGeometryChange(updatedState);
 }
@@ -291,8 +295,8 @@ export function reset(event) {
 
 
 function handleRewindUIChanges() {
-    ui.undoButton.classList.remove(FLASH_BUTTON_CLASS_NAME);
-    if (ui.resetButton) ui.resetButton.classList.remove(FLASH_BUTTON_CLASS_NAME);
+    ui.undoButton.classList.remove(FLASH_BUTTON_CLASS);
+    if (ui.resetButton) ui.resetButton.classList.remove(FLASH_BUTTON_CLASS);
 
     if (state.length === 2) {
         disableButton(ui.undoButton, [undo]);

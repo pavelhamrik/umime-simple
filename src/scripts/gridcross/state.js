@@ -1,43 +1,112 @@
 import {
-    composeStateObject,
+    composeStateObject, constructAuxLinesForLine,
+    constructAuxLinesForPoint,
     createStateId,
     extendLineCoordinates,
     findLine,
     getNearestNode,
-    splitOrCombineLinesWithLine,
+    getUniquePoints,
     updateElemForState
 } from './geometry';
 import {
-    AUX_LINE_CLASS_NAME,
-    AXIS_LINE_CLASS_NAME,
-    DUPLICATE_NODE_THRESHOLD,
-    GRID_NODE_CLASS_NAME,
-    NODE_CLASS_NAME,
+    AUX_LINE_CLASS,
+    AUX_NODE_CLASS,
+    AXIS_LINE_CLASS,
+    DUPLICATE_NODE_TOLERANCE,
+    GRID_NODE_CLASS,
+    NODE_CLASS,
     NODE_STATE_COLLECTION,
-    PATH_STATE_COLLECTION
+    PATH_STATE_COLLECTION,
+    TASK_LINE_CLASS,
+    USER_LINE_CLASS,
+    USER_NODE_CLASS
 } from './constants';
 import {intersectLineLine} from './intersections';
 import {state} from './gridcross.exercise';
+import {arrayIncludes, setIncludes} from './utils';
 
 export function composeNewStateForNode(point, classes, stateSnapshot, label = {}) {
+    const workingState = [stateSnapshot];
+
     const nearestNode = getNearestNode(point, stateSnapshot.nodes);
     if (typeof nearestNode.distance === 'undefined') return;
 
-    // node is considered duplicate
-    if (nearestNode.distance < DUPLICATE_NODE_THRESHOLD) {
-        return Object.assign({}, stateSnapshot, {
+    // update existing node or create a new one
+
+    if (nearestNode.distance < DUPLICATE_NODE_TOLERANCE) {
+        const stateUpdate = Object.assign({}, stateSnapshot, {
             nodes: updateElemForState(stateSnapshot.nodes, nearestNode.node.id, classes, state.length + 1, label)
-        })
+        });
+        workingState.push(stateUpdate);
     }
-    // node doesn't exist yet
-    const newNodeClasses = classes.add === undefined
-        ? new Set([NODE_CLASS_NAME])
-        : new Set([NODE_CLASS_NAME].concat(classes.add));
-    return Object.assign({}, stateSnapshot, {
-        nodes: stateSnapshot.nodes.concat(
-            composeStateObject(createStateId(NODE_STATE_COLLECTION, stateSnapshot), newNodeClasses, {p1: point}, state.length + 1, label)
-        )
-    })
+    else {
+        const newNodeClasses = typeof classes.add !== 'undefined'
+            ? new Set(classes.add.concat(NODE_CLASS))
+            : new Set([NODE_CLASS]);
+        console.log(newNodeClasses);
+        const stateUpdate = Object.assign({}, workingState[workingState.length - 1], {
+            nodes: workingState[workingState.length - 1].nodes.concat(
+                composeStateObject(
+                    createStateId(NODE_STATE_COLLECTION, workingState[workingState.length - 1]),
+                    newNodeClasses,
+                    {p1: point},
+                    state.length + 1,
+                    label
+                )
+            )
+        });
+        workingState.push(stateUpdate);
+    }
+
+    if (typeof classes.add !== 'undefined' && arrayIncludes(classes.add, [USER_NODE_CLASS, AUX_NODE_CLASS])) {
+        const auxLines = constructAuxLinesForPoint(point, workingState[workingState.length - 1].paths);
+        const auxStateUpdate = composeNewStateForAuxLines(auxLines, workingState[workingState.length - 1]);
+        workingState.push(auxStateUpdate);
+    }
+
+    return workingState[workingState.length - 1];
+}
+
+export function composeNewStateForAuxLines(lines, stateSnapshot) {
+    if (lines.length === 0) return stateSnapshot;
+
+    const workingState = [stateSnapshot];
+
+    lines.forEach(line => {
+        const existingLines = findLine(line.geometry.p1, line.geometry.p2, workingState[workingState.length - 1].paths);
+        if (existingLines.length === 0) {
+            // console.log('auxing: creating new line');
+            const newLine = composeStateObject(
+                createStateId(PATH_STATE_COLLECTION, workingState[workingState.length - 1]),
+                new Set([AUX_LINE_CLASS]),
+                {p1: line.geometry.p1, p2: line.geometry.p2},
+                state.length + 1,
+            );
+            workingState.push(
+                Object.assign({}, workingState[workingState.length - 1], {
+                    paths: workingState[workingState.length - 1].paths.concat(newLine)
+                })
+            );
+        }
+        else {
+            existingLines.forEach(line => {
+                // console.log('auxing: existing line found');
+                const updatedPathState = updateElemForState(
+                    workingState[workingState.length - 1].paths,
+                    line.id,
+                    {add: [AUX_LINE_CLASS]},
+                    state.length + 1,
+                );
+                workingState.push(
+                    Object.assign({}, workingState[workingState.length - 1], {
+                        paths: updatedPathState
+                    })
+                );
+            })
+        }
+    });
+
+    return workingState[workingState.length - 1];
 }
 
 export function composeNewStateForLine(p1, p2, classes, stateSnapshot, label = {}) {
@@ -65,48 +134,15 @@ export function composeNewStateForLine(p1, p2, classes, stateSnapshot, label = {
         })
     );
 
-    const auxLines = splitOrCombineLinesWithLine(p1, p2, stateSnapshot.paths, classes);
-    const auxPathsStateObject = auxLines
-        .map(line => {
-            console.log(line);
-            return line;
-        })
-        .filter(line => findLine(line.geometry.p1, line.geometry.p2, workingState[workingState.length - 1].paths).length === 0)
-        .map(line => composeStateObject(
-            createStateId(PATH_STATE_COLLECTION, workingState[workingState.length - 1]),
-            new Set([AUX_LINE_CLASS_NAME]),
-            {p1: line.geometry.p1, p2: line.geometry.p2},
-            state.length + 1,
-            )
-        );
-    workingState.push(
-        Object.assign({}, workingState[workingState.length - 1], {
-            paths: workingState[workingState.length - 1].paths.concat(auxPathsStateObject)
-        })
-    );
-
-    const auxPathsUpdatedLinesStateObject = auxLines
-        .reduce((acc, line) => {
-            const existingLines = findLine(line.geometry.p1, line.geometry.p2, workingState[workingState.length - 1].paths);
-            if (existingLines.length !== 0) {
-                return updateElemForState(acc, existingLines[0].id, {add: [AUX_LINE_CLASS_NAME]}, state.length + 1);
-            }
-            return acc;
-        }, workingState[workingState.length - 1].paths);
-    workingState.push(
-        Object.assign({}, workingState[workingState.length - 1], {
-            paths: auxPathsUpdatedLinesStateObject
-        })
-    );
-
     // create the hinting 'axis line'
+
     const axisLine = extendLineCoordinates(p1, p2);
     const existingAxisLine = findLine(axisLine.p1, axisLine.p2, workingState[workingState.length - 1][PATH_STATE_COLLECTION]);
     if (existingAxisLine.length === 0) {
         workingState.push(
             Object.assign({}, workingState[workingState.length - 1], {
                 paths: workingState[workingState.length - 1].paths.concat(
-                    composeStateObject(createStateId(PATH_STATE_COLLECTION, workingState[workingState.length - 1]), new Set([AXIS_LINE_CLASS_NAME]), {
+                    composeStateObject(createStateId(PATH_STATE_COLLECTION, workingState[workingState.length - 1]), new Set([AXIS_LINE_CLASS]), {
                         p1: axisLine.p1,
                         p2: axisLine.p2
                     }, state.length + 1)
@@ -120,7 +156,7 @@ export function composeNewStateForLine(p1, p2, classes, stateSnapshot, label = {
                 paths: updateElemForState(
                     workingState[workingState.length - 1][PATH_STATE_COLLECTION],
                     existingAxisLine[0].id,
-                    {add: [AXIS_LINE_CLASS_NAME]},
+                    {add: [AXIS_LINE_CLASS]},
                     state.length + 1,
                     label
                 )
@@ -128,15 +164,36 @@ export function composeNewStateForLine(p1, p2, classes, stateSnapshot, label = {
         );
     }
 
+    // connect segments of existing lines if the new line bridges them
+
+    const auxLines = constructAuxLinesForLine(p1, p2, workingState[workingState.length - 1]);
+    const auxStateUpdate = composeNewStateForAuxLines(auxLines, workingState[workingState.length - 1]);
+    workingState.push(auxStateUpdate);
+
     // create or update nodes at intersections of existing lines with the new line
+
     stateSnapshot[PATH_STATE_COLLECTION].forEach(path => {
+    // workingState[workingState.length - 1].paths.forEach(path => {
         intersectLineLine(path.geometry.p1, path.geometry.p2, axisLine.p1, axisLine.p2).intersections
             .forEach(intersection => {
+                const intersectionClasses = (setIncludes(path.classes, [TASK_LINE_CLASS, USER_LINE_CLASS, AUX_LINE_CLASS])
+                    && getUniquePoints([path.geometry.p1, path.geometry.p2, intersection]).length === 2)
+                    ? {add: [GRID_NODE_CLASS, AUX_NODE_CLASS]}
+                    : {add: [GRID_NODE_CLASS]};
                 workingState.push(
-                    composeNewStateForNode(intersection, {add: [GRID_NODE_CLASS_NAME]}, workingState[workingState.length - 1])
+                    composeNewStateForNode(intersection, intersectionClasses, workingState[workingState.length - 1])
                 );
             })
     });
+
+    // stateSnapshot[PATH_STATE_COLLECTION].forEach(path => {
+    //     intersectLineLine(path.geometry.p1, path.geometry.p2, axisLine.p1, axisLine.p2).intersections
+    //         .forEach(intersection => {
+    //             workingState.push(
+    //                 composeNewStateForNode(intersection, {add: [GRID_NODE_CLASS]}, workingState[workingState.length - 1])
+    //             );
+    //         })
+    // });
 
     if (LOG) console.timeEnd('composeNewStateForLine');
 

@@ -5,8 +5,8 @@ import {
     // LOG,
     NODE_STATE_COLLECTION,
     PATH_STATE_COLLECTION,
-    TASK_LINE_CLASS_NAME,
-    TASK_NODE_CLASS_NAME, TOUCH_SELECT_TOLERANCE
+    TASK_LINE_CLASS,
+    TASK_NODE_CLASS, TOUCH_SELECT_TOLERANCE
 } from './constants';
 import {isEmptyObject, noPointerEvents} from './utils';
 
@@ -72,8 +72,8 @@ export function attachTouchSurfaceSelectable(surface, stateSnapshot) {
     function handleSelect(origin) {
         if (LOG) console.time('handleTouchSurfaceSelect');
 
-        const nodes = stateSnapshot[NODE_STATE_COLLECTION].filter(node => node.classes.has(TASK_NODE_CLASS_NAME));
-        const lines = stateSnapshot[PATH_STATE_COLLECTION].filter(node => node.classes.has(TASK_LINE_CLASS_NAME));
+        const nodes = stateSnapshot[NODE_STATE_COLLECTION].filter(node => node.classes.has(TASK_NODE_CLASS));
+        const lines = stateSnapshot[PATH_STATE_COLLECTION].filter(node => node.classes.has(TASK_LINE_CLASS));
 
         const nearestNode = getNearestNode(origin, nodes);
         const nearestLine = getNearestLine(origin, lines);

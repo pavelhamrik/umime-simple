@@ -128,7 +128,7 @@ $task-color: map-get($apps, 'english');
 
         circle.indicator {
             fill: $white;
-            stroke-width: 1;
+            stroke-width: 1.5;
             stroke: $black;
             transition: $transition;
 

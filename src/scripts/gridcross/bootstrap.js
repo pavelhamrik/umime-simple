@@ -14,9 +14,9 @@ import {
 } from './constants';
 import GAUtils from '../utils/googleAnalytics';
 
-svgDraggableInit(SVG);
-
 export function bootstrap() {
+    svgDraggableInit(SVG);
+
     GAUtils.createTest(RESET_BUTTON_TEST);
 
     const root = document.getElementById('gridcross');

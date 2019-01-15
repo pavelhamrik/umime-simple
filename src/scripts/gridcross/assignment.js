@@ -1,23 +1,25 @@
 import {
-    ACCEPTABLE_SOLUTION_LINE_CLASSES, AUX_LINE_CLASS_NAME,
-    AXIS_LINE_CLASS_NAME,
+    ACCEPTABLE_SOLUTION_LINE_CLASSES,
+    AUX_LINE_CLASS,
+    AXIS_LINE_CLASS,
     CONFIG_STATE_COLLECTION,
     NODE_STATE_COLLECTION,
-    PATH_STATE_COLLECTION, SELECTED_LINE_CLASS_NAME, SELECTED_NODE_CLASS_NAME,
+    PATH_STATE_COLLECTION,
+    SELECTED_LINE_CLASS,
+    SELECTED_NODE_CLASS,
     SOLUTION_STATE_COLLECTION,
-    SOLVED_LINE_CLASS_NAME,
-    SOLVED_NODE_CLASS_NAME,
-    TASK_LINE_CLASS_NAME,
-    TASK_NODE_CLASS_NAME,
-    USER_LINE_CLASS_NAME,
-    USER_NODE_CLASS_NAME
+    SOLVED_LINE_CLASS,
+    SOLVED_NODE_CLASS,
+    TASK_LINE_CLASS,
+    TASK_NODE_CLASS,
+    USER_LINE_CLASS,
+    USER_NODE_CLASS
 } from './constants';
 import Point from './Point';
 import { extendLineCoordinates, findLine, toCanvasXCoord, toCanvasYCoord } from './geometry';
 import { composeNewStateForNode } from './state';
-import { subsegmentLines } from './geometry';
+import { isSubsegment } from './geometry';
 import {composeNewStateForLine} from './state';
-
 
 export function parseAssignment(assignments, index, stateSnapshot) {
     const workingState = [stateSnapshot];
@@ -41,7 +43,7 @@ export function parseAssignment(assignments, index, stateSnapshot) {
                         toCanvasXCoord(point.geometry[0]),
                         toCanvasYCoord(point.geometry[1])
                     ),
-                    {add: [TASK_NODE_CLASS_NAME]},
+                    {add: [TASK_NODE_CLASS]},
                     workingState[workingState.length - 1],
                     point.label
                 )
@@ -63,7 +65,7 @@ export function parseAssignment(assignments, index, stateSnapshot) {
             workingState.push(
                 composeNewStateForLine(
                     p1, p2,
-                    {add: [TASK_LINE_CLASS_NAME]},
+                    {add: [TASK_LINE_CLASS]},
                     workingState[workingState.length - 1],
                     line.label
                 )
@@ -71,14 +73,14 @@ export function parseAssignment(assignments, index, stateSnapshot) {
             workingState.push(
                 composeNewStateForNode(
                     p1,
-                    {add: [TASK_NODE_CLASS_NAME]},
+                    {add: [TASK_NODE_CLASS]},
                     workingState[workingState.length - 1]
                 )
             );
             workingState.push(
                 composeNewStateForNode(
                     p2,
-                    {add: [TASK_NODE_CLASS_NAME]},
+                    {add: [TASK_NODE_CLASS]},
                     workingState[workingState.length - 1]
                 )
             );
@@ -101,7 +103,7 @@ export function parseAssignment(assignments, index, stateSnapshot) {
             workingState.push(
                 composeNewStateForLine(
                     p1, p2,
-                    {add: [TASK_LINE_CLASS_NAME]},
+                    {add: [TASK_LINE_CLASS]},
                     workingState[workingState.length - 1],
                     line.label
                 )
@@ -165,20 +167,19 @@ export function parseAssignment(assignments, index, stateSnapshot) {
     return workingState[workingState.length - 1];
 }
 
-
 export function checkSolution(stateSnapshot) {
     const uiEvalSegmentsAsLines = getConfigValue('uiEvalSegmentsAsLines', stateSnapshot);
     const uiOnlySelect = getConfigValue('uiOnlySelect', stateSnapshot);
 
     function checkAllowedNodeClasses(node) {
-        return uiOnlySelect ? node.classes.has(SELECTED_NODE_CLASS_NAME) : node.classes.has(USER_NODE_CLASS_NAME)
+        return uiOnlySelect ? node.classes.has(SELECTED_NODE_CLASS) : node.classes.has(USER_NODE_CLASS)
     }
 
     function checkAllowedPathClasses(path) {
-        if (uiOnlySelect && path.classes.has(SELECTED_LINE_CLASS_NAME)) return true;
+        if (uiOnlySelect && path.classes.has(SELECTED_LINE_CLASS)) return true;
 
         const acceptable = uiEvalSegmentsAsLines
-            ? new Set(ACCEPTABLE_SOLUTION_LINE_CLASSES).add(AXIS_LINE_CLASS_NAME)
+            ? new Set(ACCEPTABLE_SOLUTION_LINE_CLASSES).add(AXIS_LINE_CLASS)
             : ACCEPTABLE_SOLUTION_LINE_CLASSES;
         for (let className of acceptable) {
             if (path.classes.has(className)) return true;
@@ -187,10 +188,10 @@ export function checkSolution(stateSnapshot) {
         return false;
 
         // return uiOnlySelect
-        //     ? path.classes.has(SELECTED_LINE_CLASS_NAME)
-        //     : path.classes.has(USER_LINE_CLASS_NAME)
-        //         || path.classes.has(TASK_LINE_CLASS_NAME)
-        //         || (uiEvalSegmentsAsLines ? path.classes.has(AXIS_LINE_CLASS_NAME) : false)
+        //     ? path.classes.has(SELECTED_LINE_CLASS)
+        //     : path.classes.has(USER_LINE_CLASS)
+        //         || path.classes.has(TASK_LINE_CLASS)
+        //         || (uiEvalSegmentsAsLines ? path.classes.has(AXIS_LINE_CLASS) : false)
     }
 
     for (const solution of stateSnapshot.solutions) {
@@ -213,9 +214,9 @@ export function checkSolution(stateSnapshot) {
             if (!uiOnlySelect) return solution;
             else {
                 const selectedNodesQty = stateSnapshot[NODE_STATE_COLLECTION]
-                    .filter(node => node.classes.has(SELECTED_NODE_CLASS_NAME)).length;
+                    .filter(node => node.classes.has(SELECTED_NODE_CLASS)).length;
                 const selectedPathsQty = stateSnapshot[PATH_STATE_COLLECTION]
-                    .filter(path => path.classes.has(SELECTED_LINE_CLASS_NAME)).length;
+                    .filter(path => path.classes.has(SELECTED_LINE_CLASS)).length;
                 const solutionNodesQty = typeof solution[NODE_STATE_COLLECTION] !== 'undefined'
                     ? solution[NODE_STATE_COLLECTION].length
                     : 0;
@@ -229,30 +230,28 @@ export function checkSolution(stateSnapshot) {
     return {};
 }
 
-
 function highlightSegment(p1, p2, stateSnapshot) {
     const workingState = [stateSnapshot];
 
     workingState.push(composeNewStateForLine(
         p1,
         p2,
-        {add: [SOLVED_LINE_CLASS_NAME]},
+        {add: [SOLVED_LINE_CLASS]},
         workingState[workingState.length - 1]
     ));
     workingState.push(composeNewStateForNode(
         p1,
-        {add: [SOLVED_NODE_CLASS_NAME]},
+        {add: [SOLVED_NODE_CLASS]},
         workingState[workingState.length - 1]
     ));
     workingState.push(composeNewStateForNode(
         p2,
-        {add: [SOLVED_NODE_CLASS_NAME]},
+        {add: [SOLVED_NODE_CLASS]},
         workingState[workingState.length - 1]
     ));
 
     return workingState[workingState.length - 1];
 }
-
 
 export function highlightSolution(solution, stateSnapshot) {
     console.log(solution);
@@ -265,7 +264,7 @@ export function highlightSolution(solution, stateSnapshot) {
             solution[collection].forEach(node => {
                 workingState.push(composeNewStateForNode(
                     node,
-                    {add: [SOLVED_NODE_CLASS_NAME]},
+                    {add: [SOLVED_NODE_CLASS]},
                     workingState[workingState.length - 1]
                 ))
             })
@@ -277,12 +276,12 @@ export function highlightSolution(solution, stateSnapshot) {
                 // also highlight coincident segments shorter than those which are part of the solution
                 stateSnapshot[PATH_STATE_COLLECTION]
                     .filter(userPath => (
-                        userPath.classes.has(USER_LINE_CLASS_NAME)
-                        || userPath.classes.has(TASK_LINE_CLASS_NAME)
-                        || userPath.classes.has(AUX_LINE_CLASS_NAME)
+                        userPath.classes.has(USER_LINE_CLASS)
+                        || userPath.classes.has(TASK_LINE_CLASS)
+                        || userPath.classes.has(AUX_LINE_CLASS)
                     ))
                     .map(userPath => {
-                        const subsegment = subsegmentLines(
+                        const subsegment = isSubsegment(
                             path.p1, path.p2,
                             userPath.geometry.p1, userPath.geometry.p2,
                             false
@@ -303,12 +302,10 @@ export function highlightSolution(solution, stateSnapshot) {
     return workingState[workingState.length - 1];
 }
 
-
 export function getConfigValue(key, stateSnapshot) {
     if (typeof stateSnapshot.config === 'undefined') return false;
     return typeof stateSnapshot.config[key] !== 'undefined' ? stateSnapshot.config[key] : false;
 }
-
 
 export function parseKatex(string) {
     return string.replace(

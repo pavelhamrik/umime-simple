@@ -1,13 +1,14 @@
 import {intersectCircleCircle, intersectLineLine,} from './intersections';
 import Point from './Point';
 import {
-    AUX_LINE_CLASS_NAME,
-    AXIS_LINE_CLASS_NAME,
+    AUX_LINE_CLASS,
+    AXIS_LINE_CLASS,
     BOTTOM_EDGE,
     CANVAS_PADDING_LEFT,
     CANVAS_PADDING_TOP,
-    COINCIDENT_LINE_THRESHOLD,
-    DUPLICATE_LINE_THRESHOLD,
+    COINCIDENT_LINE_TOLERANCE,
+    DUPLICATE_LINE_TOLERANCE,
+    GEOMETRY_PRECISION_TOLERANCE,
     GRID_HEIGHT,
     GRID_WIDTH,
     LEFT_EDGE,
@@ -17,12 +18,13 @@ import {
     PATH_STATE_COLLECTION,
     RESOLUTION,
     RIGHT_EDGE,
-    SOLVED_LINE_CLASS_NAME,
-    TASK_LINE_CLASS_NAME,
+    TASK_LINE_CLASS,
+    TASK_NODE_CLASS,
     TOP_EDGE,
-    USER_LINE_CLASS_NAME,
+    USER_LINE_CLASS,
+    USER_NODE_CLASS,
 } from './constants';
-import {deleteFromSet, isAsc, isEmptyObject} from './utils';
+import {deleteFromSet, isAsc, isEmptyObject, setIncludes} from './utils';
 import {getConfigValue} from './assignment';
 
 export function calculateDistance(p1, p2) {
@@ -169,11 +171,11 @@ export function createStateId(stateType, stateSnapshot) {
     return lastId === -Infinity ? 1 : lastId + 1;
 }
 
-export function findLine(point1, point2, stateCollection, tolerance = DUPLICATE_LINE_THRESHOLD) {
+export function findLine(point1, point2, stateCollection, tolerance = DUPLICATE_LINE_TOLERANCE) {
     return stateCollection.filter(path => isSameLine(path.geometry.p1, path.geometry.p2, point1, point2, tolerance))
 }
 
-export function isSameLine(p1, p2, q1, q2, tolerance = DUPLICATE_LINE_THRESHOLD) {
+export function isSameLine(p1, p2, q1, q2, tolerance = DUPLICATE_LINE_TOLERANCE) {
     const distance1 = Math.min(
         calculateDistance(p1, q1),
         calculateDistance(p1, q2)
@@ -185,16 +187,16 @@ export function isSameLine(p1, p2, q1, q2, tolerance = DUPLICATE_LINE_THRESHOLD)
     return distance1 <= tolerance && distance2 <= tolerance;
 }
 
-export const isCoincident = function (a1, a2, b1, b2, tolerance = COINCIDENT_LINE_THRESHOLD) {
+export function isCoincident(a1, a2, b1, b2, tolerance = COINCIDENT_LINE_TOLERANCE) {
     let ua_t = (b2.x - b1.x) * (a1.y - b1.y) - (b2.y - b1.y) * (a1.x - b1.x);
     let ub_t = (a2.x - a1.x) * (a1.y - b1.y) - (a2.y - a1.y) * (a1.x - b1.x);
     let u_b = (b2.y - b1.y) * (a2.x - a1.x) - (b2.x - b1.x) * (a2.y - a1.y);
 
     return Math.abs(u_b) <= tolerance && (Math.abs(ua_t) <= tolerance || Math.abs(ub_t) <= tolerance);
-};
+}
 
-export const subsegmentLines = function (p1, p2, q1, q2, symmetric = true) {
-    if (!isCoincident(p1, p2, q1, q2)) return {applies: false, geometry: []};
+export function isSubsegment(p1, p2, q1, q2, symmetric = true) {
+    if (!isCoincident(p1, p2, q1, q2)) return false;
 
     const p = sortPoints([p1, p2]);
     const q = sortPoints([q1, q2]);
@@ -206,157 +208,123 @@ export const subsegmentLines = function (p1, p2, q1, q2, symmetric = true) {
     const xs = [a[0].x, b[0].x, b[1].x, a[1].x];
     const ys = [a[0].y, b[0].y, b[1].y, a[1].y];
 
-    if (isAsc(xs) && (isAsc(ys) || isAsc(ys.slice().reverse()))) {
-        const unique = getUniquePoints([a[0], a[1], b[0], b[1]]);
+    return isAsc(xs) && (isAsc(ys) || isAsc(ys.slice().reverse()))
+}
 
-        const geometry = [];
-
-        if (unique.length === 4) {
-            geometry.push({geometry: {p1: a[0], p2: b[0]}});
-            geometry.push({geometry: {p1: b[1], p2: a[1]}});
-        }
-        else if (unique.length === 3) {
-            if (a[0].equals(b[0])) geometry.push({geometry: {p1: a[1], p2: b[1]}});
-            else if (a[1].equals(b[1])) geometry.push({geometry: {p1: a[0], p2: b[0]}});
-        }
-
-        return {
-            applies: true,
-            geometry: geometry,
-        }
-    }
-
-    return {applies: false, geometry: []}
-};
-
-export const overlapLines = function (p1, p2, q1, q2) {
-    if (!isCoincident(p1, p2, q1, q2)) return {applies: false, geometry: []};
-
-    const p = sortPoints([p1, p2]);
-    const q = sortPoints([q1, q2]);
-
-    const swap = p[0].x > q[0].x;
-    const a = swap ? q : p;
-    const b = swap ? p : q;
-
-    const xs = [a[0].x, b[0].x, a[1].x, b[1].x];
-    const ys1 = [a[0].y, b[0].y, a[1].y, b[1].y];
-    const ys2 = [b[0].y, a[0].y, b[1].y, a[1].y];
-
-    // console.log(xs, ys1, ys2);
-
-    if (isAsc(xs)) {
-        if (isAsc(ys1) || isAsc(ys1.slice().reverse())) {
-            return {
-                applies: true,
-                geometry: [
-                    {geometry: {p1: new Point(a[0].x, a[0].y), p2: new Point(b[0].x, b[0].y)}},
-                    {geometry: {p1: new Point(b[0].x, b[0].y), p2: new Point(a[1].x, a[1].y)}},
-                    {geometry: {p1: new Point(a[1].x, a[1].y), p2: new Point(b[1].x, b[1].y)}},
-                ]
-            }
-        }
-        if (isAsc(ys2) || isAsc(ys2.slice().reverse())) {
-            return {
-                applies: true,
-                geometry: [
-                    {geometry: {p1: new Point(a[0].x, b[0].y), p2: new Point(b[0].x, a[0].y)}},
-                    {geometry: {p1: new Point(b[0].x, a[0].y), p2: new Point(a[1].x, b[1].y)}},
-                    {geometry: {p1: new Point(a[1].x, b[1].y), p2: new Point(b[1].x, a[1].y)}},
-                ]
-            }
-        }
-    }
-
-    return {applies: false, geometry: []};
-};
-
-export const isConnected = function (p1, p2, q1, q2) {
-    if (!isCoincident(p1, p2, q1, q2)) return false;
-
-    const uniques = getUniquePoints([p1, p2, q1, q2]);
-    if (uniques.length === 3) {
-        const pLength = calculateDistance(p1, p2);
-        const qLength = calculateDistance(q1, q2);
-        const abLength = calculateDistance(uniques[0], uniques[1]);
-        const bcLength = calculateDistance(uniques[1], uniques[2]);
-        const acLength = calculateDistance(uniques[0], uniques[2]);
-
-        if (Math.max(abLength, bcLength, acLength) > Math.max(pLength, qLength)) return true;
-    }
-
-    return false;
-};
-
-export const combineOverlappingLines = function (p1, p2, q1, q2) {
-    const subsegment = subsegmentLines(p1, p2, q1, q2);
-    if (subsegment.applies) {
-        console.log('%cSUBSEGMENT', 'color: aqua');
-        return subsegment.geometry;
-    }
-    if (isConnected(p1, p2, q1, q2)) {
-        console.log('%cCONNECTED', 'color: yellow');
-        if (p2.equals(q1)) return {geometry: {p1: p1, p2: q2}};
-        if (p2.equals(q2)) return {geometry: {p1: p1, p2: q1}};
-        if (p1.equals(q1)) return {geometry: {p1: p2, p2: q2}};
-        if (p1.equals(q2)) return {geometry: {p1: p2, p2: q1}};
-    }
-
-    const overlap = overlapLines(p1, p2, q1, q2);
-    console.log(overlap);
-    if (overlap.applies) {
-        console.log('%cOVERLAP', 'color: lime');
-        return overlap.geometry;
-    }
-
-    if (LOG) console.error('Unhandled intersect type');
-    return [];
-};
-
-export const getUniquePoints = function (array) {
+export function getUniquePoints(array) {
     if (array.length === 0) return [];
     const filtered = array
         .slice(1)
         .filter(point => !array[0].equals(point));
     return [array[0]].concat(getUniquePoints(filtered));
-};
+}
 
-export const sortPoints = function (points) {
+export function getRepeatedPoints(array) {
+    if (array.length === 0) return [];
+
+    const repeated = array.filter(p1 => array.filter(p2 => p1.equals(p2)).length >= 2);
+    return getUniquePoints(repeated);
+}
+
+export function sortPoints (points) {
     return points.slice().sort((p1, p2) => {
         if (p1.x === p2.x) {
             return p1.y - p2.y;
         }
         return p1.x - p2.x;
     })
-};
-
-export function splitOrCombineLinesWithLine(p1, p2, collection, classes) {
-    // early return to prevent checking for supplementary geometry such as solution highlights
-    if (
-        typeof classes.add === 'undefined'
-        || classes.add.includes(SOLVED_LINE_CLASS_NAME)
-        || !classes.add.includes(USER_LINE_CLASS_NAME)
-    ) return [];
-
-    let auxLines = [];
-
-    collection
-        .filter(line => (
-            line.classes.has(USER_LINE_CLASS_NAME)
-            || line.classes.has(TASK_LINE_CLASS_NAME)
-            || line.classes.has(AUX_LINE_CLASS_NAME)
-        ))
-        .filter(line => !isSameLine(line.geometry.p1, line.geometry.p2, p1, p2))
-        .forEach(line => {
-            const {p1: q1, p2: q2} = line.geometry;
-
-            const newLines = combineOverlappingLines(p1, p2, q1, q2);
-            if (newLines.length !== 0) auxLines = auxLines.concat(newLines);
-        });
-
-    return auxLines;
 }
 
+export function findLinesByPoint(p, collection) {
+    return collection.filter(line => isLineOnPoint(p, line.geometry.p1, line.geometry.p2));
+}
+
+export function isLineOnPoint(p, q1, q2) {
+    const pq1Dist = calculateDistance(p, q1);
+    const pq2Dist = calculateDistance(p, q2);
+    const qDist = calculateDistance(q1, q2);
+
+    return Math.abs(pq1Dist + pq2Dist - qDist) <= GEOMETRY_PRECISION_TOLERANCE
+}
+
+export function splitLineByPoint(p, line) {
+    const splitLines = [];
+
+    const lineLength = calculateDistance(line.geometry.p1, line.geometry.p2);
+    const p1Dist = calculateDistance(p, line.geometry.p1);
+    const p2Dist = calculateDistance(p, line.geometry.p2);
+
+    if (p1Dist >= GEOMETRY_PRECISION_TOLERANCE && Math.abs(p1Dist - lineLength) >= GEOMETRY_PRECISION_TOLERANCE) {
+        splitLines.push({
+            geometry: {p1: line.geometry.p1, p2: p}
+        })
+    }
+    if (p2Dist >= GEOMETRY_PRECISION_TOLERANCE && Math.abs(p2Dist - lineLength) >= GEOMETRY_PRECISION_TOLERANCE) {
+        splitLines.push({
+            geometry: {p1: p, p2: line.geometry.p2}
+        })
+    }
+
+    return splitLines;
+}
+
+export function connectLines(p1, p2, q1, q2) {
+    if (!isCoincident(p1, p2, q1, q2)) return {};
+
+    const points = [p1, p2, q1, q2];
+    const pivot = getRepeatedPoints(points);
+    if (pivot.length === 1) {
+        const satellites = points.filter(point => !point.equals(pivot[0]));
+
+        console.log('CONNECTED!', pivot, satellites);
+
+        return {geometry: {p1: satellites[0], p2: satellites[1]}};
+    }
+    return {};
+}
+
+export function connectLinesInCollection(p1, p2, lines) {
+    return lines.reduce((acc, line) => {
+        const connected = connectLines(p1, p2, line.geometry.p1, line.geometry.p2);
+        if (!isEmptyObject(connected)) {
+            return acc.concat(connected)
+        }
+        return acc;
+    }, []);
+}
+
+export function constructAuxLinesForPoint(point, collection) {
+    const eligibleLines = collection.filter(line => (
+        setIncludes(line.classes, [USER_LINE_CLASS, TASK_LINE_CLASS, AUX_LINE_CLASS]))
+    );
+
+    const lines = findLinesByPoint(point, eligibleLines);
+
+    return lines.reduce((acc, line) => {
+        const splitLines = splitLineByPoint(point, line);
+        return acc.concat(splitLines);
+    }, []);
+}
+
+export function constructAuxLinesForLine(p1, p2, collections) {
+    const {paths, nodes} = collections;
+
+    const eligibleLines = paths.filter(line => (
+        setIncludes(line.classes, [USER_LINE_CLASS, TASK_LINE_CLASS, AUX_LINE_CLASS]))
+    );
+
+    const connectedCollection = connectLinesInCollection(p1, p2, eligibleLines);
+
+    const linesSplitByPoints = nodes
+        .filter(point => setIncludes(point.classes, [TASK_NODE_CLASS, USER_NODE_CLASS]))
+        .reduce((acc, point) => {
+            const auxLines = constructAuxLinesForPoint(point.geometry.p1, paths);
+            if (auxLines.length !== 0) return acc.concat(auxLines);
+            return acc
+        }, []);
+
+    return connectedCollection.concat(linesSplitByPoints);
+}
 
 export function countGeometry(collection, classNames) {
     return collection.filter(elem =>
@@ -375,7 +343,7 @@ export function isGeometryMaxed(stateSnaphot) {
 
     // counting lines first, typically expecting fewer lines then nodes; then early return
     const acceptableLineClasses = getConfigValue('uiEvalSegmentsAsLines', stateSnaphot)
-        ? deleteFromSet(LIMITED_USER_LINE_CLASSES, USER_LINE_CLASS_NAME).add(AXIS_LINE_CLASS_NAME)
+        ? deleteFromSet(LIMITED_USER_LINE_CLASSES, USER_LINE_CLASS).add(AXIS_LINE_CLASS)
         : LIMITED_USER_LINE_CLASSES;
     const linesCount = countGeometry(
         stateSnaphot[PATH_STATE_COLLECTION],
