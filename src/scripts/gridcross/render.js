@@ -14,7 +14,6 @@ import {
     LABEL_OFFSET_VERTICAL_CORRECTION,
     LINE_RENDERING_ORDER,
     NODE_CLASS_NAME,
-    // LOG,
     NODE_GROUP,
     NODE_RADIUS,
     NODE_STATE_COLLECTION,
@@ -29,10 +28,11 @@ import {
     WORK_GROUP
 } from './constants';
 import { attachDraggable, attachTouchSurfaceDraggable } from './draggable';
-import { exportGeometry } from './util';
+import {isEmptyObject} from './utils';
 import { getConfigValue } from './assignment';
 import { attachTouchSurfaceSelectable } from './selectable';
-import { isEmptyObject, noPointerEvents } from './functions';
+import { noPointerEvents } from './utils';
+import {exportGeometry} from './localIO';
 
 export function render(state, groups, interactive = true) {
     const stateSnapshot = state.get();

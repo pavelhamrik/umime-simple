@@ -13,9 +13,10 @@ import {
     USER_NODE_CLASS_NAME
 } from './constants';
 import Point from './Point';
-import { extendLineCoordinates, findLine, toCanvasXCoord, toCanvasYCoord } from './functions';
-import { composeNewStateForLine, composeNewStateForNode } from './gridcross.exercise';
-import { subsegmentLines } from './intersections';
+import { extendLineCoordinates, findLine, toCanvasXCoord, toCanvasYCoord } from './geometry';
+import { composeNewStateForNode } from './state';
+import { subsegmentLines } from './geometry';
+import {composeNewStateForLine} from './state';
 
 
 export function parseAssignment(assignments, index, stateSnapshot) {

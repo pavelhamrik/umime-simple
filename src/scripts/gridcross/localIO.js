@@ -1,15 +1,15 @@
 import {
     AUX_LINE_CLASS_NAME,
-    // LOCAL_IO,
     NODE_STATE_COLLECTION,
     PATH_STATE_COLLECTION,
     TASK_LINE_CLASS_NAME,
     TASK_NODE_CLASS_NAME,
     USER_LINE_CLASS_NAME,
-    USER_NODE_CLASS_NAME,
+    USER_NODE_CLASS_NAME
 } from './constants';
-import { handleAssignment } from './gridcross.exercise';
-import { fromCanvasXCoord, fromCanvasYCoord } from './functions';
+import {fromCanvasXCoord, fromCanvasYCoord} from './geometry';
+import {handleAssignment} from './gridcross.exercise';
+import {isValidJSON} from './utils';
 
 export function exportGeometry(stateSnapshot) {
     if (!LOCAL_IO) return;
@@ -47,7 +47,7 @@ export function exportGeometry(stateSnapshot) {
 
     console.log(
         JSON.stringify(log, (key, value) => {
-                return value instanceof Array
+            return value instanceof Array
                 ? value.map(value => (
                     value instanceof Array ? JSON.stringify(value) : value
                 ))
@@ -55,7 +55,6 @@ export function exportGeometry(stateSnapshot) {
         }, 2).replace(/"\[/g, '[').replace(/]"/g, ']')
     );
 }
-
 
 export function createLocalInput() {
     const container = document.createElement('div');
@@ -79,11 +78,9 @@ export function createLocalInput() {
     container.appendChild(applyButton);
 }
 
-
 function resizeInputField() {
     this.style.height = `calc(${this.scrollHeight + 2}px)`;
 }
-
 
 function handleLocalInput() {
     const inputField = document.getElementById('local-io-input');
@@ -91,14 +88,4 @@ function handleLocalInput() {
         handleAssignment(JSON.parse(inputField.value));
     }
     else console.log(`%cInvalid assignment input`, 'color: red');
-}
-
-
-function isValidJSON(json) {
-    try {
-        JSON.parse(json);
-    } catch (e) {
-        return false;
-    }
-    return true;
 }

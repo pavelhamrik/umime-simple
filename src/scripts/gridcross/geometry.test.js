@@ -1,12 +1,10 @@
 import {
     sortPoints,
-    isAsc,
-    countUniquePoints,
     subsegmentLines,
     isConnected,
     overlapLines,
     getUniquePoints,
-} from './intersections';
+} from './geometry';
 import Point from './Point';
 
 test('overlapLines', () => {
@@ -240,21 +238,8 @@ test('subsegmentLines', () => {
     ).applies).toBe(true);
 });
 
-test('countUniquePoints', () => {
-    expect(countUniquePoints([])).toBe(0);
-
-    expect(countUniquePoints([
-        new Point(2, 0),
-        new Point(3, 1),
-        new Point(0, 2),
-        new Point(2, 0),
-        new Point(2, 0),
-        new Point(2, 1),
-    ])).toBe(4);
-});
-
 test('getUniquePoints', () => {
-    expect(countUniquePoints([])).toBe(0);
+    expect(getUniquePoints([])).toEqual([]);
 
     expect(getUniquePoints([
         new Point(2, 0),
@@ -291,14 +276,4 @@ test('sortPoints', () => {
     ]);
 
     expect(sortPoints([])).toEqual([]);
-});
-
-test('isAsc', () => {
-    expect(isAsc([-Infinity, 0, 0, 1])).toBe(true);
-
-    expect(isAsc([0, 2, 1])).toBe(false);
-
-    expect(isAsc([0, 3, 2, 5])).toBe(false);
-
-    expect(isAsc([])).toBe(true);
 });

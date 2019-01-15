@@ -1,15 +1,16 @@
 import SVG from 'svg.js';
 
 import Point from "./Point";
-import { handleNewPath } from './gridcross.exercise';
-import { draggableSnap, getNearestNode } from './functions';
+import {handleNewPath} from './gridcross.exercise';
+import {getNearestNode} from './geometry';
 import {
     BOTTOM_EDGE,
     CANVAS_PADDING_BOTTOM,
     CANVAS_PADDING_RIGHT,
     LINE,
     NODE_RADIUS,
-    RIGHT_EDGE
+    RIGHT_EDGE,
+    SNAP_THRESHOLD
 } from "./constants";
 
 const tool = {};
@@ -79,6 +80,14 @@ function handleDragStart(event, point, layer) {
             .addClass('indicator'),
     };
     tool['type'] = LINE;
+}
+
+
+function draggableSnap(point, nodes) {
+    const nearest = getNearestNode(point, nodes);
+    return nearest.distance <= SNAP_THRESHOLD
+        ? {point: nearest.point, snapped: true, node: nearest.node}
+        : {point: point, snapped: false, node: {}}
 }
 
 

@@ -1,6 +1,6 @@
 import Point from './Point';
 import { handleSelectedElem } from './gridcross.exercise';
-import { getNearestLine, getNearestNode, isEmptyObject, noPointerEvents } from './functions';
+import { getNearestLine, getNearestNode} from './geometry';
 import {
     // LOG,
     NODE_STATE_COLLECTION,
@@ -8,6 +8,7 @@ import {
     TASK_LINE_CLASS_NAME,
     TASK_NODE_CLASS_NAME, TOUCH_SELECT_TOLERANCE
 } from './constants';
+import {isEmptyObject, noPointerEvents} from './utils';
 
 
 // export function attachSelectable(elem) {
