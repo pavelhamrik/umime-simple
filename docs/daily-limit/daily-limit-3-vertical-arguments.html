@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Google Optimize -->
+        <style>.async-hide { opacity: 0 !important} </style>
+        <script>
+            (function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date;
+                h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
+                (a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;
+            })(window,document.documentElement,'async-hide','dataLayer',4000,
+            {'GTM-NJDNKQN':true});
+        </script>
+
+        <!-- Google Analytics -->
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-132212154-1', 'auto');
+            ga('require', 'GTM-NJDNKQN');
+            ga('send', 'pageview');
+        </script>
+
+        <!--<meta name="apple-mobile-web-app-capable" content="yes">-->
+        <!--<meta name="apple-mobile-web-app-status-bar-style" content="white-translucent">-->
+
+        <title>Umíme to!</title>
+
+        <script src="../assets/scripts/umime.app.js" type="text/javascript" defer></script>
+
+        <link rel="stylesheet" href="../assets/styles/app.css">
+        <link rel="icon" href="../assets/img/favicons/favicon-math@1x.png" type="image/png">
+        <link rel="apple-touch-icon" href="../assets/img/favicons/appicon-ios-czech.png">
+    </head>
+    <body>
+
+    <header class="dropdown">
+        <div class="dropdown-button"></div>
+        <div class="header-row header-row-primary">
+            <ul id="header-personal-menu" class="menu menu-small-stacked menu-medium-flexed">
+                <li class="dropdown app-switch">
+                    <a href="../index.html" class="button button-plain identity identity-math dropdown-button">
+                        <span class="identity-label">Umíme <strong class="color-math">matiku</strong></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="../index.html" class="identity identity-czech">
+                                <span class="identity-label">Umíme <strong class="color-czech">česky</strong></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="../index.html" class="identity identity-english">
+                                <span class="identity-label">Umíme <strong class="color-english">anglicky</strong></span>
+                            </a>
+                        </li>
+                        <!--<li>-->
+                            <!--<a href="../index.html" class="identity identity-math">-->
+                                <!--<span class="identity-label">Umíme <strong class="color-math">matiku</strong></span>-->
+                            <!--</a>-->
+                        <!--</li>-->
+                        <li>
+                            <a href="../index.html" class="identity identity-facts">
+                                <span class="identity-label">Umíme <strong class="color-facts">fakta</strong></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="../index.html" class="identity identity-programming">
+                                <span class="identity-label">Umíme <strong class="color-programming">programovat</strong></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="../index.html" class="identity identity-german">
+                                <span class="identity-label">Umíme <strong class="color-german">německy</strong></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="flex-item-grow-2 header-touch-secondary">
+                    <div class="search">
+                        <input type="search" placeholder="Hledat">
+                        <button class="button-clear icon-cross-small"></button>
+                    </div>
+                </li>
+                <li class="dropdown header-touch-secondary">
+                    <a href="#" class="dropdown-button button primary">Učitel</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Moje třídy</a></li>
+                        <li><a href="#">Domácí úkoly</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">…</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown header-touch-secondary">
+                    <a href="#" class="button button-plain dropdown-button stacked-labels">
+                        <span class="dongle"><img src="https://www.umimeto.org/img/lion.png" class="user-picture"></span>
+                        <span class="stack">
+                            <strong class="user-name">Koblizek</strong>
+                            <span class="subtitle">Můj profil</span>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li><a href="#">Můj profil</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Můj účet</a></li>
+                        <li><a href="#">Moje licence</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Odhlásit se</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    
+        <div class="header-row header-row-secondary">
+            <ul id="header-content-menu" class="menu menu-small-stacked menu-medium-flexed">
+                <li>
+                    <a href="../index.html" class="button button-plain">Přehled</a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="button button-plain dropdown-button">Procvičování</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="../mrizkovana.html">Mřížkovaná</a></li>
+                        <li><a href="../doplnovacka.html">Doplňovačka</a></li>
+                        <li><a href="#">Diktáty</a></li>
+                        <li><a href="#">Rozřazovačka</a></li>
+                        <li><a href="#">Čárky</a></li>
+                        <li><a href="#">Rozbory</a></li>
+                        <li><a href="#">Mluvené diktáty</a></li>
+                        <li><a href="#">Korektor</a></li>
+                        <li><a href="#">Otázky</a></li>
+                        <li><a href="#">Pexeso</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="button button-plain dropdown-button">Netradiční</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Vtipy</a></li>
+                        <li><a href="#">Roboti</a></li>
+                        <li><a href="#">Střílečka</a></li>
+                        <li><a href="#" class="current">Tetris</a></li>
+                        <li><a href="#">Příšerky</a></li>
+                        <li class="divider"></li>
+                        <li class="title">Více hráčů</li>
+                        <li><a href="#">Závody</a></li>
+                        <li><a href="#">Týmovka</a></li>
+                        <li><a href="#">Územíčka</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="button button-plain dropdown-button">Témata</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Přehled všech témat</a></li>
+                        <li><a href="#">Psaní i/y</a></li>
+                        <li><a href="#">Podobně znějící</a></li>
+                        <li><a href="#">Skloňování a časování</a></li>
+                        <li><a href="#">Velká písmena</a></li>
+                        <li><a href="#">Interpunkce</a></li>
+                        <li><a href="#">Čárky</a></li>
+                        <li><a href="#">Rozbory vět, stavba slov</a></li>
+                        <li><a href="#">Tvarosloví</a></li>
+                        <li><a href="#">Slova a jejich význam</a></li>
+                        <li><a href="#">Tematická zadání</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="button button-plain dropdown-button">Podle třídy</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">2. třída</a></li>
+                        <li><a href="#">3. třída</a></li>
+                        <li><a href="#">4. třída</a></li>
+                        <li><a href="#">5. třída</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">6. třída</a></li>
+                        <li><a href="#">7. třída</a></li>
+                        <li><a href="#">8. třída</a></li>
+                        <li><a href="#">9. třída</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Střední škola</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#" class="button button-plain">Učím se</a>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <div class="page-wrapper daily-limit">
+    
+        <section class="grid">
+            <div class="grid-content">
+                <div class="grid-item-large-12 small-align-center splash">
+                    <div class="back">
+                        <img class="picture picture-with-meter picture-faded" src="../assets/img/prisera_chapadla-01-bez_vousu.png"
+                             alt="Dneska jste tedy zamakali!"/>
+                    </div>
+                    <div class="front">
+                        <div class="meter meter-warning">
+                            <div class="current" style="width: 100%;"></div>
+                        </div>
+                        <h1>Jde vám to od ruky!</h1>
+                        <p class="margin-top--1 lead">Využili jste všech 250 dnešních otázek zdarma</p>
+                        <p><a href="#co-dal" class="button button-large button-primary smooth-scroll">Koukněte co dál</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="grid" id="co-dal">
+            <div class="grid-content">
+                <div class="grid-item-medium-8 grid-item-medium-offset-2 grid-item-large-4 grid-item-large-offset-0 space-emphasis">
+                    <div class="content-box small-align-center flex flex-direction-column">
+                        <div class="content-box-section tight flex-item">
+                            <div class="">
+                                <img class="picture picture-license" src="../assets/img/divka_veru+kluk_it.png" alt="Procvičující rodina">
+                            </div>
+                            <h2>+150 otázek zdarma</h2>
+                            <p class="subheader">
+                                <span class="badge badge-primary">Zaregistrujte se</span>
+                            </p>
+                        </div>
+                        <div class="content-box-section tight flex-item-grow-1">
+                            <p><strong>250 otázek zdarma každý den</strong></p>
+                            <p>Statistiky vašeho zlepšování</p>
+                            <p>Přehled vašich chyb k poučení</p>
+                            <p>Připomeneme, že můžete zase na to</p>
+                            <p>Jsme rádi, že s námi procvičujete 🥰</p>
+                        </div>
+                        <div class="content-box-section tight flex-item">
+                            <!--<p class="lead">&nbsp;</p>-->
+                            <p>
+                                <a href="#" class="button button-disabled button-suppressed">
+                                    <i class="material-icons">check</i> Jste registrovaní
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-item-medium-6 grid-item-large-4 space-emphasis">
+                    <div class="content-box content-box-success small-align-center flex flex-direction-column">
+                        <div class="content-box-section tight flex-item">
+                            <div class="">
+                                <img class="picture picture-license" src="../assets/img/rodina@2x.png" alt="Procvičující rodina">
+                            </div>
+                            <h2>Neomezené procvičování</h2>
+                            <p class="subheader">
+                                <span class="badge badge-success">S rodinnou licencí</span>
+                            </p>
+                        </div>
+                        <div class="content-box-section tight flex-item-grow-1">
+                            <p>Procvičujte bez denního omezení</p>
+                            <p>Nástroje pro rodiče</p>
+                            <p>Neustále rostoucí obsah systému</p>
+                            <p><a href="#" class="success">Zjistit více</a></p>
+                        </div>
+                        <div class="content-box-section tight flex-item">
+                            <p class="lead">Už <strong>od 222 Kč</strong> za rok</p>
+                            <p><a href="#" class="button button-success button-emphasized">Pořídit licenci</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-item-medium-6 grid-item-large-4 space-emphasis">
+                    <div class="content-box content-box-success small-align-center flex flex-direction-column">
+                        <div class="content-box-section tight flex-item">
+                            <div class="">
+                                <img class="picture picture-license" src="../assets/img/ucitelka_deti.png" alt="Procvičující rodina">
+                            </div>
+                            <h2>Procvičování pro školy</h2>
+                            <p class="subheader">
+                                <span class="badge badge-success">Se školní licencí</span>
+                            </p>
+                        </div>
+                        <div class="content-box-section tight flex-item-grow-1">
+                            <p>Procvičujte bez denního omezení</p>
+                            <p>Nástroje pro učitele</p>
+                            <p>Neustále rostoucí obsah systému</p>
+                            <p><a href="#" class="success">Zjistit více</a></p>
+                        </div>
+                        <div class="content-box-section tight flex-item">
+                            <p class="lead">Už <strong>od 990 Kč</strong> za školu a rok</p>
+                            <p><a href="#" class="button button-success button-emphasized">Pořídit licenci</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="grid">
+            <div class="grid-content">
+                <div class="grid-item-medium-5 grid-item-large-5 grid-item-large-offset-1 grid-item-xlarge-4 grid-item-xlarge-offset-2 medium-align-right flex flex-align-center">
+                    <div class="uncontained">
+                        <h3 class="shoutout">Procvičujte pestrou škálu předmětů kvalitně, zábavně a do hloubky</h3>
+                        <p>Všechny předměty pod jednou střechou.
+                            Jediná online cvičebnice Vám pokryje vše podstatné.
+                            Její obsah je vždy aktuální a neustále se rozšiřuje.</p>
+                        <p><a href="#">Zjistit více</a></p>
+                    </div>
+                </div>
+                <div class="grid-item-medium-7 grid-item-large-6 grid-item-xlarge-5">
+                    <div class="tabs">
+                        <div class="tabs-bookmarks">
+                            <div class="tab-bookmark">Český jazyk</div>
+                            <div class="tab-bookmark">Angličtina</div>
+                            <div class="tab-bookmark">Matematika</div>
+                            <div class="tab-bookmark">+4 další</div>
+                        </div>
+                        <div class="tabs-content">
+                            <div class="tab">
+                                <p>
+                                <div class="picture-placeholder">img czech</div>
+                                </p>
+                                <div class="stats">
+                                    <div class="stat">
+                                        <div class="value">154</div>
+                                        <div class="label">Oblastí</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="value">22</div>
+                                        <div class="label">Cvičení</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="value">9&thinsp;535</div>
+                                        <div class="label">Příkladů</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="value">2&thinsp;443</div>
+                                        <div class="label">Řešení denně</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab">
+                                <p>
+                                <div class="picture-placeholder">img english</div>
+                                </p>
+                                <div class="stats">
+                                    <div class="stat">
+                                        <div class="value">197</div>
+                                        <div class="label">Oblastí</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="value">18</div>
+                                        <div class="label">Cvičení</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="value">7&thinsp;441</div>
+                                        <div class="label">Příkladů</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="value">4&thinsp;392</div>
+                                        <div class="label">Řešení denně</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab">
+                                <p>
+                                <div class="picture-placeholder">img math</div>
+                                </p>
+                                <div class="stats">
+                                    <div class="stat">
+                                        <div class="value">153</div>
+                                        <div class="label">Oblastí</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="value">16</div>
+                                        <div class="label">Cvičení</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="value">9&thinsp;896</div>
+                                        <div class="label">Příkladů</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="value">2&thinsp;984</div>
+                                        <div class="label">Řešení denně</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab">
+                                <p>
+                                <div class="picture-placeholder">img the whole ecosystem</div>
+                                </p>
+                                <div class="stats">
+                                    <div class="stat">
+                                        <div class="value">1&thinsp;289</div>
+                                        <div class="label">Oblastí</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="value">201</div>
+                                        <div class="label">Cvičení</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="value">59&thinsp;896</div>
+                                        <div class="label">Příkladů</div>
+                                    </div>
+                                    <div class="stat">
+                                        <div class="value">32&thinsp;984</div>
+                                        <div class="label">Řešení denně</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="grid">
+            <div class="grid-content">
+                <div class="grid-item-medium-10 grid-item-large-8 grid-item-xlarge-6 grid-item-medium-offset-1 grid-item-large-offset-2 grid-item-xlarge-offset-3">
+                    <div class="picture-container">
+                        <img class="picture"
+                             src="../assets/img/ill-licensees-journey-9@2x.png"
+                             alt="Dneska jste tedy zamakali!"
+                        />
+                    </div>
+                </div>
+                <div class="grid-item-medium-10 grid-item-large-8 grid-item-xlarge-6 grid-item-medium-offset-1 grid-item-large-offset-2 grid-item-xlarge-offset-3">
+                    <h3 class="shoutout">Jen opakování dělá mistra</h3>
+                    <p>Pokud si máte něco zapamatovat, bez opakování to nepůjde.</p>
+                    <p>Svou znalost v systému prokážete získáním 4&nbsp;štítů.</p>
+                    <p>Pokud si látku zopakujete po měsíci, získáte hvězdu jako potvrzení.</p>
+                    <p><a href="#">Zjistit více</a></p>
+                </div>§
+            </div>
+        </section>
+        
+        <section class="grid">
+            <div class="grid-content">
+                <div class="grid-item small-align-center">
+                    <h3>Je toho za tím ještě o kus víc</h3>
+                    <p><a href="#" class="button button-suppressed">O naší metodě</a></p>
+                </div>
+            </div>
+        </section>
+        <section class="grid">
+            <div class="grid-content">
+                <div class="grid-item-large-12 small-align-center">
+                    <hr class="spacious"/>
+                    <div class="small-align-center">
+                        <img class="picture picture-small" src="../assets/img/rodina@2x.png" alt="Procvičující rodina">
+                    </div>
+                    <h2>Dává vám procvičování s námi smysl?</h2>
+                    <p>Rodinné licence už <strong>od 222 Kč za rok</strong><br/>
+                        <strong>První měsíc zdarma</strong> na zkušenou</p>
+                    <p><a href="#" class="button button-success button-large button-emphasized">Pořídit licenci</a></p>
+                    <hr class="spacious"/>
+                </div>
+            </div>
+        </section>
+        <section class="grid">
+            <div class="grid-content">
+                <div class="grid-item small-align-center">
+                    <h2 class="margin-top-0">Řekli o nás</h2>
+                </div>
+                <div class="grid-item-large-4 space-emphasis">
+                    <div class="content-box flex flex-direction-column">
+                        <div class="content-box-section tight flex-item-grow-1">
+                            <p class="small">Děkuji za super web - už nemusím děti nahánět k procvičování češtiny, občas je
+                                musím spíš odhánět :)</p>
+                            <p class="small margin-bottom-0">Navíc mi to dost usnadňuje domácí vzdělávání syna. Děkuji.</p>
+                        </div>
+                        <div class="content-box-section tight unseparated flex-item">
+                            <p>
+                                <span class="person-mention">
+                                    <span class="dongle">
+                                        <img src="../assets/img/avatar-hipsterka.png" alt="Marcela Chvátilová"/>
+                                    </span>
+                                    <span class="label">
+                                        <strong>Marcela Chvátilová</strong>
+                                    </span>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-item-large-4 space-emphasis">
+                    <div class="content-box flex flex-direction-column">
+                        <div class="content-box-section tight flex-item-grow-1">
+                            <p class="small">Dobrý den, jsem žákyní 6.třídy a velmi se mi líbí váš způsob. Díky vám jsem se
+                                naučila některá pravidla. :) Chci vám poděkovat.</p>
+                            <p class="small">Čeština mi z počátku moc nešla ale po pár
+                                měsících učení a procvičování na této internetové stránce mi opravdu pomohla.</p>
+                            <p class="small margin-bottom-0">V poslední době dostávám jedničky (max. 1-) s diktátů. Pan učitel mě chválí a
+                                je rád že se snažím. Děkuji moc. :)</p>
+                        </div>
+                        <div class="content-box-section tight unseparated flex-item">
+                            <p>
+                                <span class="person-mention">
+                                    <span class="dongle">
+                                        <img src="../assets/img/avatar-luc.png" alt="Karolína Doležalová"/>
+                                    </span>
+                                    <span class="label">
+                                        <strong>Karolína Doležalová</strong><br/>6.B :)
+                                    </span>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-item-large-4 space-emphasis">
+                    <div class="content-box flex flex-direction-column">
+                        <div class="content-box-section tight flex-item-grow-1">
+                            <p class="small">V hodinách českého jazyka využíváme umimecesky.cz v každé hodině. Pro žáky je
+                                střídání různých činností při opakování pravopisu a gramatiky důležité a on-line cvičení
+                                představují skvělou alternativu k pracovním sešitům či diktátům. Žáky takové procvičování
+                                baví a tím pádem se toho také víc naučí.</p>
+                            <p class="small margin-bottom-0">Oproti jiným výukovým webům oceňujeme především propracovaný systém tříd a
+                                zadaných úkolů, které pro učitele tvoří příjemný a komplexní přehled postupu třídy. Fandíme
+                                celém webu umimeto.org a děkujeme za skvělou spolupráci.</p>
+                        </div>
+                        <div class="content-box-section tight unseparated flex-item">
+                            <p>
+                                <span class="person-mention">
+                                    <span class="dongle">
+                                        <img src="../assets/img/avatar-ucitel.png" alt="Petr Kuba"/>
+                                    </span>
+                                    <span class="label">
+                                        <strong>Petr Kuba</strong><br/>EDUCAnet – SŠ a ZŠ České Budějovice, s.r.o.
+                                    </span>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+
+    <footer>
+        <div class="grid">
+            <div class="grid-content">
+                <div class="grid-item-medium-4">
+                    <h2>Pro učitele a školy</h2>
+                    <ul class="list-plain">
+                        <li><a href="#">Ucitelský mód</a></li>
+                        <li><a href="#">7 kroků pro rychlý start učitele</a></li>
+                        <li><a href="#">Jak propojit systémy s výukou?</a></li>
+                        <li><a href="#">Ceník licencí pro školy</a></li>
+                        <li><a href="#">Časté dotazy</a></li>
+                    </ul>
+                </div>
+                <div class="grid-item-medium-4">
+                    <h2>Pro rodiny a jednotlivce</h2>
+                    <ul class="list-plain">
+                        <li><a href="#">Rodinná licence</a></li>
+                        <li><a href="#">Domácí procvičování</a></li>
+                        <li><a href="#">Ceník licencí pro rodiny</a></li>
+                        <li><a href="#">Časté dotazy</a></li>
+                    </ul>
+                </div>
+                <div class="grid-item-medium-4">
+                    <h2>O projektu</h2>
+                    <ul class="list-plain">
+                        <li><a href="#">O systémech Umíme</a></li>
+                        <li><a href="#">Autoři projektu</a></li>
+                        <li><a href="#">Youtube kanál </a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="grid-content">
+                <div class="grid-item-medium-8">
+                    <p>Umíme česky je systém, který umožňuje důkladné procvičení učiva. Má široké pokrytí a řadu cvičení. Systém Vám ulehčí zadávání domácích úkolů, Vaše studenty bude procvičování bavit a více se toho naučí.</p>
+                    <p><a href="#">Více o učitelském módu</a></p>
+                </div>
+                <div class="grid-item-medium-4">
+                    <img src="../assets/img/footer-teacher.png" class="dongle" alt="Illustration of a teacher">
+                </div>
+            </div>
+        </div>
+    </footer>
+    </body>
+</html>
