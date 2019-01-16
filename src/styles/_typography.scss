@@ -65,6 +65,10 @@ p.suppressed {
 p.subheader {
     color: $dark-gray;
     margin-top: -($vertical-margin / 2);
+
+    &.subheader-tight {
+        margin-top: -$vertical-margin;
+    }
 }
 
 .lead {
