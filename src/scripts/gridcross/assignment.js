@@ -176,7 +176,7 @@ export function checkSolution(stateSnapshot) {
     }
 
     function checkAllowedPathClasses(path) {
-        if (uiOnlySelect && path.classes.has(SELECTED_LINE_CLASS)) return true;
+        if (uiOnlySelect) return path.classes.has(SELECTED_LINE_CLASS);
 
         const acceptable = uiEvalSegmentsAsLines
             ? new Set(ACCEPTABLE_SOLUTION_LINE_CLASSES).add(AXIS_LINE_CLASS)
