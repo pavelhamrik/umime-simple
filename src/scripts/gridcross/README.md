@@ -104,7 +104,7 @@ Ask for a demo, docs TBD thereafter.
 - [x] improve the `undo` and `redo` buttons placement
 - [x] limit user geometry count, signalize failure and enforce undo
 - [x] implement the reset button
-- [ ] connecting & separating lines
+- [x] connecting & separating lines
 
 ### Later
 
@@ -131,4 +131,3 @@ Ask for a demo, docs TBD thereafter.
 - [x] `fixex, jan 15` auxlines are getting duplicated
 - [x] `fixex, jan 15` solutions including auxlines highlight more geometry than they should
 - [x] `fixex, jan 18` in select-lines style of assignments, any selection of the required amount of selected objects highlights the correct solution and is accepted
- 

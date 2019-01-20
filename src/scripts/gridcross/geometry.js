@@ -52,7 +52,11 @@ export function getNearestLine(point, lines) {
             const r1 = calculateDistance(point, line.geometry.p1);
             const r2 = calculateDistance(point, line.geometry.p2);
             const intersections = intersectCircleCircle(line.geometry.p1, r1, line.geometry.p2, r2);
-            const distance = calculateDistance(intersections[0], intersections[1]);
+
+            // todo: why does it ever happen that there are no intersections?
+            const distance = intersections.length === 2
+                ? calculateDistance(intersections[0], intersections[1])
+                : Infinity;
             return {geometry: line.geometry, distance: distance, line: line}
         })
         .reduce((acc, line) => (
@@ -275,9 +279,6 @@ export function connectLines(p1, p2, q1, q2) {
     const pivot = getRepeatedPoints(points);
     if (pivot.length === 1) {
         const satellites = points.filter(point => !point.equals(pivot[0]));
-
-        console.log('CONNECTED!', pivot, satellites);
-
         return {geometry: {p1: satellites[0], p2: satellites[1]}};
     }
     return {};
@@ -345,6 +346,7 @@ export function isGeometryMaxed(stateSnaphot) {
     const acceptableLineClasses = getConfigValue('uiEvalSegmentsAsLines', stateSnaphot)
         ? deleteFromSet(LIMITED_USER_LINE_CLASSES, USER_LINE_CLASS).add(AXIS_LINE_CLASS)
         : LIMITED_USER_LINE_CLASSES;
+    console.log(acceptableLineClasses);
     const linesCount = countGeometry(
         stateSnaphot[PATH_STATE_COLLECTION],
         acceptableLineClasses,
