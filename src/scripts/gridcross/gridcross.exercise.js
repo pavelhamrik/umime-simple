@@ -249,8 +249,14 @@ function handleValidSolution(solution) {
 
     const stateSnapshot = Object.assign({}, state.get(), {});
 
-    const nodesCount = countGeometry(stateSnapshot[NODE_STATE_COLLECTION], ACCEPTABLE_SOLUTION_NODE_CLASSES);
-    const pathsCount = countGeometry(stateSnapshot[NODE_STATE_COLLECTION], ACCEPTABLE_SOLUTION_LINE_CLASSES);
+    const nodesCount = countGeometry({
+        collection: stateSnapshot[NODE_STATE_COLLECTION],
+        acceptable: ACCEPTABLE_SOLUTION_NODE_CLASSES,
+    });
+    const pathsCount = countGeometry({
+        collection: stateSnapshot[NODE_STATE_COLLECTION],
+        acceptable: ACCEPTABLE_SOLUTION_LINE_CLASSES,
+    });
 
     logToRemote(stateSnapshot.id, {
         geometryCount: nodesCount + pathsCount,

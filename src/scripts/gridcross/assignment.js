@@ -2,7 +2,7 @@ import {
     ACCEPTABLE_SOLUTION_LINE_CLASSES,
     AUX_LINE_CLASS,
     AXIS_LINE_CLASS,
-    CONFIG_STATE_COLLECTION,
+    CONFIG_STATE_COLLECTION, GEOMETRY_PRECISION_TOLERANCE,
     NODE_STATE_COLLECTION,
     PATH_STATE_COLLECTION,
     SELECTED_LINE_CLASS,
@@ -198,7 +198,7 @@ export function checkSolution(stateSnapshot) {
         const pointCheck = typeof solution[NODE_STATE_COLLECTION] !== 'undefined'
             ? solution[NODE_STATE_COLLECTION].filter(point => (
             stateSnapshot[NODE_STATE_COLLECTION].filter(userPoint => (
-                checkAllowedNodeClasses(userPoint) && userPoint.geometry.p1.equals(point)
+                checkAllowedNodeClasses(userPoint) && userPoint.geometry.p1.equals(point, GEOMETRY_PRECISION_TOLERANCE)
             )).length === 0
         )).length === 0
             : true;

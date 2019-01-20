@@ -12,8 +12,8 @@ import {
     GRID_HEIGHT,
     GRID_WIDTH,
     LEFT_EDGE,
-    LIMITED_USER_LINE_CLASSES,
-    LIMITED_USER_NODE_CLASSES,
+    CEILED_LINE_CLASSES,
+    CEILED_NODE_CLASSES,
     NODE_STATE_COLLECTION,
     PATH_STATE_COLLECTION,
     RESOLUTION,
@@ -22,9 +22,9 @@ import {
     TASK_NODE_CLASS,
     TOP_EDGE,
     USER_LINE_CLASS,
-    USER_NODE_CLASS,
+    USER_NODE_CLASS, CEILED_EXCLUDED_LINE_CLASSES,
 } from './constants';
-import {deleteFromSet, isAsc, isEmptyObject, setIncludes} from './utils';
+import {arrayIncludes, deleteFromSet, isAsc, isEmptyObject, setIncludes} from './utils';
 import {getConfigValue} from './assignment';
 
 export function calculateDistance(p1, p2) {
@@ -327,15 +327,24 @@ export function constructAuxLinesForLine(p1, p2, collections) {
     return connectedCollection.concat(linesSplitByPoints);
 }
 
-export function countGeometry(collection, classNames) {
+// export function countGeometry(collection, classNames) {
+//     return collection.filter(elem =>
+//         Array.from(classNames).filter(className => elem.classes.has(className)).length !== 0
+//     ).length;
+// }
+
+export function countGeometry(params) {
+    const { collection , acceptable = new Set(), unacceptable = new Set() } = params;
+
     return collection.filter(elem =>
-        Array.from(classNames).filter(className => elem.classes.has(className)).length !== 0
+        setIncludes(elem.classes, acceptable) && !setIncludes(elem.classes, unacceptable)
     ).length;
 }
 
 export function isGeometryMaxed(stateSnaphot) {
     const {config = {}} = stateSnaphot;
     const {maxUserNodes, maxUserLines} = config;
+    const uiEvalSegmentsAsLines = getConfigValue('uiEvalSegmentsAsLines', stateSnaphot);
 
     if (typeof maxUserNodes === 'undefined' && typeof maxUserLines === 'undefined') return {
         isMaxed: false,
@@ -343,24 +352,24 @@ export function isGeometryMaxed(stateSnaphot) {
     };
 
     // counting lines first, typically expecting fewer lines then nodes; then early return
-    const acceptableLineClasses = getConfigValue('uiEvalSegmentsAsLines', stateSnaphot)
-        ? deleteFromSet(LIMITED_USER_LINE_CLASSES, USER_LINE_CLASS).add(AXIS_LINE_CLASS)
-        : LIMITED_USER_LINE_CLASSES;
-    console.log(acceptableLineClasses);
-    const linesCount = countGeometry(
-        stateSnaphot[PATH_STATE_COLLECTION],
-        acceptableLineClasses,
-    );
+    const acceptableLineClasses = uiEvalSegmentsAsLines
+        ? deleteFromSet(CEILED_LINE_CLASSES, USER_LINE_CLASS).add(AXIS_LINE_CLASS)
+        : CEILED_LINE_CLASSES;
+    const linesCount = countGeometry({
+        collection: stateSnaphot[PATH_STATE_COLLECTION],
+        acceptable: acceptableLineClasses,
+        unacceptable: CEILED_EXCLUDED_LINE_CLASSES,
+    });
 
     if (typeof maxUserLines !== 'undefined' && linesCount >= maxUserLines) return {
         isMaxed: true,
         diff: linesCount - maxUserLines,
     };
 
-    const nodesCount = countGeometry(
-        stateSnaphot[NODE_STATE_COLLECTION],
-        LIMITED_USER_NODE_CLASSES,
-    );
+    const nodesCount = countGeometry({
+        collection: stateSnaphot[NODE_STATE_COLLECTION],
+        acceptable: CEILED_NODE_CLASSES,
+    });
 
     return {
         isMaxed: typeof maxUserNodes !== 'undefined' && nodesCount >= maxUserNodes,

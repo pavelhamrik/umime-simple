@@ -90,14 +90,18 @@ export const ACCEPTABLE_SOLUTION_LINE_CLASSES = new Set([
     SELECTED_LINE_CLASS,
 ]);
 
-export const LIMITED_USER_NODE_CLASSES = new Set([
+export const CEILED_NODE_CLASSES = new Set([
     USER_NODE_CLASS,
     SELECTED_NODE_CLASS,
 ]);
 
-export const LIMITED_USER_LINE_CLASSES = new Set([
+export const CEILED_LINE_CLASSES = new Set([
     USER_LINE_CLASS,
     SELECTED_LINE_CLASS,
+]);
+
+export const CEILED_EXCLUDED_LINE_CLASSES = new Set([
+    // TASK_LINE_CLASS,
 ]);
 
 export const LOCAL_IO_LOG_AUX_GEOMETRY = false;
