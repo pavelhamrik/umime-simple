@@ -109,3 +109,26 @@ export function determineResolution(gridWidth, gridHeight, canvasPadding) {
     const resolution = Math.floor(viewSize / gridSize / 5) * 5;
     return Math.min(resolution, 100);
 }
+
+export function weightedRandom(weights, seed) {
+    const total = weights.reduce((acc, val) => acc + val, 0);
+
+    let threshold = seed * total;
+
+    for (let i = 0; i < weights.length; i++) {
+        if (threshold < weights[i]) {
+            return i;
+        }
+        threshold = threshold - weights[i];
+    }
+
+    return -1;
+}
+
+// seed is provided only to run tests
+export function weightedRandomFromArr(weightedArr, key = 'weight', seed = Math.random()) {
+    const weights = weightedArr.map(item => item[key]);
+    const idx = weightedRandom(weights, seed);
+    if (idx === -1) return {};
+    return weightedArr[idx];
+}

@@ -1,6 +1,7 @@
 'use strict';
 
 import Cookies from 'js-cookie';
+import {weightedRandomFromArr} from '../gridcross/utils';
 
 const DEFAULT_COOKIE_EXPIRATION = 30;
 
@@ -19,20 +20,22 @@ class GAUtils {
     }
 
     static createTest(params) {
-        const {name = '', variants = 0, id = ''} = params;
+        const {name = '', variants = [], id = ''} = params;
 
         if (name === '' || id === '') {
             if (LOG) console.error(`Test ID and name must be specified`);
             return;
         }
 
-        if (variants < 2) {
+        if (variants.length < 2) {
             if (LOG) console.error(`The number of test variants must be 2 or bigger`);
             return;
         }
 
         if (typeof Cookies.get(`ab-${name}-id`) === 'undefined') {
-            const variant = Math.round(Math.random() * (variants - 1));
+            // const variant = Math.round(Math.random() * (variants - 1));
+            const variant = weightedRandomFromArr(variants).label;
+
             if (LOG) console.log(
                 `%cSetting test variant cookies:\nab-${name}-variant = ${variant}\nab-${name}-id = ${id}`,
                 'color: burlywood'

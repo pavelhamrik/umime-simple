@@ -125,6 +125,9 @@ export const TIMEOUT = 20000;
 
 export const RESET_BUTTON_TEST = {
     name: 'reset-button',
-    variants: 2,
-    id: 'lX-VcSRhTd2nyk-Rr1kQrA',
+    variants: [
+        {weight: 0.2, label: '0'},
+        {weight: 0.8, label: '1'},
+    ],
+    id: 'aBbRhqcCStGrLlNpnsldeQ',
 };
