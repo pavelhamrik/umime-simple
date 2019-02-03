@@ -24,7 +24,7 @@ import {
     USER_LINE_CLASS,
     USER_NODE_CLASS, CEILED_EXCLUDED_LINE_CLASSES,
 } from './constants';
-import {arrayIncludes, deleteFromSet, isAsc, isEmptyObject, setIncludes} from './utils';
+import {deleteFromSet, isAsc, isEmptyObject, setIncludes} from './utils';
 import {getConfigValue} from './assignment';
 
 export function calculateDistance(p1, p2) {

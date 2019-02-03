@@ -32,6 +32,7 @@ export const DUPLICATE_LINE_TOLERANCE = 0.1;
 export const COINCIDENT_LINE_TOLERANCE = 0.001;
 export const GEOMETRY_PRECISION_TOLERANCE = 0.001;
 export const TOUCH_SELECT_TOLERANCE = 20;
+export const NODE_SELECT_RADIUS = 5;
 
 // export const NODE = 'NODE';
 export const LINE = 'LINE';

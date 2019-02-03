@@ -131,3 +131,4 @@ Ask for a demo, docs TBD thereafter.
 - [x] `fixex, jan 15` auxlines are getting duplicated
 - [x] `fixex, jan 15` solutions including auxlines highlight more geometry than they should
 - [x] `fixex, jan 18` in select-lines style of assignments, any selection of the required amount of selected objects highlights the correct solution and is accepted
+- [x] `fixex, feb 3` in selection assignment types, if the solution only includes one type of geometry, accidental selection of an object of the other geometry type prevents a correct solution from ever being accepted
