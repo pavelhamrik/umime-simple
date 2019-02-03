@@ -55,9 +55,9 @@ class GAUtils {
             if (send) {
                 this.sendEvent({
                     category: 'A/B Tests',
-                    action: 'A/B test log',
-                    label: testName,
-                    value: variant,
+                    action: testName,
+                    label: `Variant ${variant}`,
+                    // value: variant,
                     nonInteraction: true,
                 });
             }
