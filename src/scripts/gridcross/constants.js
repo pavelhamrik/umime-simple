@@ -129,5 +129,6 @@ export const RESET_BUTTON_TEST = {
         {weight: 0.2, label: '0'},
         {weight: 0.8, label: '1'},
     ],
-    id: 'aBbRhqcCStGrLlNpnsldeQ',
+    // id: 'aBbRhqcCStGrLlNpnsldeQ',    // prod
+    id: 'lX-VcSRhTd2nyk-Rr1kQrA',       // stg
 };
