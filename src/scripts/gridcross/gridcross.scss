@@ -45,28 +45,62 @@ $icon-font: 'umime-to-gridcross';
         box-sizing: inherit;
     }
 
+    .task-title {
+        margin: 0 1.25rem $vertical-padding / 2;
+        font-weight: $font-weight-bold;
+    }
+
     .task-copy {
-        text-align: center;
-        margin: 0 auto $vertical-padding * 2;
-        max-width: 320px;
-        min-height: 3rem;
+        margin: 0 1.25rem $vertical-padding * 2;
+    }
+
+    .limit {
+        background: $light-gray;
+        border-radius: 2rem;
+        font-size: $small-font-size;
+        padding: 0.125rem 0.5rem;
+        margin: 0 0.25rem;
+        white-space: nowrap;
+    }
+
+    .limit-node:before {
+        background: $white;
+        content: '';
+        display: inline-block;
+        border-radius: 0.5rem;
+        height: 10px;
+        width: 10px;
+        border: 1.5px solid $task-color;
+        margin-right: 0.25rem;
+    }
+
+    .limit-line:before {
+        background: $task-color;
+        content: '';
+        display: inline-block;
+        border-radius: 1rem;
+        height: 3px;
+        width: 14px;
+        transform: translate(-0.0625rem, -0.25rem) rotate(-45deg);
+    }
+
+    .limit-eq-sign {
+        display: inline-block;
+        transform: translate(0, -0.0625rem);
     }
 
     #canvas-wrapper {
-        background: url($asset-url + 'gridcross-background.jpg') blanchedalmond 55% 50%;
-        background-size: cover;
+        //background: url($asset-url + 'gridcross-background.jpg') blanchedalmond 55% 50%;
+        background: #E1F1DF linear-gradient(-45deg, #D2EDEF 0%, #DCEFCD 50%, #F4F3D2 100%);
         border-radius: $border-radius;
-        box-shadow: $soft-shadow, 0 2px 7px 0 rgba(0,0,0,.08);
-        //box-sizing: content-box;
-        //margin: 0 auto;
-        //width: -moz-fit-content;
-        //width: -webkit-fit-content;
-        //width: fit-content;
+        box-shadow:
+            $soft-shadow,
+            0 2px 4px 0 rgba(0,0,0,.03),
+            inset 0 0 100px rgba($black,0.05);
         position: relative;
     }
 
     #canvas {
-        background: rgba($white, 0.65);
         border-radius: inherit;
         box-sizing: border-box;
         display: block;
@@ -88,10 +122,10 @@ $icon-font: 'umime-to-gridcross';
                 pointer-events: auto;
             }
 
-            &.auxline {
-                stroke-width: 1;
-                stroke: yellow;
-            }
+            //&.auxline {
+            //    stroke-width: 1;
+            //    stroke: yellow;
+            //}
 
             &.userline,
             &.selectedline {

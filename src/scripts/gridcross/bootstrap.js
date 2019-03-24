@@ -11,6 +11,10 @@ import {
     CANVAS_PADDING_BOTTOM,
     RESET_BUTTON_LABEL,
     RESET_BUTTON_TEST,
+    TASK_TITLE_DEFAULT,
+    RESOLUTION,
+    GRID_WIDTH,
+    CANVAS_PADDING_LEFT,
 } from './constants';
 import GAUtils from '../utils/googleAnalytics';
 
@@ -21,19 +25,34 @@ export function bootstrap() {
 
     const root = document.getElementById('gridcross');
 
-    // create the task text paragraph
+    const wrapper = document.createElement('div');
+    wrapper.classList.add('gridcross-wrapper');
+    wrapper.style.width = `${GRID_WIDTH * RESOLUTION + CANVAS_PADDING_LEFT + CANVAS_PADDING_RIGHT}px`;
+    root.appendChild(wrapper);
+
+    // create the task's title, assignment text and geometry limits
+
+    const taskTitle = document.createElement('div');
+    taskTitle.innerHTML = TASK_TITLE_DEFAULT;
+    taskTitle.classList.add('task-title');
+    wrapper.appendChild(taskTitle);
 
     const taskText = document.createElement('div');
     taskText.innerHTML = TASK_TEXT_DEFAULT;
     taskText.classList.add('task-copy');
-    root.appendChild(taskText);
+    wrapper.appendChild(taskText);
+
+    // const taskLimits = document.createElement('span');
+    // taskLimits.classList.add('task-limits');
+    // taskText.appendChild(taskLimits);
+
 
     // attach the exercise root element
 
     const canvasWrapper = document.createElement('div');
     canvasWrapper.id = 'canvas-wrapper';
     canvasWrapper.style.width = RIGHT_EDGE + CANVAS_PADDING_RIGHT;
-    root.appendChild(canvasWrapper);
+    wrapper.appendChild(canvasWrapper);
 
     // create the svg canvas to draw on
 
@@ -58,15 +77,11 @@ export function bootstrap() {
 
     // create the reset button
 
-    const resetButton = GAUtils.getTestVariant(RESET_BUTTON_TEST.name) === 1
-        ? document.createElement('button')
-        : null;
-    if (resetButton != null) {
-        resetButton.classList.add('reset-button');
-        resetButton.setAttribute('title', RESET_BUTTON_LABEL);
-        resetButton.disabled = true;
-        buttonWrapperLeft.appendChild(resetButton);
-    }
+    const resetButton = document.createElement('button');
+    resetButton.classList.add('reset-button');
+    resetButton.setAttribute('title', RESET_BUTTON_LABEL);
+    resetButton.disabled = true;
+    buttonWrapperLeft.appendChild(resetButton);
 
     // create the undo button
 
@@ -90,8 +105,9 @@ export function bootstrap() {
         undoButton: undoButton,
         nextButton: nextButton,
         resetButton: resetButton,
-        root: root,
+        // wrapper: wrapper,
         canvasWrapper: canvasWrapper,
+        taskTitle: taskTitle,
         taskText: taskText,
     };
 }

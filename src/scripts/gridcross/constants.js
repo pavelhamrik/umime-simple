@@ -49,6 +49,10 @@ export const SOLUTION_STATE_COLLECTION = 'solutions';
 export const CONFIG_STATE_COLLECTION = 'config';
 
 export const LABEL_CLASS = 'label';
+export const LIMITS_CLASS = 'limit';
+export const LIMITS_NODE_CLASS = 'limit-node';
+export const LIMITS_LINE_CLASS = 'limit-line';
+export const LIMITS_EQ_SING_CLASS = 'limit-eq-sign';
 
 export const NODE_CLASS = 'node';
 export const GRID_NODE_CLASS = 'gridnode';
@@ -116,6 +120,7 @@ export const BACK_BUTTON_LABEL = 'Zpět';
 export const RESET_BUTTON_LABEL = 'Od začátku';
 export const NEXT_BUTTON_LABEL = 'Další';
 export const TASK_TEXT_DEFAULT = 'Načítám zadání…';
+export const TASK_TITLE_DEFAULT = '⤵';
 export const API_LOAD_ERROR_TEXT = 'Nepodařilo se načíst zadání. Zkuste prosím obnovit stránku.';
 export const API_LOAD_TIMEOUT_TEXT = 'Načítání zadání nám trochu trvá, ale zkoušíme dál…';
 
@@ -129,6 +134,6 @@ export const RESET_BUTTON_TEST = {
         {weight: 0.2, label: '0'},
         {weight: 0.8, label: '1'},
     ],
-    // id: 'aBbRhqcCStGrLlNpnsldeQ',    // prod
-    id: 'lX-VcSRhTd2nyk-Rr1kQrA',       // stg
+    id: 'aBbRhqcCStGrLlNpnsldeQ', // prod
+    // id: 'lX-VcSRhTd2nyk-Rr1kQrA', // stg
 };

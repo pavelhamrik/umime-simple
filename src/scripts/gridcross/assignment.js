@@ -2,7 +2,12 @@ import {
     ACCEPTABLE_SOLUTION_LINE_CLASSES,
     AUX_LINE_CLASS,
     AXIS_LINE_CLASS,
-    CONFIG_STATE_COLLECTION, GEOMETRY_PRECISION_TOLERANCE,
+    CONFIG_STATE_COLLECTION,
+    GEOMETRY_PRECISION_TOLERANCE,
+    LIMITS_CLASS,
+    LIMITS_EQ_SING_CLASS,
+    LIMITS_LINE_CLASS,
+    LIMITS_NODE_CLASS,
     NODE_STATE_COLLECTION,
     PATH_STATE_COLLECTION,
     SELECTED_LINE_CLASS,
@@ -27,7 +32,7 @@ export function parseAssignment(assignments, index, stateSnapshot) {
     workingState.push(Object.assign({}, workingState[workingState.length - 1], {
         id: assignments[index].id,
         name: assignments[index].name,
-        text: assignments[index].item.text,
+        text: enrichAssignmentText(assignments[index].item),
         explanation: assignments[index].explanation,
         index: index,
         startTime: Date.now(),
@@ -254,8 +259,6 @@ function highlightSegment(p1, p2, stateSnapshot) {
 }
 
 export function highlightSolution(solution, stateSnapshot) {
-    console.log(solution);
-
     if (LOG) console.time('highlightSolution');
     const workingState = [stateSnapshot];
 
@@ -317,4 +320,19 @@ export function parseKatex(string) {
             return '';
         }
     );
+}
+
+export function enrichAssignmentText(assignment) {
+    console.log(assignment);
+
+    const {config = {}} =  assignment;
+
+    const nodeLimit = config.maxUserNodes
+        ? `<span class='${LIMITS_CLASS} ${LIMITS_NODE_CLASS}'><span class='${LIMITS_EQ_SING_CLASS}'>&le;</span> ${config.maxUserNodes}</span>`
+        : '';
+    const lineLimit = config.maxUserLines
+        ? `<span class='${LIMITS_CLASS} ${LIMITS_LINE_CLASS}'><span class='${LIMITS_EQ_SING_CLASS}'>&le;</span> ${config.maxUserLines}</span>`
+        : ' ';
+
+    return `${assignment.text}${nodeLimit}${lineLimit}`;
 }

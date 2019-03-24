@@ -69,6 +69,7 @@ function init() {
     ui.canvas = uiBootstrap.canvas;
     ui.canvasWrapper = uiBootstrap.canvasWrapper;
     ui.taskText =  uiBootstrap.taskText;
+    ui.taskTitle =  uiBootstrap.taskTitle;
     ui.nextButton = uiBootstrap.nextButton;
     ui.undoButton = uiBootstrap.undoButton;
     ui.resetButton = uiBootstrap.resetButton;
@@ -96,7 +97,8 @@ export function presentAssignment(index) {
     state.set(assignment);
     logToRemote(assignment.id);
 
-    ui.taskText.innerHTML = parseKatex(assignments[index].item.text);
+    ui.taskText.innerHTML = parseKatex(assignment.text);
+    ui.taskTitle.innerHTML = assignment.name;
 
     if (CHANGE_BROWSER_HISTORY) {
         // there are some document-scoped variables in use
