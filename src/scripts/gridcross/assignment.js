@@ -334,5 +334,5 @@ export function enrichAssignmentText(assignment) {
         ? `<span class='${LIMITS_CLASS} ${LIMITS_LINE_CLASS}'><span class='${LIMITS_EQ_SING_CLASS}'>&le;</span> ${config.maxUserLines}</span>`
         : ' ';
 
-    return `${assignment.text}${nodeLimit}${lineLimit}`;
+    return `${assignment.text} ${nodeLimit}${lineLimit}`;
 }

@@ -3,7 +3,10 @@
 
 $asset-url: 'https://umimematiku.cz/files/mrizkovana/';
 $primary-color: #31BD60;
-$task-color: map-get($apps, 'english');
+$task-color: $black;
+$snap-color: map-get($apps, 'english');
+$user-color: map-get($colors, secondary);
+$flash-color: map-get($colors, secondary);
 
 @font-face {
     font-family: 'umime-to-gridcross';
@@ -59,7 +62,7 @@ $icon-font: 'umime-to-gridcross';
         border-radius: 2rem;
         font-size: $small-font-size;
         padding: 0.125rem 0.5rem;
-        margin: 0 0.25rem;
+        margin: 0 0.25rem 0 0;
         white-space: nowrap;
     }
 
@@ -91,7 +94,7 @@ $icon-font: 'umime-to-gridcross';
 
     #canvas-wrapper {
         //background: url($asset-url + 'gridcross-background.jpg') blanchedalmond 55% 50%;
-        background: #E1F1DF linear-gradient(-45deg, #D2EDEF 0%, #DCEFCD 50%, #F4F3D2 100%);
+        background: #E1F1DF linear-gradient(-45deg, #D8F3E6 0%, #E6F6DA 50%, #F5F7DE 100%);
         border-radius: $border-radius;
         box-shadow:
             $soft-shadow,
@@ -129,7 +132,7 @@ $icon-font: 'umime-to-gridcross';
 
             &.userline,
             &.selectedline {
-                stroke: $black;
+                stroke: $user-color;
                 stroke-width: 3;
             }
 
@@ -159,7 +162,7 @@ $icon-font: 'umime-to-gridcross';
 
             &.usernode,
             &.selectednode {
-                stroke: $black;
+                stroke: $user-color;
                 fill: $white;
             }
 
@@ -186,17 +189,17 @@ $icon-font: 'umime-to-gridcross';
         circle.indicator {
             fill: $white;
             stroke-width: 1.5;
-            stroke: $black;
+            stroke: $user-color;
             transition: $transition;
 
             &.snapped {
-                stroke: map-get($colors, secondary);
+                stroke: $snap-color;
             }
         }
 
         line.indicator {
             stroke-width: 3;
-            stroke: $black;
+            stroke: $user-color;
             transition: $transition;
 
             &.crosshair {
@@ -204,7 +207,7 @@ $icon-font: 'umime-to-gridcross';
                 stroke: rgba($black, 0.5);
 
                 &.snapped {
-                    stroke: rgba(map-get($colors, secondary), 0.75);
+                    stroke: rgba($snap-color, 0.75);
                 }
 
                 @include breakpoint(large) {
@@ -213,7 +216,7 @@ $icon-font: 'umime-to-gridcross';
             }
 
             &.snapped {
-                stroke: map-get($colors, secondary);
+                stroke: $snap-color;
             }
         }
 
@@ -372,10 +375,10 @@ $icon-font: 'umime-to-gridcross';
 
     @keyframes flash-selected-line {
         0% {
-            stroke: rgba(map-get($colors, secondary), 0.5);
+            stroke: rgba($flash-color, 0.5);
         }
         100% {
-            stroke: rgba(map-get($colors, secondary), 0);
+            stroke: rgba($flash-color, 0);
             stroke-width: 16;
         }
     }
@@ -392,10 +395,10 @@ $icon-font: 'umime-to-gridcross';
 
     @keyframes flash-selected-node {
         0% {
-            stroke: rgba(map-get($colors, secondary), 0.5);
+            stroke: rgba($flash-color, 0.5);
         }
         100% {
-            stroke: rgba(map-get($colors, secondary), 0);
+            stroke: rgba($flash-color, 0);
             stroke-width: 24;
         }
     }
@@ -412,7 +415,7 @@ $icon-font: 'umime-to-gridcross';
 
     @keyframes solved-path {
         0% {
-            stroke: $black;
+            stroke: $user-color;
         }
         100% {
             stroke: $primary-color;
@@ -422,7 +425,7 @@ $icon-font: 'umime-to-gridcross';
 
     @keyframes solved-node {
         0% {
-            stroke: $black;
+            stroke: $user-color;
         }
         100% {
             stroke: $primary-color;
