@@ -179,7 +179,7 @@ $speed: 1s;
 
 @keyframes rise-and-land {
     80% {
-        transform: translate3d(0, -15%, 0);
+        transform: translate3d(0, -15%, 0) rotate3d(1, 0, 0, -10deg) rotate3d(0, 1, 0, 5deg);
     }
 }
 
