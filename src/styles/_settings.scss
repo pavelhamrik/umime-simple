@@ -9,7 +9,6 @@ $horizontal-margin: 1.5rem;
 
 $box-margin: $vertical-margin $horizontal-margin;
 
-
 // colors
 
 $black: #323F4D;
@@ -58,7 +57,7 @@ $breakpoints: (
 
 $grid-columns: 12;
 //$grid-gap: 1.5rem;
-$grid-gap: 2rem;
+$grid-gap: 2rem 1.5rem;
 $grid-max-width: 1200px;
 
 // dimensions
@@ -171,7 +170,8 @@ $icon-font: 'umime-to';
 
 $content-icons: (
     'doplnovacka',
-    'diktaty'
+    'diktaty',
+    
 );
 
 // layers

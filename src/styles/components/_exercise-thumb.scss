@@ -1,13 +1,14 @@
 @import '../settings';
 
 .exercise-thumb {
+    align-items: center;
     background: $light-gray;
     border-radius: $border-radius;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem;
     height: 100%;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
 
     &:hover,
     &:focus {
@@ -19,24 +20,23 @@
     }
 
     .dongle {
-        width: 3.5rem;
-        margin-right: $small-horizontal-padding;
         flex-shrink: 0;
+        margin-right: $small-horizontal-padding;
+        width: 3.5rem;
     }
 
     .content {
         color: $black;
+        flex-grow: 2;
         overflow: hidden;
 
         .title {
+            display: -webkit-box;
             font-weight: $font-weight-bold;
             line-height: 1.375rem;
-            display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            //white-space: nowrap;
-            //text-overflow: ellipsis;
 
         }
 

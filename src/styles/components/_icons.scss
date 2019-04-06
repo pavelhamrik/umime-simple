@@ -4,7 +4,7 @@
     .icon-#{$icon} {
         background: $white url('../img/icon-#{$icon}.png') center no-repeat;
         background-size: contain;
-        border-radius: 20%;
+        border-radius: 15%;
         box-shadow: $soft-shadow;
         min-width: 3rem;
 

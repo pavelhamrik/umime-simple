@@ -1,0 +1,7 @@
+{
+    "search.exclude": {
+        "**/.git": true,
+        "**/coverage": true,
+        "**/docs": true
+    }
+}

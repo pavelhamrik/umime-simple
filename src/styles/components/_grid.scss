@@ -48,7 +48,7 @@ $grid-template-columns: unquote($grid-template-columns);
 
     $grid-gap-iterator: 1;
     @each $screen, $size in $breakpoints {
-        $responsive-gap: $grid-gap * $grid-gap-iterator / 2;
+        $responsive-gap: (nth($grid-gap, 1) * $grid-gap-iterator / 2) (nth($grid-gap, 2) * $grid-gap-iterator / 2);
         $grid-gap-iterator: $grid-gap-iterator + 0.25;
         @include breakpoint(#{$screen}) {
             //.grid-item {
