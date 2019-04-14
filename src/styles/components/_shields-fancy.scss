@@ -1,9 +1,9 @@
 @import '../settings';
 
-$duration: 2s;
+$duration: 1.5s;
 $shield-color: map-get($apps, czech);
-$iteration-count: infinite;
-$delay: 1s;
+$iteration-count: 1;
+$delay: 0.3s;
 
 $levels: (
     'dot',
@@ -15,14 +15,14 @@ $levels: (
 );
 
 $stars: (
-    '1',
-    '2',
-    '3',
-    '4',
+    1,
+    2,
+    3,
+    4,
 );
 
 .fancy-shield {
-    margin: 1.5rem auto 3rem;
+    margin: 0 auto 2.5rem;
     height: 10rem;
     width: 10rem;
     position: relative;
@@ -46,9 +46,16 @@ $stars: (
             fill: $shield-color;
         }
 
-        path:not(#board-right):not(#board-left):not(#frame-left):not(#frame-right),
+        path,
         polygon {
             visibility: hidden;
+        }
+
+        #board-right,
+        #board-left,
+        #frame-right,
+        #frame-left {
+            visibility: visible;
         }
     }
 
@@ -61,7 +68,7 @@ $stars: (
         height: 5%;
         left: 25%;
         position: absolute;
-        transform: scale(1.5, 0.65);
+        transform: scale(1.35, 0.65);
         width: 50%;
     }
 
@@ -74,16 +81,39 @@ $stars: (
     }
 }
 
+@each $level in $levels {
+    .fancy-shield-level-#{$level} svg {
+        #label-#{$level} {
+            visibility: visible;
+            filter: url(#drop-shadow);
+        }
+    }
+}
+
+@each $star in $stars {
+    .fancy-shield-star-#{$star} svg {
+        @for $i from 1 through $star {
+            #star-#{$i} {
+                visibility: visible;
+                fill: url(#star-gradient);
+                filter: url(#drop-shadow);
+            }
+        }
+    }
+}
+
 .fancy-shield-rise-and-land {
+    $easing: cubic-bezier(.75,0.25,.6,2);
+
     svg,
     .label {
         animation-name: rise-and-land;
-        animation-timing-function: cubic-bezier(.8,.01,.75,1.75);
+        animation-timing-function: $easing;
     }
 
     &:before {
         animation-name: rise-and-land-shadow;
-        animation-timing-function: cubic-bezier(.8,.01,.75,1.75);
+        animation-timing-function: $easing;
     }
 
     path:nth-child(1) {
@@ -104,17 +134,26 @@ $stars: (
 }
 
 .fancy-shield-high-five {
+    $easing: ease-in-out;
+    $duration: 1.2s;
+
     svg,
     .label {
         animation-name: high-five;
+        animation-timing-function: $easing;
+        animation-duration: $duration;
     }
 
     #board-left {
         animation-name: fold-left;
+        animation-timing-function: $easing;
+        animation-duration: $duration;
     }
     
     #board-right {
         animation-name: fold-slight-left;
+        animation-timing-function: $easing;
+        animation-duration: $duration;
     }
 }
 
@@ -155,33 +194,33 @@ $stars: (
 }
 
 @keyframes wing-wave-left {
-    12.5%, 37.5%, 65.5% {
+    8%, 24%, 40%, 56% {
         transform: rotate3d(0, 1, 0, -20deg);
     }
 
-    25%, 50%, 75% {
+    16%, 32%, 48%, 64% {
         transform: rotate3d(0, 1, 0, 20deg);
     }
 }
 
 @keyframes wing-wave-right {
-    12.5%, 37.5%, 65.5% {
+    8%, 24%, 40%, 56% {
         transform: rotate3d(0, 1, 0, 20deg);
     }
 
-    25%, 50%, 75% {
+    16%, 32%, 48%, 64% {
         transform: rotate3d(0, 1, 0, -20deg);
     }
 }
 
 @keyframes rise-and-land {
-    80% {
-        transform: translate3d(0, -15%, 0) rotate3d(1, 0, 0, -10deg) rotate3d(0, 1, 0, 5deg);
+    90% {
+        transform: translate3d(0, -15%, 0) rotate3d(1, 0, 0, -10deg) rotate3d(0, 1, 0, 7deg);
     }
 }
 
 @keyframes rise-and-land-shadow {
-    80% {
+    90% {
         transform: scale(1.25, 0.5);
     }
 }
