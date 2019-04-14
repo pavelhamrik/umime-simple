@@ -1,0 +1,187 @@
+@import '../settings';
+
+$duration: 2s;
+$shield-color: map-get($apps, czech);
+$iteration-count: infinite;
+$delay: 1s;
+
+$levels: (
+    'dot',
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+);
+
+$stars: (
+    '1',
+    '2',
+    '3',
+    '4',
+);
+
+.fancy-shield {
+    margin: 1.5rem auto 3rem;
+    height: 10rem;
+    width: 10rem;
+    position: relative;
+
+    svg {
+        position: relative;
+        transform-origin: center center 1cm;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+
+        path, polygon {
+            transform-origin: center center;
+        }
+
+        #board-right {
+            fill: scale-color($shield-color, $lightness: $darken);
+        }
+        
+        #board-left {
+            fill: $shield-color;
+        }
+
+        path:not(#board-right):not(#board-left):not(#frame-left):not(#frame-right),
+        polygon {
+            visibility: hidden;
+        }
+    }
+
+    &:before {
+        background: rgba($black, 0.5);
+        border-radius: 50%;
+        bottom: -10%;
+        content: '';
+        filter: blur(10px);
+        height: 5%;
+        left: 25%;
+        position: absolute;
+        transform: scale(1.5, 0.65);
+        width: 50%;
+    }
+
+    svg, 
+    svg path, 
+    &:before {
+        animation-delay: $delay;
+        animation-iteration-count: $iteration-count;
+        animation-duration: $duration;
+    }
+}
+
+.fancy-shield-rise-and-land {
+    svg,
+    .label {
+        animation-name: rise-and-land;
+        animation-timing-function: cubic-bezier(.8,.01,.75,1.75);
+    }
+
+    &:before {
+        animation-name: rise-and-land-shadow;
+        animation-timing-function: cubic-bezier(.8,.01,.75,1.75);
+    }
+
+    path:nth-child(1) {
+        animation-name: wing-wave-right;
+    }
+
+    path:nth-child(2) {
+        animation-name: wing-wave-left;
+    }
+    
+    path:nth-child(4) {
+        animation-name: wing-wave-left;
+    }
+
+    path:nth-child(3) {
+        animation-name: wing-wave-right;
+    }
+}
+
+.fancy-shield-high-five {
+    svg,
+    .label {
+        animation-name: high-five;
+    }
+
+    #board-left {
+        animation-name: fold-left;
+    }
+    
+    #board-right {
+        animation-name: fold-slight-left;
+    }
+}
+
+// keyframes
+
+@keyframes high-five {
+    55% {
+        transform: rotate3d(1, 1, 0, 20deg);
+    }    
+
+    75% {
+        transform: rotate3d(1, 1, 0, -20deg);
+    }
+}
+
+@keyframes fold-left {
+    55% {
+        transform: rotate3d(0, 1, 0, -20deg);
+    }
+}
+
+@keyframes fold-slight-left {
+    55% {
+        transform: rotate3d(0, 1, 0, -10deg);
+    }
+}
+
+@keyframes fold-right {
+    55% {
+        transform: rotate3d(0, 1, 0, 20deg);
+    }
+}
+
+@keyframes fold-slight-right {
+    55% {
+        transform: rotate3d(0, 1, 0, 10deg);
+    }
+}
+
+@keyframes wing-wave-left {
+    12.5%, 37.5%, 65.5% {
+        transform: rotate3d(0, 1, 0, -20deg);
+    }
+
+    25%, 50%, 75% {
+        transform: rotate3d(0, 1, 0, 20deg);
+    }
+}
+
+@keyframes wing-wave-right {
+    12.5%, 37.5%, 65.5% {
+        transform: rotate3d(0, 1, 0, 20deg);
+    }
+
+    25%, 50%, 75% {
+        transform: rotate3d(0, 1, 0, -20deg);
+    }
+}
+
+@keyframes rise-and-land {
+    80% {
+        transform: translate3d(0, -15%, 0) rotate3d(1, 0, 0, -10deg) rotate3d(0, 1, 0, 5deg);
+    }
+}
+
+@keyframes rise-and-land-shadow {
+    80% {
+        transform: scale(1.25, 0.5);
+    }
+}
